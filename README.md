@@ -1,2 +1,0 @@
-﻿# JobConnect_frontend
-
