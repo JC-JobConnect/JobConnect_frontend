@@ -1,6 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { FiAlignJustify } from "react-icons/fi";
 import { useState } from "react";
+import { IoLogInOutline } from "react-icons/io5";
 
 const publicNavItems = [
     { id: "home", name: "Home", path: "/" },
@@ -24,7 +25,7 @@ export default function Navbar({ isLoggedIn = false }) {
         : publicNavItems;
 
     return (
-        <header className="fixed inset-x-0 top-4 z-50 px-4">
+        <header className="fixed inset-x-0 top-4 z-50 px-4 backdrop-blur-md">
             <div className="mx-auto max-w-7xl flex items-center justify-between">
 
                 {/* Logo */}
@@ -68,9 +69,9 @@ export default function Navbar({ isLoggedIn = false }) {
                     {/* Login */}
                     <NavLink
                         to="/login"
-                        className="px-4 py-2 text-sm font-semibold text-gray-300 hover:text-white transition-colors"
+                        className="relative inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold text-gray-300 after:absolute after:bottom-0 after:left-0 after:h-[1.5px] after:w-0 after:bg-teal-400 after:transition-all after:duration-300 hover:after:w-full"
                     >
-                        Login
+                        <IoLogInOutline className=" text-xl" /> Login
                     </NavLink>
 
                     {/* Sign Up / Create Profile */}

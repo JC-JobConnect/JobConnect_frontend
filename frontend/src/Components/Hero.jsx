@@ -122,7 +122,7 @@ const Hero = () => {
             </div>
 
             {/* Search Button */}
-            <button className="bg-[#0D9488] hover:bg-[#0F766E] text-white font-semibold px-8 py-3.5 rounded-xl transition-colors w-full md:w-auto">
+            <button className="bg-[#0D9488] hover:bg-[#0F766E] text-white font-semibold px-8 py-3.5 rounded-xl transition-colors w-full md:w-auto cursor-pointer">
               Search
             </button>
           </div>
