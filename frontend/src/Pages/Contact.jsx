@@ -24,19 +24,28 @@ function Contact() {
     event.preventDefault();
     setResult("Sending...");
 
-    const formData = new FormData(event.target);
-    formData.append("access_key", "222dc648-0bef-4d2e-ab93-5bc9cc55e714");
+    const formDataObj = new FormData(event.target);
+    formDataObj.append("access_key", "222dc648-0bef-4d2e-ab93-5bc9cc55e714");
 
     const response = await fetch("https://api.web3forms.com/submit", {
       method: "POST",
-      body: formData,
+      body: formDataObj,
     });
 
     const data = await response.json();
 
     if (data.success) {
       setResult("Success! Email sent.");
-      event.target.reset(); // Clears inputs on success
+
+      // Clear the React state to empty out the input boxes
+      setFormData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        message: "",
+      });
+
+      event.target.reset();
     } else {
       console.log("Error details:", data);
       setResult(data.message || "Error submitting form");
@@ -192,7 +201,7 @@ function Contact() {
             <div className="pt-2">
               <button
                 type="submit"
-                className="bg-blue-400 hover:bg-blue-500 text-white text-xs font-medium py-2.5 px-6 rounded-md transition duration-200 shadow-sm"
+                className="bg-blue-400 hover:bg-blue-500 text-white text-base font-medium py-2.5 px-6 rounded-md transition duration-200 shadow-sm"
               >
                 Send Message
               </button>
