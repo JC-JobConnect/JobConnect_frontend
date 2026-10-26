@@ -25,8 +25,8 @@ export default function Navbar({ isLoggedIn = false }) {
         : publicNavItems;
 
     return (
-        <header className="fixed inset-x-0 top-4 z-50 px-4 backdrop-blur-md">
-            <div className="mx-auto max-w-7xl flex items-center justify-between">
+        <header className="fixed inset-x-0 top-4 z-50 px-4 ">
+            <div className="mx-auto max-w-7xl flex items-center justify-between bg-white/80 backdrop-blur-md rounded-full px-4 py-2 shadow-sm border border-gray-100">
 
                 {/* Logo */}
                 <NavLink
