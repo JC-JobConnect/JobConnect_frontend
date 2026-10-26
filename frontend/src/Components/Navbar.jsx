@@ -9,7 +9,7 @@ const publicNavItems = [
     { id: "contact", name: "Contact", path: "/contact" },
 ];
 
-export default function Navbar({ isLoggedIn = true }) {
+export default function Navbar({ isLoggedIn = false }) {
     const [isOpen, setIsOpen] = useState(false);
     const navItems = isLoggedIn
         ? [
@@ -24,31 +24,37 @@ export default function Navbar({ isLoggedIn = true }) {
         : publicNavItems;
 
     return (
-        <header className="fixed inset-x-0 top-3 z-50 px-4">
-            <div className="mx-auto max-w-7xl">
-                <div className="flex items-center justify-between rounded-full border border-gray-200 bg-white px-5 py-4 shadow-md sm:px-8 lg:px-10">
-                    {/* Logo */}
-                    <NavLink
-                        to="/"
-                        className="flex shrink-0 items-center gap-2 text-2xl font-bold text-gray-900"
-                    >JC
-                        <div>
-                            <span>Job</span>
-                            <span className="text-blue-600">Connect</span>
-                        </div>
-                    </NavLink>
-                    {/* Center Navigation */}
+        <header className="fixed inset-x-0 top-4 z-50 px-4">
+            <div className="mx-auto max-w-7xl flex items-center justify-between">
 
-                    <nav className="hidden md:block ">
-                        <ul className="flex items-center gap-8 lg:gap-12  ">
+                {/* Logo */}
+                <NavLink
+                    to="/"
+                    className="flex items-center gap-2 text-xl font-bold text-gray-900"
+                >
+                    <div className="w-10 h-10 rounded-lg bg-teal-600 text-white flex items-center justify-center text-lg font-bold">
+                        JC
+                    </div>
+                    <div className="text-2xl font-bold">
+                        <span>Job</span>
+                        <span className="text-teal-700">Connect</span>
+                    </div>
+                </NavLink>
+
+                {/* Right side - Dark pill navbar */}
+                <div className="hidden md:flex items-center gap-1 rounded-full bg-gray-900 px-3 py-2 shadow-lg">
+
+                    {/* Nav Links */}
+                    <nav>
+                        <ul className="flex items-center">
                             {navItems.map((item) => (
                                 <li key={item.id}>
                                     <NavLink
                                         to={item.path}
                                         className={({ isActive }) =>
-                                            ` transition-colors font-semibold text-xl duration-200   ${isActive
-                                                ? "text-blue-600"
-                                                : "text-gray-900 hover:text-blue-600  "
+                                            `px-4 py-2 text-sm font-semibold rounded-full transition-colors ${isActive
+                                                ? "text-white bg-white/10"
+                                                : "text-gray-300 hover:text-white"
                                             }`
                                         }
                                     >
@@ -58,29 +64,31 @@ export default function Navbar({ isLoggedIn = true }) {
                             ))}
                         </ul>
                     </nav>
-                    {/* Mobile Theme Button */}
 
-                    <button
-                        onClick={() => setIsOpen(true)}
-                        className="md:hidden text-2xl text-zinc-700"
+                    {/* Login */}
+                    <NavLink
+                        to="/login"
+                        className="px-4 py-2 text-sm font-semibold text-gray-300 hover:text-white transition-colors"
                     >
-                        <FiAlignJustify />
-                    </button>
+                        Login
+                    </NavLink>
 
-                    {/* login & Create profile Button */}
-                    <div className="hidden shrink-0 items-center gap-5 md:flex">
-                        <NavLink
-                            to="/login"
-                            className="flex items-center gap-2 text-[16px] font-semibold text-gray-900 hover:text-blue-600"
-                        >Login</NavLink>
-                        <NavLink
-                            to="/register"
-                            className="rounded-full bg-linear-to-r from-blue-600 to-cyan-500 px-5 py-2.5 text-[16px] font-semibold text-white transition-all duration-200 hover:shadow-lg"
-                        >
-                            Create Profile
-                        </NavLink>
-                    </div>
+                    {/* Sign Up / Create Profile */}
+                    <NavLink
+                        to="/register"
+                        className="ml-1 rounded-full bg-linear-to-r from-teal-600 to-cyan-500 transition-all duration-200 hover:scale-105 px-5 py-2 text-sm font-semibold text-white"
+                    >
+                        Sign Up
+                    </NavLink>
                 </div>
+
+                {/* Mobile Hamburger */}
+                <button
+                    onClick={() => setIsOpen(true)}
+                    className="md:hidden text-2xl text-gray-800"
+                >
+                    <FiAlignJustify />
+                </button>
             </div>
 
             {isOpen && (
@@ -106,7 +114,7 @@ export default function Navbar({ isLoggedIn = true }) {
                             >     {/* logo will be here */}
                                 <span>JC</span>
                                 <span>
-                                    Job<span className="text-blue-600">Connect</span>
+                                    Job<span className="text-teal-600">Connect</span>
                                 </span>
                             </NavLink>
 
@@ -130,8 +138,8 @@ export default function Navbar({ isLoggedIn = true }) {
                                             onClick={() => setIsOpen(false)}
                                             className={({ isActive }) =>
                                                 `block rounded-lg px-3 py-4 text-base font-medium transition-colors ${isActive
-                                                    ? "bg-blue-50 text-blue-600"
-                                                    : "text-gray-700 hover:bg-gray-50 hover:text-blue-600"
+                                                    ? "bg-blue-50 text-teal-600"
+                                                    : "text-gray-700 hover:bg-gray-50 hover:text-teal-600"
                                                 }`
                                             }
                                         >
@@ -155,7 +163,7 @@ export default function Navbar({ isLoggedIn = true }) {
                             <NavLink
                                 to="/register"
                                 onClick={() => setIsOpen(false)}
-                                className="rounded-full bg-linear-to-r from-blue-600 to-cyan-500 px-4 py-3 text-center font-semibold text-white transition hover:shadow-lg"
+                                className="rounded-full bg-linear-to-r from-teal-600 to-cyan-500 px-4 py-3 text-center font-semibold text-white transition hover:shadow-lg"
                             >
                                 Create Profile
                             </NavLink>
