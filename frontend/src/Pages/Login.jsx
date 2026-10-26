@@ -123,7 +123,7 @@ const Login = () => {
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
                   >
-                    {showPassword ? <FiEyeOff size={18} /> : <FiEye size={18} />}
+                    {showPassword ? <FiEyeOff className="cursor-pointer" size={18} /> : <FiEye className="cursor-pointer" size={18} />}
                   </button>
                 </div>
                 <p className="text-xs text-gray-500 mt-1.5">
