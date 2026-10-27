@@ -201,7 +201,7 @@ function Contact() {
             <div className="pt-2">
               <button
                 type="submit"
-                className="bg-teal-400 hover:bg-teal-500 text-white text-base font-medium py-2.5 px-6 rounded-md transition duration-200 shadow-sm"
+                className="bg-teal-300 hover:bg-teal-700 text-white text-base font-medium py-2.5 px-6 rounded-md transition duration-200 shadow-sm"
               >
                 Send Message
               </button>
