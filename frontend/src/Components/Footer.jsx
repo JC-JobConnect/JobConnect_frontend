@@ -1,7 +1,11 @@
-import React from 'react'
+import Hero_bg from "../Assets/images/HeroImage.webp";
 
 const Footer = () => {
     return (
+        <div>
+            <div className="bg-teal-400">
+                <img src={Hero_bg} alt="" className=""/>
+            </div>
         <footer className="bg-white border-t border-slate-200">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
@@ -83,6 +87,7 @@ const Footer = () => {
                 </div>
             </div>
         </footer>
+        </div>
     )
 }
 

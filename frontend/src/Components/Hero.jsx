@@ -2,9 +2,11 @@ import { CiSearch } from "react-icons/ci";
 import { CiLocationOn } from "react-icons/ci";
 
 
+
 const Hero = () => {
   return (
-    <section className="bg-white pt-28 pb-16">
+    <section className="bg-white/10 pt-28 pb-16">
+      
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-5">
 
         {/* Top Content */}
