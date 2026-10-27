@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import Hero_bg from "../Assets/images/test3.webp";
-import Hero_bg2 from "../Assets/images/testd.webp";
+import Hero_bg from "../Assets/images/Hero_bg2.webp";
+import Hero_bg2 from "../Assets/images/Hero_bg.webp";
 
 const PageHero = ({ title }) => {
   const [darkMode, setDarkMode] = useState(

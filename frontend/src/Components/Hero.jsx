@@ -8,50 +8,85 @@ import { FaArrowTrendUp } from "react-icons/fa6";
 const Hero = () => {
 
   return (
-    <section className="bg-[#f5f5f5] pt-22 pb-16">
-
-
+    <section className="bg-white dark:bg-[#06122B] pt-28 pb-16 ">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-5">
-
         {/* Top Content */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-
-          {/* Left Content */}
-          <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#D1FAE5] text-[#064E4A] text-sm font-medium mb-6">
-              <span className="w-2 h-2 rounded-full bg-[#10B981]"></span>
-              Your Next Opportunity Awaits
+          {/* Hero Left Text Content */}
+          <div className="space-y-6 text-center lg:text-left">
+            {/* Opportunity Badge */}
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-teal-50 dark:bg-teal-950/60 border border-teal-200/60 dark:border-teal-800/50 text-[#0fa988] font-semibold text-sm">
+              <span className="w-2 h-2 rounded-full bg-[#0fa988] animate-ping" />
+              <span> Your Next Opportunity Awaits</span>
             </div>
-
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#064E4A] leading-tight tracking-tight">
+            {/* Main Headline */}
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 dark:text-white leading-[1.15] tracking-tight">
               Find Your{" "}
-              <span className="text-[#0D9488]">Dream Job</span>
-              <br />
-              Build Your{" "}
-              <span className="text-[#0D9488]">Future</span>
+              <span className="text-[#0fa988] relative inline-block">
+                Dream Job
+                <svg
+                  className="absolute -bottom-2 left-0 w-full h-3 text-[#0fa988]/30"
+                  viewBox="0 0 100 20"
+                  preserveAspectRatio="none"
+                >
+                  <path
+                    d="M0,15 Q50,0 100,15"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={6}
+                  />
+                </svg>
+              </span>{" "}
+              <br className="hidden sm:inline" />
+              Build Your Future
             </h1>
-
-            <p className="mt-5 text-lg text-[#0F766E] max-w-lg leading-relaxed">
-              Discover thousands of job opportunities from top companies.
-              Start your career journey today with the right opportunity.
+            {/* Subtitle */}
+            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-xl mx-auto lg:mx-0 leading-relaxed">
+              Discover thousands of career opportunities from top global companies.
+              Start your career journey today with the right match for your skills.
             </p>
-
-            <button className="mt-8 inline-flex items-center gap-2 bg-[#0D9488] hover:bg-[#0F766E] text-white font-semibold px-6 py-3.5 rounded-full transition-colors">
-              Get Started
-              <span className="text-lg">→</span>
-            </button>
-
-            {/* Trusted by */}
-            <div className="mt-10">
-              <p className="text-sm text-[#0F766E] mb-3">Trusted by leading companies</p>
-              <div className="flex items-center gap-6 opacity-70">
-                <span className="font-bold text-[#064E4A]">SAMSUNG</span>
-                <span className="font-bold text-[#064E4A]">Uber</span>
-                <span className="font-bold text-[#064E4A]">adidas</span>
-                <span className="font-bold text-[#064E4A]">Google</span>
+            {/* Call to Action Buttons */}
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2">
+              <a
+                href="#search-section"
+                className="px-7 py-3.5 rounded-full bg-[#0fa988] hover:bg-[#0d9488] text-white font-semibold text-base shadow-lg shadow-teal-600/20 hover:scale-[1.02] transition-all flex items-center gap-2"
+              >
+                Get Started
+                <i data-lucide="arrow-right" className="w-5 h-5" />
+              </a>
+              <a
+                href="#jobs"
+                className="px-7 py-3.5 rounded-full border-2 border-gray-200 dark:border-gray-700 hover:border-[#0fa988] dark:hover:border-[#0fa988] text-gray-700 dark:text-gray-200 font-semibold text-base hover:text-[#0fa988] dark:hover:text-[#0fa988] transition-all"
+              >
+                Explore Jobs
+              </a>
+            </div>
+            {/* Trusted Companies Bar */}
+            <div className="pt-8 border-t border-gray-100 dark:border-gray-800/80">
+              <p className="text-xs uppercase tracking-wider text-gray-400 dark:text-gray-500 font-semibold mb-4">
+                Trusted by leading companies
+              </p>
+              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-6 sm:gap-8 opacity-70 grayscale hover:grayscale-0 transition-all">
+                <span className="text-xl font-bold tracking-tight text-gray-700 dark:text-gray-300 font-sans">
+                  SAMSUNG
+                </span>
+                <span className="text-xl font-black tracking-tighter text-gray-700 dark:text-gray-300">
+                  Uber
+                </span>
+                <span className="text-xl font-extrabold tracking-wider text-gray-700 dark:text-gray-300 lowercase italic">
+                  adidas
+                </span>
+                <span className="text-xl font-semibold tracking-normal text-gray-700 dark:text-gray-300">
+                  Google
+                </span>
+                <span className="text-xl font-bold text-gray-700 dark:text-gray-300">
+                  Microsoft
+                </span>
               </div>
             </div>
           </div>
+
+
 
           {/* Right Visual */}
           <div className="relative mx-auto w-full max-w-130">
@@ -131,6 +166,7 @@ const Hero = () => {
 
               </div>
 
+
               {/* People Icon */}
               <div className="absolute bottom-[20%] right-5 z-20 flex h-[76px] w-[76px] items-center justify-center rounded-full border border-white/70 bg-white/90 text-teal-600 shadow-[0_10px_30px_rgba(15,118,110,0.10)] backdrop-blur-md transition-transform duration-300 hover:scale-105 sm:right-8">
 
@@ -139,7 +175,6 @@ const Hero = () => {
             </div>
           </div>
         </div>
-
         {/* Search Bar Section */}
         <div className="mt-14">
           <div className="bg-white rounded-2xl shadow-lg border border-[#A7F3D0] p-3 flex flex-col md:flex-row gap-3 items-center">
