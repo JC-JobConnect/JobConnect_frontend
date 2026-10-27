@@ -1,12 +1,33 @@
 import { CiSearch } from "react-icons/ci";
 import { CiLocationOn } from "react-icons/ci";
-
+import Hero_bg from "../Assets/images/test3.webp";
+import Hero_bg2 from "../Assets/images/testd.webp";
+import { useState, useEffect } from "react";
 
 
 const Hero = () => {
+  const [darkMode, setDarkMode] = useState(
+    document.documentElement.classList.contains('dark')
+  );
+
+  useEffect(() => {
+    const observer = new MutationObserver(() => {
+      setDarkMode(document.documentElement.classList.contains('dark'));
+    });
+
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class'],
+    });
+
+    return () => observer.disconnect();
+  }, []);
   return (
-    <section className="bg-white/10 pt-28 pb-16">
-      
+    <section className="bg-white pt-12 pb-16">
+      <div className=" relative h-250 bg-green-400 overflow-hidden">
+        <img src={darkMode ? Hero_bg2 : Hero_bg} alt="" className="absolute inset-0 w-full h-full object-cover opacity-99 " />
+      </div>
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-5">
 
         {/* Top Content */}
