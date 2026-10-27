@@ -75,7 +75,7 @@ function Contact() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-8 pt-4">
             {/* Call */}
             <div className="flex flex-col items-start gap-3">
-              <FiPhoneCall className="text-sky-400 text-2xl mt-2 shrink-0" />
+              <FiPhoneCall className="text-teal-400 text-2xl mt-2 shrink-0" />
               <div>
                 <h4 className="font-bold text-gray-900 text-xl">
                   Call for inquiry
@@ -86,7 +86,7 @@ function Contact() {
 
             {/* email */}
             <div className="flex flex-col items-start gap-3">
-              <FiMail className="text-sky-400 text-2xl mt-2 shrink-0" />
+              <FiMail className="text-teal-400 text-2xl mt-2 shrink-0" />
               <div>
                 <h4 className="font-bold text-gray-900 text-xl">
                   Send us email
@@ -104,7 +104,7 @@ function Contact() {
 
             {/* Opening hours */}
             <div className="flex flex-col items-start gap-3">
-              <FiClock className="text-sky-400 text-2xl mt-2 shrink-0" />
+              <FiClock className="text-teal-400 text-2xl mt-2 shrink-0" />
               <div>
                 <h4 className="font-bold text-gray-900 text-xl">
                   Opening hours
@@ -117,7 +117,7 @@ function Contact() {
 
             {/* Office */}
             <div className="flex flex-col items-start gap-3">
-              <FiMapPin className="text-sky-400 text-2xl mt-2 shrink-0" />
+              <FiMapPin className="text-teal-400 text-2xl mt-2 shrink-0" />
               <div>
                 <h4 className="font-bold text-gray-900 text-xl">Office</h4>
                 <p className="text-gray-900 text-lg mt-2">Dhaka, Bangladesh</p>
@@ -201,7 +201,7 @@ function Contact() {
             <div className="pt-2">
               <button
                 type="submit"
-                className="bg-blue-400 hover:bg-blue-500 text-white text-base font-medium py-2.5 px-6 rounded-md transition duration-200 shadow-sm"
+                className="bg-teal-400 hover:bg-teal-500 text-white text-base font-medium py-2.5 px-6 rounded-md transition duration-200 shadow-sm"
               >
                 Send Message
               </button>

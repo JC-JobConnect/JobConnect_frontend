@@ -1,12 +1,272 @@
-import PageHero from "../Components/PageHero"
+import PageHero from "../Components/PageHero";
+import { useState } from "react";
+import aboutHeroImg from "../Assets/images/image_1_about_us.jpg";
+import cardImg1 from "../Assets/images/image_2_about_us.jpg";
+import cardImg2 from "../Assets/images/image_3_about_us.jpg";
+import cardImg3 from "../Assets/images/image_4_about_us.jpg";
+import cardImg4 from "../Assets/images/image_5_about_us.jpg";
+import {
+  FiUser,
+  FiFileText,
+  FiBriefcase,
+  FiCheckCircle,
+  FiPlus,
+  FiX,
+  FiThumbsUp,
+  FiAward,
+  FiStar,
+  FiUsers,
+} from "react-icons/fi";
 
+const HowItWorks = [
+  {
+    icon: <FiUser className="w-8 h-8 text-teal-500" />,
+    title: "Create Account",
+    desc: "Register in seconds to build your professional profile and unlock personalized career opportunities.",
+  },
+  {
+    icon: <FiFileText className="w-8 h-8 text-teal-500" />,
+    title: "Upload Resume",
+    desc: "Upload your latest CV so recruiters can discover your candidate profile directly.",
+  },
+  {
+    icon: <FiBriefcase className="w-8 h-8 text-teal-500" />,
+    title: "Find Jobs",
+    desc: "Explore curated job opportunities tailored to your skills, experience, and location preference.",
+  },
+  {
+    icon: <FiCheckCircle className="w-8 h-8 text-teal-500" />,
+    title: "Apply Job",
+    desc: "Instantly connect with top employers and take the next step in advancing your career.",
+  },
+];
 
-const About = () => {
+const faqs = [
+  {
+    id: 1,
+    question: "Can I upload a CV?",
+    answer: "Yes, you can upload your cv while creating your profile.",
+  },
+  {
+    id: 2,
+    question: "How long will the recruitment process take?",
+    answer:
+      "The recruitment process typically takes 2-4 weeks depending on the role and number of applicants.",
+  },
+  {
+    id: 3,
+    question: "What does the recruitment and selection process involve?",
+    answer:
+      "It usually includes CV screening, interviews, technical assessments, and final offer stage.",
+  },
+  {
+    id: 4,
+    question: "Do you recruit for Graduates, Apprentices and Students?",
+    answer:
+      "Yes, we actively recruit graduates, apprentices and students across multiple industries.",
+  },
+  {
+    id: 5,
+    question:
+      "Can I receive notifications for any future jobs that may interest me?",
+    answer:
+      "Absolutely. You can set job alerts based on your preferences and receive email notifications.",
+  },
+];
+
+const features = [
+  { icon: <FiThumbsUp className="w-5 h-5" />, title: "Quality Job" },
+  { icon: <FiUsers className="w-5 h-5" />, title: "Freshers" },
+  { icon: <FiAward className="w-5 h-5" />, title: "Top Companies" },
+  { icon: <FiStar className="w-5 h-5" />, title: "Top Talents" },
+];
+
+function AboutUs() {
+  const [openFaq, setOpenFaq] = useState(1);
+
   return (
-    <div>
-        <PageHero title="About" />
+    <div className="min-h-screen bg-white font-sans">
+      <PageHero title="About Us" badgeText="Who We Are" />
+      {/* Connecting Talent */}
+      <section className="max-w-7xl mx-auto px-6 py-16">
+        <div className="grid md:grid-cols-2 gap-12 items-start mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">
+            Connecting Talent with
+            <br />
+            Possibilities
+          </h2>
+          <p className="text-gray-600 leading-relaxed text-justify">
+            JobConnect began its journey in 2026 as a tech startup with a vision
+            to connect job seekers and employers on one platform. It offers job
+            seekers an easy way to showcase their skills and apply for desired
+            jobs, while helping employers make hiring simpler, transparent, and
+            cost-effective.
+          </p>
+        </div>
+
+        <div
+          className="w-full h-72 md:h-96 rounded-2xl overflow-hidden bg-gradient-to-br from-gray-300
+         via-gray-400 to-gray-500 transition-transform duration-300 ease-in-out hover:scale-105"
+        >
+          <img
+            src={aboutHeroImg}
+            alt="Team"
+            className="w-full h-full object-cover"
+          />
+        </div>
+      </section>
+
+      {/* How it works */}
+      <section className="max-w-7xl mx-auto px-6 py-16 ">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold text-gray-900 mb-3">
+            How it works
+          </h2>
+          <p className="text-gray-500 text-sm">
+            Our platform makes job searching smarter and more efficient.
+          </p>
+        </div>
+
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {HowItWorks.map((item, idx) => (
+            <div
+              key={idx}
+              className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm hover:shadow-xl 
+              hover:-translate-y-1.5 hover:border-teal-400 transition-all 
+              duration-300 group cursor-pointer"
+            >
+              <div className="mb-4 transition-transform duration-300 group-hover:scale-110">
+                {item.icon}
+              </div>
+              <h3 className="font-semibold text-gray-900 mb-2">{item.title}</h3>
+              <p className="text-sm text-gray-500 leading-relaxed">
+                {item.desc}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="max-w-7xl mx-auto px-6 py-16">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold text-gray-900 mb-3">
+            Frequently Asked Questions
+          </h2>
+          <p className="text-gray-500 text-sm">
+            Clear answers to common questions about JobConnect.
+          </p>
+        </div>
+
+        <div className="max-w-3xl mx-auto space-y-3">
+          {faqs.map((faq) => (
+            <div
+              key={faq.id}
+              className={`rounded-xl border transition-all ${
+                openFaq === faq.id
+                  ? "bg-teal-50 border-teal-100"
+                  : "bg-white border-gray-200 hover:border-teal-300"
+              }`}
+            >
+              <button
+                onClick={() => setOpenFaq(openFaq === faq.id ? null : faq.id)}
+                className="w-full flex items-center justify-between px-6 py-5 text-left"
+              >
+                <div className="flex items-center gap-4">
+                  <span className="text-sm font-medium text-gray-400 w-6">
+                    {String(faq.id).padStart(2, "0")}
+                  </span>
+                  <span className="font-medium text-gray-900">
+                    {faq.question}
+                  </span>
+                </div>
+                {openFaq === faq.id ? (
+                  <FiX className="w-5 h-5 text-teal-500" />
+                ) : (
+                  <FiPlus className="w-5 h-5 text-teal-500" />
+                )}
+              </button>
+
+              {openFaq === faq.id && (
+                <div className="px-6 pb-5 pl-16">
+                  <p className="text-sm text-gray-600 leading-relaxed">
+                    {faq.answer}
+                  </p>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* We're Only Working With The Best */}
+      <section className="max-w-7xl mx-auto px-6 py-16">
+        <div className="grid md:grid-cols-2 gap-12 items-center">
+          {/* Image collage */}
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-4">
+              <div className="h-48 rounded-2xl overflow-hidden shadow-sm">
+                <img
+                  src={cardImg1}
+                  alt="Team1"
+                  className="w-full h-full object-cover transition-transform duration-300 ease-in-out hover:scale-105"
+                />
+              </div>
+              <div className="h-32 rounded-2xl overflow-hidden shadow-sm">
+                <img
+                  src={cardImg2}
+                  alt="Team1"
+                  className="w-full h-full object-cover transition-transform duration-300 ease-in-out hover:scale-105"
+                />
+              </div>
+            </div>
+            <div className="space-y-4 pt-8">
+              <div className="h-40 rounded-2xl overflow-hidden shadow-sm">
+                <img
+                  src={cardImg3}
+                  alt="Team1"
+                  className="w-full h-full object-cover transition-transform duration-300 ease-in-out hover:scale-105"
+                />
+              </div>
+              <div className="h-36 rounded-2xl overflow-hidden shadow-sm">
+                <img
+                  src={cardImg4}
+                  alt="Team1"
+                  className="w-full h-full object-cover transition-transform duration-300 ease-in-out hover:scale-105"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Content */}
+          <div>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 leading-tight">
+              We’re Only Working
+              <br />
+              With The Best
+            </h2>
+            <p className="text-gray-600 mb-8 leading-relaxed text-justify">
+              Empowering leading organizations by bridging the gap with
+              high-performing industry professionals.
+            </p>
+
+            <div className="grid grid-cols-2 gap-6">
+              {features.map((item, idx) => (
+                <div key={idx} className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-cyan-50 flex items-center justify-center text-teal-600">
+                    {item.icon}
+                  </div>
+                  <span className="font-medium text-gray-800">
+                    {item.title}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
-  )
+  );
 }
 
-export default About
+export default AboutUs;
