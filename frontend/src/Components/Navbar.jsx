@@ -2,6 +2,8 @@ import { NavLink } from "react-router-dom";
 import { FiAlignJustify } from "react-icons/fi";
 import { useState } from "react";
 import { IoLogInOutline } from "react-icons/io5";
+import { MdOutlineWbSunny } from "react-icons/md";
+import { MdOutlineDarkMode } from "react-icons/md";
 
 const publicNavItems = [
     { id: "home", name: "Home", path: "/" },
@@ -12,6 +14,18 @@ const publicNavItems = [
 
 export default function Navbar({ isLoggedIn = false }) {
     const [isOpen, setIsOpen] = useState(false);
+    const [darkMode, setDarkMode] = useState(false);
+
+    const toggleDarkMode = () => {
+        const newMode = !darkMode;
+        setDarkMode(newMode);
+
+        if (newMode) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    };
     const navItems = isLoggedIn
         ? [
             ...publicNavItems.slice(0, 2),
@@ -33,7 +47,7 @@ export default function Navbar({ isLoggedIn = false }) {
                     to="/"
                     className="flex items-center gap-2 text-xl font-bold text-gray-900"
                 >
-                    <div className="w-10 h-10 rounded-lg bg-teal-600 text-white flex items-center justify-center text-lg font-bold">
+                    <div className="w-10 h-10 rounded-lg bg-teal-600 dark:bg-amber-700 text-white flex items-center justify-center text-lg font-bold">
                         JC
                     </div>
                     <div className="text-2xl font-bold">
@@ -43,44 +57,53 @@ export default function Navbar({ isLoggedIn = false }) {
                 </NavLink>
 
                 {/* Right side - Dark pill navbar */}
-                <div className="hidden md:flex items-center gap-1 rounded-full bg-gray-900 px-3 py-2 shadow-lg">
+                <div className="hidden md:flex items-center gap-3">
+                    <div className="hidden md:flex items-center gap-1 rounded-full bg-gray-900 px-3 py-2 shadow-lg">
 
-                    {/* Nav Links */}
-                    <nav>
-                        <ul className="flex items-center">
-                            {navItems.map((item) => (
-                                <li key={item.id}>
-                                    <NavLink
-                                        to={item.path}
-                                        className={({ isActive }) =>
-                                            `px-4 py-2 text-sm font-semibold rounded-full transition-colors ${isActive
-                                                ? "text-white bg-white/10"
-                                                : "text-gray-300 hover:text-white"
-                                            }`
-                                        }
-                                    >
-                                        {item.name}
-                                    </NavLink>
-                                </li>
-                            ))}
-                        </ul>
-                    </nav>
+                        {/* Nav Links */}
+                        <nav>
+                            <ul className="flex items-center">
+                                {navItems.map((item) => (
+                                    <li key={item.id}>
+                                        <NavLink
+                                            to={item.path}
+                                            className={({ isActive }) =>
+                                                `px-4 py-2 text-sm font-semibold rounded-full transition-colors ${isActive
+                                                    ? "text-white bg-white/10"
+                                                    : "text-gray-300 hover:text-white"
+                                                }`
+                                            }
+                                        >
+                                            {item.name}
+                                        </NavLink>
+                                    </li>
+                                ))}
+                            </ul>
+                        </nav>
 
-                    {/* Login */}
-                    <NavLink
-                        to="/login"
-                        className="relative inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold text-gray-300 after:absolute after:bottom-0 after:left-0 after:h-[1.5px] after:w-0 after:bg-teal-400 after:transition-all after:duration-300 hover:after:w-full"
+                        {/* Login */}
+                        <NavLink
+                            to="/login"
+                            className="relative inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold text-gray-300 after:absolute after:bottom-0 after:left-0 after:h-[1.5px] after:w-0 after:bg-teal-400 after:transition-all after:duration-300 hover:after:w-full"
+                        >
+                            <IoLogInOutline className=" text-xl" /> Login
+                        </NavLink>
+
+                        {/* Sign Up / Create Profile */}
+                        <NavLink
+                            to="/register"
+                            className="ml-1 rounded-full bg-linear-to-r from-teal-600 to-cyan-500 transition-all duration-200 hover:scale-105 px-5 py-2 text-sm font-semibold text-white"
+                        >
+                            Sign Up
+                        </NavLink>
+                    </div>
+                    {/* Dark mode button */}
+                    <button
+                        onClick={toggleDarkMode}
+                        className="px-4 py-2 text-sm font-medium rounded-full cursor-pointer border border-gray-200 hover:bg-gray-100 transition"
                     >
-                        <IoLogInOutline className=" text-xl" /> Login
-                    </NavLink>
-
-                    {/* Sign Up / Create Profile */}
-                    <NavLink
-                        to="/register"
-                        className="ml-1 rounded-full bg-linear-to-r from-teal-600 to-cyan-500 transition-all duration-200 hover:scale-105 px-5 py-2 text-sm font-semibold text-white"
-                    >
-                        Sign Up
-                    </NavLink>
+                        {darkMode ? <MdOutlineWbSunny className="text-lg" /> :  <MdOutlineDarkMode className="text-lg" />}
+                    </button>
                 </div>
 
                 {/* Mobile Hamburger */}
@@ -90,6 +113,7 @@ export default function Navbar({ isLoggedIn = false }) {
                 >
                     <FiAlignJustify />
                 </button>
+
             </div>
 
             {isOpen && (
