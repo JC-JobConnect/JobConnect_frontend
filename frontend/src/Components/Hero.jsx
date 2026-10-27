@@ -1,32 +1,15 @@
 import { CiSearch } from "react-icons/ci";
 import { CiLocationOn } from "react-icons/ci";
-import Hero_bg from "../Assets/images/test3.webp";
-import Hero_bg2 from "../Assets/images/testd.webp";
-import { useState, useEffect } from "react";
-
+import modelimg from "../Assets/images/model.webp"
+import { LuBriefcaseBusiness } from "react-icons/lu";
+import { BsPersonBoundingBox } from "react-icons/bs";
+import { FaArrowTrendUp } from "react-icons/fa6";
 
 const Hero = () => {
-  const [darkMode, setDarkMode] = useState(
-    document.documentElement.classList.contains('dark')
-  );
 
-  useEffect(() => {
-    const observer = new MutationObserver(() => {
-      setDarkMode(document.documentElement.classList.contains('dark'));
-    });
-
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['class'],
-    });
-
-    return () => observer.disconnect();
-  }, []);
   return (
-    <section className="bg-white pt-12 pb-16">
-      <div className=" relative h-250 bg-green-400 overflow-hidden">
-        <img src={darkMode ? Hero_bg2 : Hero_bg} alt="" className="absolute inset-0 w-full h-full object-cover opacity-99 " />
-      </div>
+    <section className="bg-[#f5f5f5] pt-22 pb-16">
+
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-5">
 
@@ -71,40 +54,88 @@ const Hero = () => {
           </div>
 
           {/* Right Visual */}
-          <div className="relative">
-            <div className="bg-[#0D9488] rounded-3xl h-105 relative overflow-hidden flex items-end justify-center">
-              {/* Decorative circles */}
-              <div className="absolute top-10 right-10 w-32 h-32 rounded-full bg-white/10"></div>
-              <div className="absolute bottom-20 left-8 w-24 h-24 rounded-full bg-white/10"></div>
+          <div className="relative mx-auto w-full max-w-130">
 
-              {/* Placeholder person area */}
-              <div className="relative z-10 w-64 h-80 bg-[#10B981] rounded-t-full flex items-center justify-center">
-                <div className="text-white text-6xl font-bold opacity-30">JC</div>
+            {/* Main Illustration Card */}
+            <div className="relative isolate h-105 overflow-visible sm:h-115">
+
+              {/* Background Shape */}
+              <div className="absolute inset-x-2 bottom-0 top-5 -z-10 overflow-hidden rounded-4xl bg-linear-to-br from-[#e5faf6] via-[#d1f7ef] to-[#c2f0e9]">
+
+                {/* Large Center Circle */}
+                <div className="absolute left-1/2 top-[20%] h-90 w-90 -translate-x-1/2 rounded-full bg-linear-to-br from-[#a9eee0] to-[#8ce7d5] opacity-80" />
+
+                {/* Bottom Left Circle */}
+                <div className="absolute -bottom-24 -left-20 h-70 w-70 rounded-full bg-linear-to-br from-[#43dfc3] to-[#a0f2e1] opacity-90" />
+
+                {/* Decorative Circle */}
+                <div className="absolute right-10 top-[52%] h-28 w-28 rounded-full bg-white/25" />
+
+                {/* Soft Light */}
+                <div className="absolute inset-0 bg-linear-to-t from-white/10 via-transparent to-white/20" />
               </div>
-            </div>
 
-            {/* Floating Card 1 */}
-            <div className="absolute top-16 -left-4 bg-white rounded-2xl shadow-lg p-4 w-56">
-              <p className="text-sm font-semibold text-[#064E4A] mb-3">How satisfied are you?</p>
-              <div className="space-y-2">
-                <div className="h-2 rounded-full bg-[#D1FAE5]">
-                  <div className="h-2 rounded-full bg-[#10B981] w-[85%]"></div>
-                </div>
-                <div className="h-2 rounded-full bg-[#D1FAE5]">
-                  <div className="h-2 rounded-full bg-[#0D9488] w-[60%]"></div>
-                </div>
-                <div className="h-2 rounded-full bg-[#D1FAE5]">
-                  <div className="h-2 rounded-full bg-[#A7F3D0] w-[40%]"></div>
-                </div>
+              {/* Main Model Image */}
+              <div className="absolute inset-x-0 bottom-0 z-10 flex h-full items-end justify-center overflow-hidden rounded-4xl">
+
+                <img
+                  src={modelimg}
+                  alt="JobConnect job seeker"
+                  className="h-[108%] w-full max-w-none object-contain object-bottom drop-shadow-sm"
+                />
+
               </div>
-            </div>
 
-            {/* Floating Card 2 */}
-            <div className="absolute bottom-10 -right-16 bg-white rounded-2xl shadow-lg p-4 w-60">
-              <p className="text-sm font-semibold text-[#064E4A] mb-1">New Opportunity</p>
-              <p className="text-xs text-[#0F766E]">
-                Frontend Developer at a growing tech company. Apply now and take the next step.
-              </p>
+              {/* JC Logo Badge */}
+              <div className="absolute left-5 top-0 z-30 flex h-20.5 w-20.5 items-center justify-center rounded-[1.8rem] border border-teal-200/70 bg-white/90 shadow-[0_12px_30px_rgba(13,148,136,0.12)] backdrop-blur-md sm:left-8">
+
+                <div className="flex h-16 w-16 items-center justify-center rounded-[1.35rem] bg-linear-to-br from-[#0d9488] to-[#009e8e] text-2xl font-extrabold tracking-tight text-white shadow-md">
+                  JC
+                </div>
+
+              </div>
+
+              {/* Find Your Perfect Job Card */}
+              <div className="absolute left-0 top-[39%] z-20 flex max-w-51.15 items-center gap-3 rounded-3xl border border-white/80 bg-white/95 px-4 py-4 shadow-[0_12px_35px_rgba(15,118,110,0.10)] backdrop-blur-md transition-transform duration-300 hover:-translate-y-1 sm:-left-1">
+
+                {/* Briefcase Icon */}
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-linear-to-br from-teal-50 to-emerald-100 text-teal-600">
+
+                  <LuBriefcaseBusiness className='text-3xl' />
+
+                </div>
+
+                <span className="text-sm font-bold leading-5 text-[#164e4a]">
+                  Find Your
+                  <br />
+                  Perfect Job
+                </span>
+
+              </div>
+
+              {/* Better Career Opportunities Card */}
+              <div className="absolute right-0 top-[22%] z-20 flex max-w-55 items-center gap-3 rounded-3xl border border-white/80 bg-white/95 px-4 py-4 shadow-[0_12px_35px_rgba(15,118,110,0.10)] backdrop-blur-md transition-transform duration-300 hover:-translate-y-1 sm:-right-1">
+
+                {/* Trending Up Icon */}
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-linear-to-br from-teal-50 to-emerald-100 text-teal-600">
+
+                  <FaArrowTrendUp className='text-3xl' />
+
+                </div>
+
+                <span className="text-sm font-bold leading-5 text-[#164e4a]">
+                  Better Career
+                  <br />
+                  Opportunities
+                </span>
+
+              </div>
+
+              {/* People Icon */}
+              <div className="absolute bottom-[20%] right-5 z-20 flex h-[76px] w-[76px] items-center justify-center rounded-full border border-white/70 bg-white/90 text-teal-600 shadow-[0_10px_30px_rgba(15,118,110,0.10)] backdrop-blur-md transition-transform duration-300 hover:scale-105 sm:right-8">
+
+                <BsPersonBoundingBox className='text-3xl' />
+              </div>
             </div>
           </div>
         </div>
@@ -184,6 +215,7 @@ const Hero = () => {
         </div>
       </div>
     </section>
+
   )
 }
 
