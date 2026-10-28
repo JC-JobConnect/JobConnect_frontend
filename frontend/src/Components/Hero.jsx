@@ -109,7 +109,7 @@ const Hero = () => {
               </div>
 
               {/* Job Vacancies Card */}
-              <div className="absolute left-0 top-[25%] z-20 flex max-w-51.15 items-center gap-3 rounded-3xl border border-white/80 bg-white/95 dark:bg-[#0F2A28]/90 dark:border-teal-800/50 px-4 py-4 shadow-[0_12px_35px_rgba(15,118,110,0.10)] backdrop-blur-md transition-transform duration-300 hover:-translate-y-1 sm:-left-1">
+              <div className="hidden absolute left-0 top-[25%] z-20 md:flex max-w-51.15 items-center gap-3 rounded-3xl border border-white/80 bg-white/95 dark:bg-[#0F2A28]/90 dark:border-teal-800/50 px-4 py-4 shadow-[0_12px_35px_rgba(15,118,110,0.10)] backdrop-blur-md transition-transform duration-300 hover:-translate-y-1 sm:-left-1">
 
                 {/* Briefcase Icon */}
                 <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-linear-to-br from-teal-50 to-emerald-100 text-teal-600 dark:from-teal-900/50 dark:to-emerald-900/40 dark:text-teal-300">
@@ -127,7 +127,7 @@ const Hero = () => {
               </div>
 
               {/* Card */}
-              <div className="absolute -right-8 top-[88%] z-20 flex max-w-82 items-center gap-3 rounded-3xl border border-white/80 bg-white/95 dark:bg-[#0F2A28]/90 dark:border-teal-800/50 px-4 py-4 shadow-[0_12px_35px_rgba(15,118,110,0.10)] backdrop-blur-md transition-transform duration-300 hover:-translate-y-1 sm:-right-6">
+              <div className=" absolute -right-2 md:-right-8 top-[88%] z-20 flex max-w-82 items-center gap-3 rounded-3xl border border-white/80 bg-white/95 dark:bg-[#0F2A28]/90 dark:border-teal-800/50 px-4 py-4 shadow-[0_12px_35px_rgba(15,118,110,0.10)] backdrop-blur-md transition-transform duration-300 hover:-translate-y-1 sm:-right-6">
 
                 {/* Trending Up Icon */}
                 <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-linear-to-br from-teal-50 to-emerald-100 text-teal-600 dark:from-teal-900/50 dark:to-emerald-900/40 dark:text-teal-300">

@@ -5,6 +5,7 @@ import { FiEye, FiEyeOff } from "react-icons/fi";
 import { MdOutlineMarkEmailRead } from "react-icons/md";
 import globeImg from "../Assets/images/Globe.webp";
 import googleImg from "../Assets/images/Google.webp";
+import logo from "../Assets/images/logo2.svg";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -71,8 +72,8 @@ const Register = () => {
 
             {/* Logo */}
             <Link to="/" className="flex items-center gap-2">
-              <div className="w-7 h-7 bg-white/20 rounded-lg flex items-center justify-center">
-                JC
+              <div className="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center">
+                <img src={ logo } alt="" className="w-14 h-14" />
               </div>
               <div className="text-lg font-semibold">JobConnect</div>
             </Link>
