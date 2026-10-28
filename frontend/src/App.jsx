@@ -1,6 +1,6 @@
 
 import { Routes, Route, useLocation } from 'react-router-dom'
-
+import ScrollToTop from "./Components/ScrollToTop";
 import Navbar from './Components/Navbar'
 import Footer from './Components/Footer'
 import My_Appications from './Pages/My_Appications'
@@ -32,6 +32,8 @@ const App = () => {
       </Routes>
 
       {!isAuthPage && <Footer />}
+      
+      <ScrollToTop />
     </div>
   )
 }

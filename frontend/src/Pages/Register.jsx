@@ -70,12 +70,12 @@ const Register = () => {
           <div className="w-full hidden md:w-[55%] bg-linear-to-br from-[#064E4A] via-[#0F766E] to-[#0D9488] p-6 md:p-10 text-white relative md:flex flex-col">
 
             {/* Logo */}
-            <a href="/" className="flex items-center gap-2">
+            <Link to="/" className="flex items-center gap-2">
               <div className="w-7 h-7 bg-white/20 rounded-lg flex items-center justify-center">
                 JC
               </div>
               <div className="text-lg font-semibold">JobConnect</div>
-            </a>
+            </Link>
 
             {/* Main Content */}
             <div className="flex-1 flex flex-col items-center justify-center text-center">

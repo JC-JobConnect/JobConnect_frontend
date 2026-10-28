@@ -6,6 +6,7 @@ import { MdOutlineMarkEmailRead } from "react-icons/md";
 import { FiLayers } from "react-icons/fi";
 import { FaArrowRightLong } from "react-icons/fa6";
 import profileImg from "../Assets/images/group_profile.webp"
+import { Link } from "react-router-dom";
 
 const Hero = () => {
 
@@ -49,19 +50,19 @@ const Hero = () => {
             </p>
             {/* Call to Action Buttons */}
             <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2">
-              <a
-                href="#search-section"
+              <Link
+                to="#search-section"
                 className="px-7 py-3.5 rounded-full bg-[#0fa988] hover:bg-[#0d9488] text-white font-semibold text-base shadow-lg shadow-teal-600/20 hover:scale-[1.02] transition-all flex items-center gap-2"
               >
                 Get Started
                 <FaArrowRightLong className="w-5 h-5" />
-              </a>
-              <a
-                href="#jobs"
+              </Link>
+              <Link
+                to="#jobs"
                 className="px-7 py-3.5 rounded-full border-2 border-gray-200 dark:border-gray-700 hover:border-[#0fa988] dark:hover:border-[#0fa988] text-gray-700 dark:text-gray-200 font-semibold text-base hover:text-[#0fa988] dark:hover:text-[#0fa988] transition-all"
               >
                 Explore Jobs
-              </a>
+              </Link>
             </div>
           </div>
 
