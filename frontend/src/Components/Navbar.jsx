@@ -1,6 +1,9 @@
 import { NavLink } from "react-router-dom";
 import { FiAlignJustify } from "react-icons/fi";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { logoutUser } from "../Api/api/Auth";
+import { IoLogOutOutline } from "react-icons/io5";
 import { IoLogInOutline } from "react-icons/io5";
 import { MdOutlineWbSunny } from "react-icons/md";
 import { MdOutlineDarkMode } from "react-icons/md";
@@ -12,9 +15,34 @@ const publicNavItems = [
     { id: "contact", name: "Contact", path: "/contact" },
 ];
 
-export default function Navbar({ isLoggedIn = false }) {
+export default function Navbar() {
+    const navigate = useNavigate();
+
     const [isOpen, setIsOpen] = useState(false);
     const [darkMode, setDarkMode] = useState(false);
+
+    const [isLoggedIn, setIsLoggedIn] = useState(
+        () => Boolean(sessionStorage.getItem("access_token"))
+    );
+
+    useEffect(() => {
+        const syncAuth = () => {
+            setIsLoggedIn(Boolean(sessionStorage.getItem("access_token")));
+        };
+
+        window.addEventListener("authChanged", syncAuth);
+
+        return () => {
+            window.removeEventListener("authChanged", syncAuth);
+        };
+    }, []);
+
+    const handleLogout = () => {
+        logoutUser();
+        window.dispatchEvent(new Event("authChanged"));
+        setIsOpen(false);
+        navigate("/login");
+    };
 
     const toggleDarkMode = () => {
         const newMode = !darkMode;
@@ -82,27 +110,47 @@ export default function Navbar({ isLoggedIn = false }) {
                         </nav>
 
                         {/* Login */}
-                        <NavLink
-                            to="/login"
-                            className="relative inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold text-gray-300 after:absolute after:bottom-0 after:left-0 after:h-[1.5px] after:w-0 after:bg-teal-400 after:transition-all after:duration-300 hover:after:w-full"
-                        >
-                            <IoLogInOutline className=" text-xl" /> Login
-                        </NavLink>
+                        {isLoggedIn ? (
+                            <>
+                                <NavLink
+                                    to="/profile"
+                                    className="px-3 py-2 text-sm font-semibold text-gray-300 hover:text-white"
+                                >
+                                    My Profile
+                                </NavLink>
 
-                        {/* Sign Up / Create Profile */}
-                        <NavLink
-                            to="/register"
-                            className="ml-1 rounded-full bg-linear-to-r from-teal-600 to-cyan-500 transition-all duration-200 hover:scale-105 px-5 py-2 text-sm font-semibold text-white"
-                        >
-                            Sign Up
-                        </NavLink>
+                                <button
+                                    type="button"
+                                    onClick={handleLogout}
+                                    className="rounded-full bg-red-500 relative inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold text-white cursor-pointer transition hover:bg-red-600"
+                                >
+                                    Logout {""} <IoLogOutOutline className='text-xl' />
+                                </button>
+                            </>
+                        ) : (
+                            <>
+                                <NavLink
+                                    to="/login"
+                                    className="relative inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold text-gray-300 after:absolute after:bottom-0 after:left-0 after:h-[1.5px] after:w-0 after:bg-teal-400 after:transition-all after:duration-300 hover:after:w-full"
+                                >
+                                    <IoLogInOutline className="text-xl" /> Login
+                                </NavLink>
+
+                                <NavLink
+                                    to="/register"
+                                    className="ml-1 rounded-full bg-linear-to-r from-teal-600 to-cyan-500 px-5 py-2 text-sm font-semibold text-white transition-all hover:scale-105"
+                                >
+                                    Sign Up
+                                </NavLink>
+                            </>
+                        )}
                     </div>
                     {/* Dark mode button */}
                     <button
                         onClick={toggleDarkMode}
                         className="px-4 py-2 text-sm font-medium rounded-full cursor-pointer border border-gray-200 hover:bg-gray-100 transition"
                     >
-                        {darkMode ? <MdOutlineWbSunny className="text-lg" /> :  <MdOutlineDarkMode className="text-lg" />}
+                        {darkMode ? <MdOutlineWbSunny className="text-lg" /> : <MdOutlineDarkMode className="text-lg" />}
                     </button>
                 </div>
 
@@ -177,21 +225,43 @@ export default function Navbar({ isLoggedIn = false }) {
 
                         {/* Mobile account actions */}
                         <div className="flex flex-col gap-3 border-t border-gray-100 pt-4">
-                            <NavLink
-                                to="/login"
-                                onClick={() => setIsOpen(false)}
-                                className="rounded-full border border-gray-200 px-4 py-3 text-center font-semibold transition hover:bg-gray-50"
-                            >
-                                Login
-                            </NavLink>
+                            {isLoggedIn ? (
+                                <>
+                                    <NavLink
+                                        to="/profile"
+                                        onClick={() => setIsOpen(false)}
+                                        className="rounded-full border border-gray-200 px-4 py-3 text-center font-semibold transition hover:bg-gray-50"
+                                    >
+                                        My Profile
+                                    </NavLink>
 
-                            <NavLink
-                                to="/register"
-                                onClick={() => setIsOpen(false)}
-                                className="rounded-full bg-linear-to-r from-teal-600 to-cyan-500 px-4 py-3 text-center font-semibold text-white transition hover:shadow-lg"
-                            >
-                                Create Profile
-                            </NavLink>
+                                    <button
+                                        type="button"
+                                        onClick={handleLogout}
+                                        className="rounded-full bg-red-500 px-4 py-3 text-center font-semibold text-white transition hover:bg-red-600"
+                                    >
+                                        Logout
+                                    </button>
+                                </>
+                            ) : (
+                                <>
+                                    <NavLink
+                                        to="/login"
+                                        onClick={() => setIsOpen(false)}
+                                        className="rounded-full border border-gray-200 px-4 py-3 text-center font-semibold transition hover:bg-gray-50"
+                                    >
+                                        Login
+                                    </NavLink>
+
+                                    <NavLink
+                                        to="/register"
+                                        onClick={() => setIsOpen(false)}
+                                        className="rounded-full bg-linear-to-r from-teal-600 to-cyan-500 px-4 py-3 text-center font-semibold text-white transition hover:shadow-lg"
+                                    >
+                                        Create Profile
+                                    </NavLink>
+                                </>
+                            )}
                         </div>
 
                         {/* Optional footer */}

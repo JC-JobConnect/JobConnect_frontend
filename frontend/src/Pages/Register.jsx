@@ -1,18 +1,73 @@
 import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { registerUser } from "../Api/api/Auth";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { MdOutlineMarkEmailRead } from "react-icons/md";
 import globeImg from "../Assets/images/Globe.webp";
-import googleImg from"../Assets/images/Google.webp";
+import googleImg from "../Assets/images/Google.webp";
 
 const Register = () => {
+  const navigate = useNavigate();
+
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    password: "",
+    confirm_password: "",
+  });
+
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setSuccess("");
+
+    if (formData.password !== formData.confirm_password) {
+      setError("Passwords do not match.");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      await registerUser(formData);
+
+      navigate("/login", {
+        state: { message: "Registration successful! Please log in." },
+      });
+    } catch (err) {
+      const data = err.response?.data;
+
+      if (data && typeof data === "object") {
+        const messages = Object.values(data).flat();
+        setError(messages.join(" "));
+      } else {
+        setError("Registration failed. Please try again.");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <section>
-      <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
-        <div className="w-full max-w-6xl bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row">
+      <div className="min-h-screen flex items-center justify-center bg-white md:bg-gray-100 p-4 ">
+        <div className="w-full max-w-7xl bg-white md:rounded-3xl md:shadow-2xl overflow-hidden flex flex-col md:flex-row">
 
           {/* LEFT SIDE (Gradient) */}
-          <div className="w-full md:w-[55%] bg-linear-to-br from-blue-500 via-blue-400 to-cyan-300 p-6 md:p-10 text-white relative flex flex-col">
+          <div className="w-full hidden md:w-[55%] bg-linear-to-br from-[#064E4A] via-[#0F766E] to-[#0D9488] p-6 md:p-10 text-white relative md:flex flex-col">
 
             {/* Logo */}
             <a href="/" className="flex items-center gap-2">
@@ -25,15 +80,20 @@ const Register = () => {
             {/* Main Content */}
             <div className="flex-1 flex flex-col items-center justify-center text-center">
 
-              {/* Globe Image - Bigger & Centered */}
-              <img
-                src={globeImg}
-                alt="Globe"
-                className="w-56 h-56 md:w-72 md:h-72 object-contain mb-6"
-              />
+              {/* Globe Image */}
+              <div className="relative mb-6">
+                {/* Soft glow */}
+                <div className="absolute inset-0 bg-teal-300/20 blur-3xl rounded-full scale-110"></div>
+
+                <img
+                  src={globeImg}
+                  alt="Globe"
+                  className="relative z-10 w-56 h-56 md:w-88 md:h-88 object-contain"
+                />
+              </div>
 
               <div className="inline-block bg-white/20 backdrop-blur-sm text-xs px-3 py-1 rounded-full mb-4">
-                Join Us to Today
+                Join Us Today
               </div>
 
               <h1 className="text-xl md:text-2xl font-bold leading-tight mb-3">
@@ -48,7 +108,7 @@ const Register = () => {
               <div className="grid grid-cols-3 gap-2.5 w-full max-w-md">
                 {/* Step 1 - Active */}
                 <div className="bg-white text-gray-800 rounded-xl p-3">
-                  <div className="w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs font-semibold mb-2">
+                  <div className="w-6 h-6 bg-teal-600 text-white rounded-full flex items-center justify-center text-xs font-semibold mb-2">
                     1
                   </div>
                   <p className="text-xs font-medium leading-snug">
@@ -80,38 +140,50 @@ const Register = () => {
           </div>
 
           {/* RIGHT SIDE (Form) */}
-          <div className="w-full md:w-[45%] p-8 md:p-10 flex flex-col justify-center">
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-7 text-center">
-              Join Us
+          <div className="w-full md:w-[45%] p-6 md:p-10 flex flex-col justify-center">
+            {/* Logo - only visible on mobile */}
+            <div className="md:hidden flex items-center justify-center gap-2 mb-4">
+              <div className="w-8 h-8 rounded-lg bg-teal-600 text-white flex items-center justify-center text-sm font-bold">
+                JC
+              </div>
+              <span className="text-lg font-semibold text-gray-800">
+                Job<span className="text-teal-600">Connect</span>
+              </span>
+            </div>
+            <h2 className="text-2xl md:text-3xl font-bold text-teal-800 mb-7 text-center">
+              Create Your Free Account
             </h2>
+            {/* Mobile Sign In / Sign Up Tabs - hidden on desktop */}
+            <div className="flex md:hidden bg-gray-100 rounded-full p-1 mb-6">
+              <button className="flex-1 py-2.5 text-sm font-semibold text-gray-400 rounded-full">
+                <Link to="/login">Sign In</Link>
+              </button>
+              <button className="flex-1 py-2.5 text-sm font-semibold text-gray-800 bg-white rounded-full shadow-sm ">
+                <Link to="/register">Sign Up</Link>
+              </button>
+            </div>
 
-            <form className="space-y-5">
-              {/* Full Name + Username */}
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                    Full Name
-                  </label>
+            <form onSubmit={handleSubmit} className="space-y-5">
+              {/*Username */}
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                  Username
+                </label>
+                <div className="relative">
                   <input
+                    name="username"
+                    value={formData.username}
+                    onChange={handleChange}
                     type="text"
-                    placeholder="Mahmuda Sultana"
-                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Choose a username"
+                    required
+                    autoComplete="username"
+                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent pr-10"
                   />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                    Username
-                  </label>
-                  <div className="relative">
-                    <input
-                      type="text"
-                      placeholder="Jewana"
-                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent pr-10"
-                    />
-                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-green-500 text-lg">
-                      ✓
-                    </span>
-                  </div>
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-green-500 text-lg">
+                    ✓
+                  </span>
                 </div>
               </div>
 
@@ -126,12 +198,17 @@ const Register = () => {
                   </div>
                   <input
                     type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                    autoComplete="email"
                     placeholder="your.email@example.com"
-                    className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
                   />
                 </div>
               </div>
-              
+
 
               {/* Password */}
               <div>
@@ -141,38 +218,78 @@ const Register = () => {
                 <div className="relative">
                   <input
                     type={showPassword ? "text" : "password"}
-                    placeholder="••••••••••••"
-                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent pr-12"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    required
+                    autoComplete="new-password"
+                    placeholder="Enter your password"
+                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent pr-12"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
                   >
-                    {showPassword ? <FiEyeOff size={18} /> : <FiEye size={18} />}
+                    {showPassword ? <FiEyeOff className='cursor-pointer' size={18} /> : <FiEye className='cursor-pointer' size={18} />}
                   </button>
                 </div>
-                <p className="text-xs text-gray-500 mt-1.5">
-                  At least 12 characters, no more than 20 characters.
-                  <br />
-                  Uppercase letters, lowercase letters, numbers, and symbols.
-                </p>
               </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                  Confirm Password
+                </label>
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    name="confirm_password"
+                    value={formData.confirm_password}
+                    onChange={handleChange}
+                    required
+                    autoComplete="new-password"
+                    placeholder="Confirm your password"
+                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent pr-12"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  >
+                    {showPassword ? <FiEyeOff className='cursor-pointer' size={18} /> : <FiEye className='cursor-pointer' size={18} />}
+                  </button>
+                </div>
+              </div>
+
+              {error && (
+                <p role="alert" className="text-sm text-red-600">
+                  {error}
+                </p>
+              )}
+
+              {success && (
+                <p role="status" className="text-sm text-green-600">
+                  {success}
+                </p>
+              )}
 
               {/* Continue Button */}
               <button
                 type="submit"
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3.5 rounded-xl transition-colors cursor-pointer"
+                disabled={loading}
+                className="w-full bg-teal-700 hover:bg-teal-800 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold py-3.5 rounded-xl transition-colors cursor-pointer"
               >
-                Continue
+                {loading ? "Creating account..." : "Create Account"}
               </button>
 
               {/* Already have account */}
-              <p className="text-center text-sm text-gray-600">
+              <p className="hidden md:inline-block text-center text-sm text-gray-600">
                 Already have an account?{" "}
-                <a href="/login" className="text-blue-600 font-medium hover:underline">
+                <Link
+                  to="/login"
+                  className="text-teal-600 font-medium hover:underline"
+                >
                   Log in
-                </a>
+                </Link>
               </p>
 
               {/* Divider */}
@@ -196,15 +313,15 @@ const Register = () => {
               </button>
 
               {/* Terms */}
-              <p className="text-xs text-gray-500 text-center leading-relaxed">
+              <p className="text-xs text-gray-500 text-center leading-relaxed mb-0">
                 By signing up I confirm that I carefully have read and agree to the JobConnect{" "}
-                <a href="/privacy-policy" className="text-blue-600 hover:underline">
+                <Link to="/privacy-policy" className="text-teal-600 hover:underline">
                   Privacy Policy
-                </a>{" "}
+                </Link>{" "}
                 and{" "}
-                <a href="/terms-of-service" className="text-blue-600 hover:underline">
+                <Link to="/terms-of-service" className="text-teal-600 hover:underline">
                   Terms of Service
-                </a>
+                </Link>
                 .
               </p>
             </form>
