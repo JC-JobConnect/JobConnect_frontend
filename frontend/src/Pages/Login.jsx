@@ -2,37 +2,79 @@ import { useState } from "react";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { IoPersonCircleOutline } from "react-icons/io5";
 import globeImg from "../Assets/images/Globe.webp";
-import googleImg from"../Assets/images/Google.webp";
+import googleImg from "../Assets/images/Google.webp";
+import logo from "../Assets/images/logo2.svg";
+import { Link, useNavigate } from "react-router-dom";
+import { loginUser, getCurrentUser } from "../Api/api/Auth";
 
-
-const Login = () => {
+export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
+
+  async function handleSubmit(event) {
+    event.preventDefault();
+    setError("");
+    setLoading(true);
+
+    try {
+      await loginUser(username, password);
+
+      // Confirm that the token can access a protected endpoint.
+      await getCurrentUser();
+
+      navigate("/");
+    } catch (err) {
+      sessionStorage.removeItem("access_token");
+      sessionStorage.removeItem("refresh_token");
+
+      const data = err.response?.data;
+
+      setError(
+        data?.detail ||
+        data?.username?.[0] ||
+        data?.non_field_errors?.[0] ||
+        "Login failed. Please Create An Account First."
+      );
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <section>
-      <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
-        <div className="w-full max-w-6xl bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row">
+      <div className="min-h-screen flex items-center justify-center bg-white md:bg-gray-100 p-4">
+        <div className="w-full max-w-7xl bg-white rounded-3xl md:shadow-2xl overflow-hidden flex flex-col md:flex-row">
 
           {/* LEFT SIDE (Gradient) */}
-          <div className="w-full md:w-[55%] bg-linear-to-br from-blue-500 via-blue-400 to-cyan-300 p-6 md:p-10 text-white relative flex flex-col">
+          <div className="hidden md:flex w-full md:w-[55%] bg-linear-to-br from-[#064E4A] via-[#0F766E] to-[#0D9488] p-6 md:p-10 text-white relative  flex-col">
 
             {/* Logo */}
-            <a href="/" className="flex items-center gap-2">
-              <div className="w-7 h-7 bg-white/20 rounded-lg flex items-center justify-center">
-                JC
+            <Link to="/" className="flex items-center gap-2">
+              <div className="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center">
+                <img src={ logo } alt="" className="w-14 h-14" />
               </div>
               <div className="text-lg font-semibold">JobConnect</div>
-            </a>
+            </Link>
 
             {/* Main Content */}
             <div className="flex-1 flex flex-col items-center justify-center text-center">
 
               {/* Globe Image - Bigger & Centered */}
-              <img
-                src={globeImg}
-                alt="Globe"
-                className="w-56 h-56 md:w-72 md:h-72 object-contain mb-6"
-              />
+              <div className="relative mb-6">
+                {/* Soft glow */}
+                <div className="absolute inset-0 bg-teal-300/20 blur-3xl rounded-full scale-110"></div>
+
+                <img
+                  src={globeImg}
+                  alt="Globe"
+                  className="relative z-10 w-56 h-56 md:w-88 md:h-88 object-contain"
+                />
+              </div>
 
               <div className="inline-block bg-white/20 backdrop-blur-sm text-xs px-3 py-1 rounded-full mb-4">
                 Login To Continue
@@ -50,7 +92,7 @@ const Login = () => {
               <div className="grid grid-cols-3 gap-2.5 w-full max-w-md">
                 {/* Step 1 - Active */}
                 <div className="bg-white text-gray-800 rounded-xl p-3">
-                  <div className="w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs font-semibold mb-2">
+                  <div className="w-6 h-6 bg-teal-600 text-white rounded-full flex items-center justify-center text-xs font-semibold mb-2">
                     1
                   </div>
                   <p className="text-xs font-medium leading-snug">
@@ -82,16 +124,38 @@ const Login = () => {
           </div>
 
           {/* RIGHT SIDE (Form) */}
-          <div className="w-full md:w-[45%] p-8 md:p-10 flex flex-col justify-center">
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-7 text-center">
-              Join Us
+          <div
+            onSubmit={handleSubmit}
+            className="w-full md:w-[45%] p-8 md:p-10 flex flex-col justify-center"
+          >
+            {/* Logo - only visible on mobile */}
+            <div className="md:hidden flex items-center justify-center gap-2 mb-4">
+              <Link to="/" >
+              <div className="w-8 h-8 rounded-lg bg-teal-600 text-white flex items-center justify-center text-sm font-bold">
+                JC
+              </div>
+              </Link>
+              <span className="text-lg font-semibold text-gray-800">
+                Job<span className="text-teal-600">Connect</span>
+              </span>
+            </div>
+            <h2 className="text-2xl text-teal-800 md:text-3xl font-bold  mb-7 text-center">
+              Welcome to JobConnect
             </h2>
 
-            <form className="space-y-5">
+            {/* Mobile Sign In / Sign Up Tabs - hidden on desktop */}
+            <div className="flex md:hidden bg-gray-100 rounded-full p-1 mb-6">
+              <button className="flex-1 py-2.5 text-sm font-semibold text-gray-800 bg-white rounded-full shadow-sm">
+                <Link to="/login">Sign In</Link>
+              </button>
+              <button className="flex-1 py-2.5 text-sm font-semibold text-gray-400 rounded-full">
+                <Link to="/register">Sign Up</Link>
+              </button>
+            </div>
 
-              {/* Email Address */}
+            <form className="space-y-5">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-1.5">
                   User Name
                 </label>
                 <div className="relative">
@@ -99,25 +163,36 @@ const Login = () => {
                     <span className="text-lg"><IoPersonCircleOutline /></span>
                   </div>
                   <input
+                    id="username"
                     type="text"
-                    placeholder="Enter Your User Name Here"
-                    className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    autoComplete="username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    required
+                    placeholder="UserName Here"
+                    className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
                   />
                 </div>
               </div>
-              
+
 
               {/* Password */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1.5">
                   Password
                 </label>
                 <div className="relative">
                   <input
+                    id="password"
                     type={showPassword ? "text" : "password"}
-                    placeholder="••••••••••••"
-                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent pr-12"
+                    autoComplete="current-password"
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Enter your password"
+                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent pr-12"
                   />
+
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
@@ -126,27 +201,29 @@ const Login = () => {
                     {showPassword ? <FiEyeOff className="cursor-pointer" size={18} /> : <FiEye className="cursor-pointer" size={18} />}
                   </button>
                 </div>
-                <p className="text-xs text-gray-500 mt-1.5">
-                  At least 12 characters, no more than 20 characters.
-                  <br />
-                  Uppercase letters, lowercase letters, numbers, and symbols.
-                </p>
               </div>
+
+              {error && (
+                <p role="alert" className="text-sm text-red-600">
+                  {error}
+                </p>
+              )}
 
               {/* Continue Button */}
               <button
+                disabled={loading}
                 type="submit"
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3.5 rounded-xl transition-colors cursor-pointer"
+                className="w-full bg-teal-700 hover:bg-teal-800 text-white font-semibold py-3.5 rounded-xl transition-colors cursor-pointer"
               >
-                Continue
+                {loading ? "Signing in..." : "Continue"}
               </button>
 
               {/* Already have account */}
-              <p className="text-center text-sm text-gray-600">
-                Already have an account?{" "}
-                <a href="/register" className="text-blue-600 font-medium hover:underline">
+              <p className="hidden md:inline-block text-center text-sm text-gray-600">
+                Don't have an account?{" "}
+                <Link to="/register" className="text-teal-600 font-medium hover:underline">
                   Sign Up
-                </a>
+                </Link>
               </p>
 
               {/* Divider */}
@@ -166,19 +243,19 @@ const Login = () => {
                   alt="Google"
                   className="w-5 h-5"
                 />
-                Sign up with Google
+                Continue with Google
               </button>
 
               {/* Terms */}
               <p className="text-xs text-gray-500 text-center leading-relaxed">
-                By signing up I confirm that I carefully have read and agree to the JobConnect{" "}
-                <a href="/privacy-policy" className="text-blue-600 hover:underline">
+                By signing in, you agree to our {" "}
+                <Link to="/privacy-policy" className="text-teal-600 hover:underline">
                   Privacy Policy
-                </a>{" "}
+                </Link>{" "}
                 and{" "}
-                <a href="/terms-of-service" className="text-blue-600 hover:underline">
+                <Link to="/terms-of-service" className="text-teal-600 hover:underline">
                   Terms of Service
-                </a>
+                </Link>
                 .
               </p>
             </form>
@@ -189,4 +266,3 @@ const Login = () => {
   )
 }
 
-export default Login
