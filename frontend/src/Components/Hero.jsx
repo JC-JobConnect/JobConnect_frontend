@@ -168,7 +168,7 @@ const Hero = () => {
 
 
               {/* People Icon */}
-              <div className="absolute bottom-[20%] right-5 z-20 flex h-[76px] w-[76px] items-center justify-center rounded-full border border-white/70 bg-white/90 text-teal-600 shadow-[0_10px_30px_rgba(15,118,110,0.10)] backdrop-blur-md transition-transform duration-300 hover:scale-105 sm:right-8">
+              <div className="absolute bottom-[20%] right-5 z-20 flex h-19 w-19 items-center justify-center rounded-full border border-white/70 bg-white/90 text-teal-600 shadow-[0_10px_30px_rgba(15,118,110,0.10)] backdrop-blur-md transition-transform duration-300 hover:scale-105 sm:right-8">
 
                 <BsPersonBoundingBox className='text-3xl' />
               </div>
