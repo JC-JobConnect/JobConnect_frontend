@@ -1,12 +1,14 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, Link, useNavigate } from "react-router-dom";
 import { FiAlignJustify } from "react-icons/fi";
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import { logoutUser } from "../Api/api/Auth";
 import { IoLogOutOutline } from "react-icons/io5";
 import { IoLogInOutline } from "react-icons/io5";
 import { MdOutlineWbSunny } from "react-icons/md";
 import { MdOutlineDarkMode } from "react-icons/md";
+import logo from "../Assets/images/logo.svg"
+import logo2 from "../Assets/images/logo2.svg"
+
 
 const publicNavItems = [
     { id: "home", name: "Home", path: "/" },
@@ -68,18 +70,17 @@ export default function Navbar() {
 
     return (
         <header className="fixed inset-x-0 top-4 z-50 px-4 ">
-            <div className="mx-auto max-w-7xl flex items-center justify-between bg-white/80 backdrop-blur-md rounded-full px-4 py-2 shadow-sm border border-gray-100">
+            <div className="mx-auto max-w-7xl flex items-center justify-between bg-white/80 dark:bg-[#0E2928] backdrop-blur-md rounded-full px-4 py-2 shadow-sm border border-gray-100 dark:border-gray-800">
 
                 {/* Logo */}
                 <NavLink
                     to="/"
                     className="flex items-center gap-2 text-xl font-bold text-gray-900"
                 >
-                    <div className="w-10 h-10 rounded-lg bg-teal-600 dark:bg-amber-700 text-white flex items-center justify-center text-lg font-bold">
-                        JC
-                    </div>
+                    <img src={darkMode ? logo : logo2} alt="" className="w-12 h-12" />
+
                     <div className="text-2xl font-bold">
-                        <span>Job</span>
+                        <span className="dark:text-white">Job</span>
                         <span className="text-teal-700">Connect</span>
                     </div>
                 </NavLink>
@@ -148,9 +149,9 @@ export default function Navbar() {
                     {/* Dark mode button */}
                     <button
                         onClick={toggleDarkMode}
-                        className="px-4 py-2 text-sm font-medium rounded-full cursor-pointer border border-gray-200 hover:bg-gray-100 transition"
+                        className="px-4 py-2 text-sm font-medium rounded-full cursor-pointer border border-gray-200 hover:bg-gray-100 dark:hover:bg-teal-800 dark:border-teal-800 transition"
                     >
-                        {darkMode ? <MdOutlineWbSunny className="text-lg" /> : <MdOutlineDarkMode className="text-lg" />}
+                        {darkMode ? <MdOutlineWbSunny className="text-lg dark:text-teal-100" /> : <MdOutlineDarkMode className="text-lg" />}
                     </button>
                 </div>
 
