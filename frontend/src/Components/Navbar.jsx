@@ -12,6 +12,7 @@ import logo2 from "../Assets/images/logo2.svg";
 const publicNavItems = [
   { id: "home", name: "Home", path: "/" },
   { id: "jobs", name: "Jobs", path: "/jobs" },
+  { id: "companies", name: "Companies", path: "/companies" },
   { id: "about", name: "About", path: "/about" },
   { id: "contact", name: "Contact", path: "/contact" },
 ];
@@ -58,13 +59,13 @@ export default function Navbar() {
 
   const navItems = isLoggedIn
     ? [
-        ...publicNavItems.slice(0, 2),
+        ...publicNavItems.slice(0, 3),
         {
           id: "my-applications",
           name: "My Applications",
           path: "/my-applications",
         },
-        ...publicNavItems.slice(2),
+        ...publicNavItems.slice(3),
       ]
     : publicNavItems;
 
