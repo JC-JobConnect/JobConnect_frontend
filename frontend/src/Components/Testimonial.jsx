@@ -89,7 +89,7 @@ const testimonials = [
   },
 ];
 
-// Positions of the profile pictures around the circle.
+
 const orbitSlots = [
   "top-0 left-1/2 -translate-x-1/2",
   "top-[16%] right-[10%]",

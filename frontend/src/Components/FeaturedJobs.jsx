@@ -9,7 +9,7 @@ import {
 } from "react-icons/lu";
 
 // Temporary sample data
-// Later, you can replace this with data from your Django API.
+// Later,can be replaced with data from Django API.
 const featuredJobs = [
   {
     id: 1,
