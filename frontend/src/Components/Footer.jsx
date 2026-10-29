@@ -37,7 +37,7 @@ const Footer = () => {
               />
 
               <span className="text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-3xl">
-                Job<span className="text-emerald-600 transition-colors group-hover:text-teal-500 dark:text-emerald-400 dark:group-hover:text-teal-300">Connect</span>
+                Job<span className="text-teal-500 transition-colors group-hover:text-teal-600 dark:text-emerald-400 dark:group-hover:text-teal-400 ">Connect</span>
               </span>
             </Link>
 

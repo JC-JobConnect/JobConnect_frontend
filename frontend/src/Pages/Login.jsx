@@ -53,13 +53,28 @@ export default function Login() {
           {/* LEFT SIDE (Gradient) */}
           <div className="hidden md:flex w-full md:w-[55%] bg-linear-to-br from-[#064E4A] via-[#0F766E] to-[#0D9488] p-6 md:p-10 text-white relative  flex-col">
 
+
             {/* Logo */}
-            <Link to="/" className="flex items-center gap-2">
-              <div className="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center">
-                <img src={ logo } alt="" className="w-14 h-14" />
+            <Link
+              to="/"
+              className="group flex items-center gap-3"
+            >
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white shadow-sm ring-1 ring-emerald-100/70 transition-transform duration-300 group-hover:scale-105 sm:h-12 sm:w-12 dark:bg-white/95">
+                <img
+                  src={logo}
+                  alt="JobConnect"
+                  className="h-full w-full object-contain p-1"
+                />
               </div>
-              <div className="text-lg font-semibold">JobConnect</div>
+
+              {/* Brand Name */}
+              <span className="whitespace-nowrap text-xl font-bold tracking-tight text-white sm:text-4xl">
+                Job<span className="text-teal-500 transition-colors duration-300 group-hover:text-teal-400">
+                  Connect
+                </span>
+              </span>
             </Link>
+
 
             {/* Main Content */}
             <div className="flex-1 flex flex-col items-center justify-center text-center">
@@ -131,9 +146,9 @@ export default function Login() {
             {/* Logo - only visible on mobile */}
             <div className="md:hidden flex items-center justify-center gap-2 mb-4">
               <Link to="/" >
-              <div className="w-8 h-8 rounded-lg bg-teal-600 text-white flex items-center justify-center text-sm font-bold">
-                JC
-              </div>
+                <div className="w-8 h-8 rounded-lg bg-teal-600 text-white flex items-center justify-center text-sm font-bold">
+                  JC
+                </div>
               </Link>
               <span className="text-lg font-semibold text-gray-800">
                 Job<span className="text-teal-600">Connect</span>

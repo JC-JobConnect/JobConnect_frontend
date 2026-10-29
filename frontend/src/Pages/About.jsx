@@ -2,11 +2,11 @@
 import PageHero from "../Components/PageHero";
 import { useState } from "react";
 
-import aboutHeroImg from "../Assets/images/image_1_about_us.jpg";
-import cardImg1 from "../Assets/images/image_2_about_us.jpg";
-import cardImg2 from "../Assets/images/image_3_about_us.jpg";
-import cardImg3 from "../Assets/images/image_4_about_us.jpg";
-import cardImg4 from "../Assets/images/image_5_about_us.jpg";
+import aboutHeroImg from "../Assets/images/image_1_about_us.webp";
+import cardImg1 from "../Assets/images/image_2_about_us.webp";
+import cardImg2 from "../Assets/images/image_3_about_us.webp";
+import cardImg3 from "../Assets/images/image_4_about_us.webp";
+import cardImg4 from "../Assets/images/image_5_about_us.webp";
 
 import {
   FiUser,

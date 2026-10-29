@@ -74,13 +74,13 @@ export default function Navbar() {
         {/* Logo */}
         <NavLink
           to="/"
-          className="flex items-center gap-2 text-xl font-bold text-gray-900"
+          className="flex items-center group gap-2 text-xl font-bold text-gray-900"
         >
           <img src={darkMode ? logo : logo2} alt="" className="w-12 h-12" />
 
-          <div className="text-2xl font-bold">
-            <span className="dark:text-white">Job</span>
-            <span className="text-teal-700">Connect</span>
+          <div className="font-bold">
+            <span className="text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-3xl">Job</span>
+            <span className="text-teal-500 transition-colors group-hover:text-teal-600 dark:text-emerald-400 dark:group-hover:text-teal-400 text-2xl sm:text-3xl">Connect</span>
           </div>
         </NavLink>
 
@@ -182,17 +182,17 @@ export default function Navbar() {
           {/* Mobile menu panel - now supports dark mode */}
           <div className="absolute left-3 right-3 top-3 max-h-[calc(100dvh-1.5rem)] overflow-y-auto rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#0E2928] p-5 text-gray-900 dark:text-gray-100 shadow-2xl">
             {/* Menu header */}
-            <div className="flex group items-center justify-between border-b border-gray-100 dark:border-gray-700 pb-4">
+            <div className="flex  items-center justify-between border-b border-gray-100 dark:border-gray-700 pb-4">
               <NavLink
                 to="/"
                 onClick={() => setIsOpen(false)}
-                className="flex items-center gap-2 text-xl font-bold"
+                className="flex group items-center gap-2 text-xl font-bold"
               >
-                <span className="dark:text-white">JC</span>
-                <span>
+                <img src={darkMode ? logo : logo2} alt="" className="w-12 h-12" />
+                <div>
                   <span className="text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-3xl">Job</span>
                   <span className="text-emerald-600 transition-colors group-hover:text-teal-500 dark:text-emerald-400 dark:group-hover:text-teal-300">Connect</span>
-                </span>
+                </div>
               </NavLink>
 
               <div className="flex items-center gap-2">
