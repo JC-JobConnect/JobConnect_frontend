@@ -182,7 +182,7 @@ export default function Navbar() {
           {/* Mobile menu panel - now supports dark mode */}
           <div className="absolute left-3 right-3 top-3 max-h-[calc(100dvh-1.5rem)] overflow-y-auto rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#0E2928] p-5 text-gray-900 dark:text-gray-100 shadow-2xl">
             {/* Menu header */}
-            <div className="flex items-center justify-between border-b border-gray-100 dark:border-gray-700 pb-4">
+            <div className="flex group items-center justify-between border-b border-gray-100 dark:border-gray-700 pb-4">
               <NavLink
                 to="/"
                 onClick={() => setIsOpen(false)}
@@ -190,8 +190,8 @@ export default function Navbar() {
               >
                 <span className="dark:text-white">JC</span>
                 <span>
-                  <span className="dark:text-white">Job</span>
-                  <span className="text-teal-600">Connect</span>
+                  <span className="text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-3xl">Job</span>
+                  <span className="text-emerald-600 transition-colors group-hover:text-teal-500 dark:text-emerald-400 dark:group-hover:text-teal-300">Connect</span>
                 </span>
               </NavLink>
 
