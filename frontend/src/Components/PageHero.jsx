@@ -13,7 +13,7 @@ const PageHero = ({ title }) => {
         <div className="relative z-10 mx-auto grid max-w-7xl grid-cols-1 items-end gap-6 px-5 pt-24 pb-0 sm:px-8 md:grid-cols-2 md:gap-8 md:pt-28 lg:px-10">
 
           {/* Left Side: Title */}
-          <div className="relative z-20 flex flex-col items-center text-center md:items-start md:text-left md:pb-12">
+          <div className="relative z-20 flex flex-col items-center text-center md:items-start md:text-left md:pb-20">
             <h1 className="max-w-xl text-4xl font-extrabold leading-tight tracking-tight text-gray-900 dark:text-white sm:text-5xl">
               {title}
             </h1>
