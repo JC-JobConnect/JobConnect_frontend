@@ -1,8 +1,22 @@
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 import logo from "../Assets/images/logo.svg";
 import logo2 from "../Assets/images/logo2.svg";
 
+
 const Footer = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    () => Boolean(sessionStorage.getItem("access_token"))
+  );
+
+  useEffect(() => {
+    const syncAuth = () => {
+      setIsLoggedIn(Boolean(sessionStorage.getItem("access_token")));
+    };
+
+    window.addEventListener("authChanged", syncAuth);
+    return () => window.removeEventListener("authChanged", syncAuth);
+  }, []);
   return (
     <footer className="relative isolate overflow-hidden border-t border-emerald-100 bg-linear-to-b from-white to-emerald-50/70 text-slate-700 transition-colors duration-300 dark:border-emerald-900/50 dark:from-[#061714] dark:to-[#04110F] dark:text-slate-300">
 
@@ -89,8 +103,9 @@ const Footer = () => {
             <ul className="space-y-4">
 
               {[,
-                { label: "Create an Account", href: "/register" },
-                { label: "Sign In", href: "/login" },
+                isLoggedIn ? { label: "FAQ", href: "/about#FAQ" } : { label: "Create an Account", href: "/register" },
+                isLoggedIn ? { label: "My Applications", href: "/my-applications" } : { label: "Sign In", href: "/login" },
+                isLoggedIn ? { label: "My Profile", href: "/profile" } : { label: "FAQ", href: "/about#FAQ" },
               ].map((item) => (
                 <li key={item.label}>
                   <Link
@@ -117,38 +132,7 @@ const Footer = () => {
               Stay informed about new opportunities and career updates.
             </p>
 
-            <form
-              onSubmit={(e) => e.preventDefault()}
-              className="space-y-3"
-            >
 
-              <label htmlFor="footer-email" className="sr-only">
-                Email address
-              </label>
-
-              <input
-                id="footer-email"
-                type="email"
-                name="email"
-                placeholder="Enter your email address"
-                autoComplete="email"
-                required
-                className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition-all placeholder:text-slate-400 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 dark:border-white/10 dark:bg-white/4 dark:text-white dark:placeholder:text-slate-500 dark:focus:border-emerald-400 dark:focus:ring-emerald-400/10"
-              />
-
-              <button
-                type="submit"
-                className="group flex w-full items-center justify-center gap-2 rounded-xl bg-linear-to-r from-emerald-600 to-teal-500 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-emerald-600/15 transition-all duration-300 hover:-translate-y-0.5 hover:from-emerald-500 hover:to-teal-400 hover:shadow-emerald-500/25 focus:outline-none focus:ring-4 focus:ring-emerald-500/20"
-              >
-                Subscribe Now
-                <span
-                  aria-hidden="true"
-                  className="transition-transform duration-300 group-hover:translate-x-1"
-                >
-                  →
-                </span>
-              </button>
-            </form>
           </div>
         </div>
       </div>

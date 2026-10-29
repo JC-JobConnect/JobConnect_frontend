@@ -86,7 +86,7 @@ const features = [
 
 function AboutUs() {
   const [openFaq, setOpenFaq] = useState(1);
-
+  
   return (
     <div className="min-h-screen bg-white dark:bg-[#071A19] font-sans text-gray-900 dark:text-gray-100 transition-colors duration-300">
       <PageHero title="About Us" badgeText="Who We Are" />
@@ -152,7 +152,7 @@ function AboutUs() {
       </section>
 
       {/* FAQ */}
-      <section className="max-w-7xl mx-auto px-6 py-16">
+      <section id="FAQ" className="max-w-7xl mx-auto px-6 py-16">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">
             Frequently Asked Questions
