@@ -3,7 +3,6 @@ import {
   FiBriefcase,
   FiClock,
   FiMapPin,
-  FiBookmark,
   FiCreditCard,
 } from "react-icons/fi";
 
@@ -70,7 +69,7 @@ export default function RelatedJobs() {
               </div>
 
               <div className="flex items-start gap-3 mb-3">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center text-white text-sm font-bold shrink-0">
+                <div className="w-10 h-10 rounded-full bg-linear-to-br from-teal-400 to-teal-600 flex items-center justify-center text-white text-sm font-bold shrink-0">
                   {job.logo}
                 </div>
                 <div>
@@ -103,17 +102,13 @@ export default function RelatedJobs() {
               </div>
             </div>
 
-            {/* Right Side: Bookmark on top of the Job Details button */}
+            {/* Job Details button */}
             <div className="flex flex-col items-end justify-between self-stretch md:self-auto gap-16">
-              <button className="text-gray-400 hover:text-teal-500 dark:text-slate-400 dark:hover:text-teal-400 transition">
-                <FiBookmark className="w-5 h-5" />
-              </button>
-
               <Link
-                to="/apply_jobs"
+                to="/job_details"
                 className="bg-teal-500 hover:bg-teal-600 text-white text-sm font-medium px-5 py-2.5 rounded-lg transition whitespace-nowrap"
               >
-                Apply Now
+                See Details
               </Link>
             </div>
           </div>

@@ -5,6 +5,7 @@ import Footer from "./Components/Footer";
 import My_Appications from "./Pages/My_Appications";
 import Home from "./Pages/Home";
 import Jobs from "./Pages/Jobs";
+import Companies from "./Pages/Companies";
 import About from "./Pages/About";
 import Contact from "./Pages/Contact";
 import Login from "./Pages/Login";
@@ -26,6 +27,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/jobs" element={<Jobs />} />
+        <Route path="/companies" element={<Companies />} />
         <Route path="/my-applications" element={<My_Appications />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />

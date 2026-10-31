@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
+
 import {
-  LuBookmark,
   LuMapPin,
   LuClock3,
   LuArrowUpRight,
@@ -52,21 +51,12 @@ const featuredJobs = [
   },
 ];
 
-const FeaturedJobs = ({
+const FeaturedJobCard = ({
   jobs = featuredJobs,
   title = "Featured Jobs",
   subtitle = "Hand-picked opportunities from top companies",
   viewAllLink = "/jobs",
 }) => {
-  const [savedJobs, setSavedJobs] = useState([]);
-
-  const toggleBookmark = (jobId) => {
-    setSavedJobs((previous) =>
-      previous.includes(jobId)
-        ? previous.filter((id) => id !== jobId)
-        : [...previous, jobId]
-    );
-  };
 
   return (
     <section className="bg-white py-16 dark:bg-[#071A19] sm:py-20">
@@ -176,32 +166,6 @@ const FeaturedJobs = ({
                       ))}
                     </div>
                   </div>
-
-                  {/* Bookmark Button */}
-                  <button
-                    type="button"
-                    onClick={() => toggleBookmark(job.id)}
-                    aria-label={
-                      savedJobs.includes(job.id)
-                        ? "Remove saved job"
-                        : "Save job"
-                    }
-                    aria-pressed={savedJobs.includes(job.id)}
-                    className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl transition-all duration-200 ${
-                      savedJobs.includes(job.id)
-                        ? "bg-teal-50 text-teal-600 dark:bg-teal-900/40 dark:text-teal-300"
-                        : "text-slate-400 hover:bg-teal-50 hover:text-teal-600 dark:hover:bg-teal-900/30 dark:hover:text-teal-300"
-                    }`}
-                  >
-                    <LuBookmark
-                      className="h-5 w-5"
-                      fill={
-                        savedJobs.includes(job.id)
-                          ? "currentColor"
-                          : "none"
-                      }
-                    />
-                  </button>
                 </div>
 
                 {/* View Job Indicator */}
@@ -232,4 +196,4 @@ const FeaturedJobs = ({
   );
 };
 
-export default FeaturedJobs;
+export default FeaturedJobCard;

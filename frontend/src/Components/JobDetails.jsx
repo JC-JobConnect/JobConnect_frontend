@@ -1,374 +1,226 @@
-import React, { useState } from "react";
-import PageHero from "../Components/PageHero";
-import JobOverview from "../Components/JobOverview";
-import RelatedJobs from "../Components/RelatedJobs";
-import { Link } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 
 import {
-  FiUser,
-  FiBriefcase,
-  FiClock,
-  FiMapPin,
   FiBookmark,
   FiCheck,
-  FiMail,
-  FiPhone,
-  FiMessageSquare,
-  FiCreditCard,
+  FiBriefcase,
+  FiArrowRight,
 } from "react-icons/fi";
 
-const responsibilities = [
-  "Collaborate with product managers, designers, and other developers to build scalable web applications.",
-  "Design, develop, and maintain secure RESTful APIs using Django REST Framework and PostgreSQL.",
-  "Write clean, maintainable, and efficient code adhering to modern software development best practices.",
-  "Optimize application performance, frontend loading speeds, and database query efficiency.",
-  "Participate in code reviews, write unit tests, and troubleshoot bugs across different environments.",
-  "Ensure seamless integration between frontend React components and backend microservices or APIs.",
-];
+import JobOverview from "../Components/JobOverview";
 
-const skills = [
-  "Strong proficiency in JavaScript/TypeScript, React.js, HTML5, CSS3, and Tailwind CSS.",
-  "In-depth experience with Python, Django, and Django REST Framework (DRF).",
-  "Hands-on experience with relational databases such as PostgreSQL or MySQL.",
-  "Familiarity with version control systems like Git and collaborative workflows on GitHub.",
-  "Strong problem-solving skills and experience working in agile development teams.",
-];
+// Temporary job data.
+// Later, you can replace this with data from your Django API.
+const jobData = {
+  id: 1,
+  title: "Full Stack Developer",
+  company: "HexaTech LTD",
+  companyInitials: "CS",
+  postedAt: "10 min ago",
+  employmentType: "Full Time",
+  category: "Commerce",
+  salary: "$40,000–$42,000",
+  location: "New-York, USA",
 
-const tags = ["Full time", "Tech", "Uttara", "Corporate", "Location"];
+  description: [
+    "We are seeking a highly motivated Full-Stack Developer to join our growing product engineering team. In this pivotal role, you will leverage your expertise to design, develop, and maintain advanced web applications and scalable backend systems, contributing directly to the full lifecycle of our platform. We value innovation and are committed to building robust solutions.",
+
+    "The ideal candidate will be proficient in modern frontend technologies and robust backend frameworks, with a deep understanding of standard development methodologies. Key requirements include extensive experience with React, fluency in Python and Django, and a proven track record of creating efficient RESTful APIs. A strong analytical mind and the ability to thrive in a collaborative environment are essential.",
+  ],
+
+  responsibilities: [
+    "Collaborate with product managers, designers, and other developers to build scalable web applications.",
+    "Design, develop, and maintain secure RESTful APIs using Django REST Framework and PostgreSQL.",
+    "Write clean, maintainable, and efficient code adhering to modern software development best practices.",
+    "Optimize application performance, frontend loading speeds, and database query efficiency.",
+    "Participate in code reviews, write unit tests, and troubleshoot bugs across different environments.",
+    "Ensure seamless integration between frontend React components and backend microservices or APIs.",
+  ],
+
+  skills: [
+    "Strong proficiency in JavaScript/TypeScript, React.js, HTML5, CSS3, and Tailwind CSS.",
+    "In-depth experience with Python, Django, and Django REST Framework (DRF).",
+    "Hands-on experience with relational databases such as PostgreSQL or MySQL.",
+    "Familiarity with version control systems like Git and collaborative workflows on GitHub.",
+    "Strong problem-solving skills and experience working in agile development teams.",
+  ],
+};
 
 function JobDetails() {
-  const [bookmarked, setBookmarked] = useState(false);
-  const [result, setResult] = useState("");
-  const [isSending, setIsSending] = useState(false);
 
-  // Web3Forms submission
-  const onSubmit = async (event) => {
-    event.preventDefault();
+  const { id } = useParams();
+  const navigate = useNavigate();
 
-    setResult("");
-    setIsSending(true);
+  // Temporary authentication check.
+  // Make sure loginUser() stores the token under this exact key.
+  const isLoggedIn = Boolean(
+    sessionStorage.getItem("access_token")
+  );
 
-    try {
-      const formData = new FormData(event.currentTarget);
+  // Use the route ID when provided.
+  // The current page uses sample job data with ID 1.
+  const job = {
+    ...jobData,
+    id: id ? Number(id) : jobData.id,
+  };
 
-      formData.append("access_key", "222dc648-0bef-4d2e-ab93-5bc9cc55e714");
+  const handleApply = () => {
+    const applicationPath = `/apply_jobs?jobId=${job.id}`;
 
-      const response = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        body: formData,
-      });
-
-      const data = await response.json();
-
-      if (response.ok && data.success) {
-        setResult("Success! Your message has been sent.");
-        event.target.reset();
-      } else {
-        setResult(data.message || "Error submitting form. Please try again.");
-      }
-    } catch (error) {
-      console.error("Contact form submission failed:", error);
-
-      setResult(
-        "Unable to send your message. Please check your connection and try again.",
+    if (isLoggedIn) {
+      navigate(applicationPath);
+    } else {
+      navigate(
+        `/login?next=${encodeURIComponent(applicationPath)}`
       );
-    } finally {
-      setIsSending(false);
     }
   };
 
+  if (!job) {
+    return (
+      <div className="flex min-h-[50vh] items-center justify-center bg-white px-6 dark:bg-[#071A19]">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
+            Job not found
+          </h2>
+
+          <p className="mt-2 text-slate-500 dark:text-slate-400">
+            This job may have been removed or is no longer available.
+          </p>
+
+          <Link
+            to="/jobs"
+            className="mt-5 inline-flex items-center gap-2 rounded-xl bg-teal-600 px-5 py-3 font-semibold text-white transition hover:bg-teal-700"
+          >
+            Browse Jobs
+            <FiArrowRight />
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-white dark:bg-[#071A19] font-sans text-gray-900 dark:text-gray-100 transition-colors duration-300">
-      <PageHero badgeText="Explore the jobs." title="Job Details" />
+    <div className="min-h-screen bg-[#F9FAFB] font-sans text-slate-900 transition-colors duration-300 dark:bg-[#071A19] dark:text-gray-100">
+      <main className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
+        <div className="grid grid-cols-1 gap-8">
 
-      {/* Main Content */}
-      <section className="max-w-7xl mx-auto px-6 py-12">
-        <div className="grid lg:grid-cols-3 gap-10">
-          {/* Left Column */}
-          <div className="lg:col-span-2 space-y-8">
-            {/* Job Header */}
-            <div>
-              <div className="flex items-center justify-between mb-4">
-                <span className="text-sm text-gray-400 dark:text-slate-400">
-                  10 min ago
-                </span>
+          {/* Job Header */}
+          <section className="min-w-0">
+            <div className="mb-5">
+              <span className="text-sm text-slate-500 dark:text-slate-400">
+                {job.postedAt}
+              </span>
+            </div>
 
-                <button
-                  type="button"
-                  onClick={() => setBookmarked(!bookmarked)}
-                  aria-label={bookmarked ? "Remove bookmark" : "Bookmark job"}
-                  aria-pressed={bookmarked}
-                  className={`p-2 rounded-full transition ${
-                    bookmarked
-                      ? "text-teal-500"
-                      : "text-gray-400 hover:text-teal-500 dark:text-slate-400 dark:hover:text-teal-400"
-                  }`}
-                >
-                  <FiBookmark className="w-5 h-5" />
-                </button>
-              </div>
-
-              <div className="flex items-start gap-4 mb-5">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center text-white text-xl font-bold">
-                  CS
+            <div className="mb-7 flex items-start justify-between gap-4">
+              {/* Company and Job Title */}
+              <div className="flex min-w-0 items-center gap-4">
+                <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-linear-to-br from-teal-400 to-emerald-600 text-lg font-bold text-white shadow-sm">
+                  {job.companyInitials}
                 </div>
 
-                <div>
-                  <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
-                    Full Stack Developer
+                <div className="min-w-0">
+                  <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-3xl">
+                    {job.title}
                   </h1>
 
-                  <p className="text-gray-500 dark:text-slate-400 mt-1">
-                    HexaTech LTD
+                  <p className="mt-1 text-slate-500 dark:text-slate-400">
+                    {job.company}
                   </p>
                 </div>
               </div>
+            </div>
 
-              {/* Job Meta Information */}
-              <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-gray-600 dark:text-slate-300 mb-6">
-                <span className="flex items-center gap-1.5">
-                  <FiBriefcase className="w-4 h-4 text-teal-500" />
-                  Tech
-                </span>
+            <JobOverview job={job} />
+          </section>
 
-                <span className="flex items-center gap-1.5">
-                  <FiClock className="w-4 h-4 text-teal-500" />
-                  Full time
-                </span>
+          {/* Job Description */}
+          <section className="min-w-0">
+            <h2 className="mb-4 text-xl font-bold text-slate-900 dark:text-white">
+              Job Description
+            </h2>
 
-                <span className="flex items-center gap-1.5">
-                  <FiCreditCard className="w-4 h-4 text-teal-500" />
-                  ৳40000-৳42000
-                </span>
+            <div className="space-y-4 text-sm leading-7 text-slate-600 dark:text-slate-300 sm:text-base">
+              {job.description.map((paragraph, index) => (
+                <p key={`${job.id}-description-${index}`}>
+                  {paragraph}
+                </p>
+              ))}
+            </div>
+          </section>
 
-                <span className="flex items-center gap-1.5">
-                  <FiMapPin className="w-4 h-4 text-teal-500" />
-                  Uttara, Dhaka
-                </span>
+          {/* Key Responsibilities */}
+          <section className="min-w-0">
+            <h2 className="mb-4 text-xl font-bold text-slate-900 dark:text-white">
+              Key Responsibilities
+            </h2>
+
+            <ul className="space-y-3">
+              {job.responsibilities.map((item, index) => (
+                <li
+                  key={`${job.id}-responsibility-${index}`}
+                  className="flex items-start gap-3 text-sm leading-6 text-slate-600 dark:text-slate-300 sm:text-base"
+                >
+                  <FiCheck className="mt-1 h-5 w-5 shrink-0 text-teal-500" />
+
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          {/* Professional Skills */}
+          <section className="min-w-0">
+            <h2 className="mb-4 text-xl font-bold text-slate-900 dark:text-white">
+              Professional Skills
+            </h2>
+
+            <ul className="space-y-3">
+              {job.skills.map((item, index) => (
+                <li
+                  key={`${job.id}-skill-${index}`}
+                  className="flex items-start gap-3 text-sm leading-6 text-slate-600 dark:text-slate-300 sm:text-base"
+                >
+                  <FiCheck className="mt-1 h-5 w-5 shrink-0 text-teal-500" />
+
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          {/* Apply Now */}
+          <section className="border-t border-slate-200 pt-6 dark:border-teal-900/60">
+            <div className="flex flex-col gap-4 rounded-2xl border border-teal-100 bg-white p-4 shadow-sm dark:border-teal-900/60 dark:bg-[#0B2421] sm:flex-row sm:items-center sm:justify-between sm:p-6">
+              <div>
+                <h2 className="text-lg font-bold text-slate-900 dark:text-white">
+                  Interested in this position?
+                </h2>
+
+                <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                  Take the next step toward your career.
+                </p>
               </div>
 
-              {/* Apply Now */}
-              <Link
-                to="/apply_jobs"
-                className="inline-block bg-teal-500 hover:bg-teal-600 text-white font-medium px-8 py-3 rounded-lg transition"
+              <button
+                type="button"
+                onClick={handleApply}
+                className="inline-flex w-full shrink-0 items-center justify-center gap-2 rounded-xl bg-teal-500 px-6 py-3.5 font-semibold text-white shadow-md shadow-teal-500/20 transition duration-200 hover:-translate-y-0.5 hover:bg-teal-600 focus:outline-none focus:ring-4 focus:ring-teal-500/30 sm:w-auto cursor-pointer"
               >
+                <FiBriefcase className="h-5 w-5" />
+
                 Apply Now
-              </Link>
+
+                <FiArrowRight className="h-4 w-4" />
+              </button>
             </div>
+          </section>
 
-            {/* Job Description */}
-            <div>
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
-                Job Description
-              </h2>
-
-              <div className="space-y-4 text-gray-600 dark:text-slate-300 leading-relaxed text-justify">
-                <p>
-                  We are seeking a highly motivated Full-Stack Developer to join
-                  our growing product engineering team. In this pivotal role,
-                  you will leverage your expertise to design, develop, and
-                  maintain advanced web applications and scalable backend
-                  systems, contributing directly to the full lifecycle of our
-                  platform. We value innovation and are committed to building
-                  robust solutions.
-                </p>
-
-                <p>
-                  The ideal candidate will be proficient in modern frontend
-                  technologies and robust backend frameworks, with a deep
-                  understanding of standard development methodologies. Key
-                  requirements include extensive experience with React, fluency
-                  in Python and Django, and a proven track record of creating
-                  efficient RESTful APIs. A strong analytical mind and the
-                  ability to thrive in a collaborative environment are
-                  essential.
-                </p>
-              </div>
-            </div>
-
-            {/* Key Responsibilities */}
-            <div>
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
-                Key Responsibilities
-              </h2>
-
-              <ul className="space-y-3">
-                {responsibilities.map((item, idx) => (
-                  <li
-                    key={idx}
-                    className="flex items-start gap-3 text-gray-600 dark:text-slate-300"
-                  >
-                    <FiCheck className="w-5 h-5 text-teal-500 mt-0.5 shrink-0" />
-
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Professional Skills */}
-            <div>
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
-                Professional Skills
-              </h2>
-
-              <ul className="space-y-3">
-                {skills.map((item, idx) => (
-                  <li
-                    key={idx}
-                    className="flex items-start gap-3 text-gray-600 dark:text-slate-300"
-                  >
-                    <FiCheck className="w-5 h-5 text-teal-500 mt-0.5 shrink-0" />
-
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Tags */}
-            <div>
-              <h3 className="font-semibold text-gray-900 dark:text-white mb-3">
-                Tags:
-              </h3>
-
-              <div className="flex flex-wrap gap-2">
-                {tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="px-4 py-1.5 bg-gray-100 dark:bg-[#0d2a28] dark:border dark:border-slate-700 text-gray-600 dark:text-slate-300 text-sm rounded-full"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            {/* Share Job */}
-            <div className="flex items-center gap-4 pt-2">
-              <span className="text-gray-700 dark:text-slate-300 font-medium">
-                Share Job:
-              </span>
-
-              <div className="flex items-center gap-3">
-                <a
-                  href="#"
-                  aria-label="Share on Facebook"
-                  className="w-9 h-9 rounded-full bg-gray-100 dark:bg-[#0d2a28] dark:border dark:border-slate-700 flex items-center justify-center text-gray-600 dark:text-slate-300 hover:bg-teal-50 dark:hover:border-teal-500 hover:text-teal-600 transition"
-                >
-                  f
-                </a>
-
-                <a
-                  href="#"
-                  aria-label="Share on X"
-                  className="w-9 h-9 rounded-full bg-gray-100 dark:bg-[#0d2a28] dark:border dark:border-slate-700 flex items-center justify-center text-gray-600 dark:text-slate-300 hover:bg-teal-50 dark:hover:border-teal-500 hover:text-teal-600 transition"
-                >
-                  𝕏
-                </a>
-
-                <a
-                  href="#"
-                  aria-label="Share on LinkedIn"
-                  className="w-9 h-9 rounded-full bg-gray-100 dark:bg-[#0d2a28] dark:border dark:border-slate-700 flex items-center justify-center text-gray-600 dark:text-slate-300 hover:bg-teal-50 dark:hover:border-teal-500 hover:text-teal-600 transition"
-                >
-                  in
-                </a>
-              </div>
-            </div>
-          </div>
-
-          {/* Right Sidebar */}
-          <div className="space-y-6">
-            {/* Job Overview Component */}
-            <JobOverview />
-
-            {/* Send Us Message */}
-            <div className="bg-teal-50 dark:bg-[#0d2a28] dark:border dark:border-slate-700 dark:shadow-black/20 rounded-2xl p-6">
-              <h3 className="font-bold text-gray-900 dark:text-white mb-5">
-                Send Us Message
-              </h3>
-
-              <form onSubmit={onSubmit} className="space-y-4">
-                {/* Full Name */}
-                <div className="relative">
-                  <FiUser className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-slate-400" />
-
-                  <input
-                    type="text"
-                    name="name"
-                    placeholder="Full name"
-                    required
-                    className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-[#071A19] text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-teal-500"
-                  />
-                </div>
-
-                {/* Email */}
-                <div className="relative">
-                  <FiMail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-slate-400" />
-
-                  <input
-                    type="email"
-                    name="email"
-                    placeholder="Email Address"
-                    required
-                    className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-[#071A19] text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-teal-500"
-                  />
-                </div>
-
-                {/* Phone */}
-                <div className="relative">
-                  <FiPhone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-slate-400" />
-
-                  <input
-                    type="tel"
-                    name="phone"
-                    placeholder="Phone Number"
-                    className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-[#071A19] text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-teal-500"
-                  />
-                </div>
-
-                {/* Message */}
-                <div className="relative">
-                  <FiMessageSquare className="absolute left-3 top-3 w-4 h-4 text-gray-400 dark:text-slate-400" />
-
-                  <textarea
-                    name="message"
-                    rows={4}
-                    placeholder="Your Message"
-                    required
-                    className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-[#071A19] text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-teal-500 resize-none"
-                  />
-                </div>
-
-                {/* Submit Button */}
-                <div className="pt-2">
-                  <button
-                    type="submit"
-                    disabled={isSending}
-                    className="cursor-pointer rounded-2xl bg-teal-700 px-6 py-3 text-base font-medium text-white shadow-sm transition duration-200 hover:bg-teal-800 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-teal-600 dark:hover:bg-teal-500"
-                  >
-                    {isSending ? "Sending..." : "Send Message"}
-                  </button>
-                </div>
-
-                {/* Submission Status */}
-                {result && (
-                  <p
-                    className="text-sm text-gray-700 dark:text-gray-300 mt-3"
-                    role="status"
-                  >
-                    {result}
-                  </p>
-                )}
-              </form>
-            </div>
-          </div>
         </div>
-      </section>
+      </main>
 
-      {/* Related Jobs Component */}
-      <RelatedJobs />
+      {/* Related Jobs can be rendered here when needed. */}
     </div>
   );
 }

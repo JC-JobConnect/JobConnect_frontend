@@ -1,4 +1,5 @@
 import PageHero from "../Components/PageHero";
+import { Link } from "react-router-dom";
 import { useState } from "react";
 import {
   FiUser,
@@ -211,12 +212,12 @@ function ApplyJob() {
 
           <p className="text-center text-sm text-gray-500 dark:text-slate-400 mt-6">
             You can view your application status later in{" "}
-            <a
-              href="/my-applications"
+            <Link
+              to="/my-applications"
               className="text-teal-500 hover:underline font-medium"
             >
               My Applications
-            </a>
+            </Link>
           </p>
         </div>
       </section>

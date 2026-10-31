@@ -1,16 +1,19 @@
-import Hero from "../Components/Hero";
+import PageHero from "../Components/PageHero";
 import JobDetails from "../Components/JobDetails";
+import CareerCTA from "../Components/CareerCTA";
 import RelatedJobs from "../Components/RelatedJobs";
-import JobOverview from "../Components/JobOverview";
+
 
 const JobDetailsPage = () => {
   return (
-    <div className="min-h-screen bg-white text-zinc-900">
-      <Hero />
+    <>
+    <PageHero title="Job Detail" badgeText="Get In Touch" />
+    <div className="min-h-screen bg-white px-6 dark:bg-[#071A19] text-zinc-900">
       <JobDetails />
-      {/* <RelatedJobs />
-      <JobOverview /> */}
+      <CareerCTA />
+      < RelatedJobs />
     </div>
+    </>
   );
 };
 

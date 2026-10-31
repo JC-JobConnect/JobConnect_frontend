@@ -4,7 +4,6 @@ import {
   FiMapPin,
   FiCalendar,
   FiClock,
-  FiBookmark,
   FiArrowUpRight,
   FiBriefcase,
 } from "react-icons/fi";
@@ -64,7 +63,7 @@ const sampleJobs = [
   },
 ];
 
-function JobCard({ job, isSaved, onToggleSave }) {
+function JobCard({ job }) {
   return (
     <article className="group relative flex min-w-0 flex-col rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-teal-300 hover:shadow-xl hover:shadow-teal-900/5 dark:border-white/10 dark:bg-[#0B2422] dark:hover:border-teal-700 cursor-pointer sm:p-5">
       {/* Top: Company and Job Title */}
@@ -104,25 +103,6 @@ function JobCard({ job, isSaved, onToggleSave }) {
             </Link>
           </h3>
         </div>
-
-        {/* Bookmark Button */}
-        <button
-          type="button"
-          onClick={() => onToggleSave(job.id)}
-          aria-label={
-            isSaved ? "Remove saved job" : "Save job"
-          }
-          aria-pressed={isSaved}
-          className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 ${
-            isSaved
-              ? "bg-teal-50 text-teal-600 dark:bg-teal-900/40 dark:text-teal-400"
-              : "text-slate-400 hover:bg-teal-50 hover:text-teal-600 dark:text-slate-400 dark:hover:bg-teal-900/30 dark:hover:text-teal-400"
-          }`}
-        >
-          <FiBookmark
-            className={`text-xl ${isSaved ? "fill-current" : ""}`}
-          />
-        </button>
       </div>
 
       {/* Job Details */}
