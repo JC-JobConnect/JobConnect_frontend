@@ -50,7 +50,8 @@ function ApplyJob() {
     <div className="min-h-screen bg-white dark:bg-[#071A19] font-sans text-gray-900 dark:text-gray-100 transition-colors duration-300">
       <PageHero title="Apply For This Job" badgeText="Applyjobs" />
 
-      {/* Job Overview Bar
+      {/*Job Overview Bar */}
+
       <div className="max-w-5xl mx-auto px-6 pt-10">
         <div className="bg-teal-50 dark:bg-[#0d2a28] dark:border dark:border-slate-700 rounded-2xl p-5 flex flex-wrap items-center justify-between gap-6">
           <div className="flex items-center gap-3">
@@ -115,8 +116,7 @@ function ApplyJob() {
             </div>
           </div>
         </div>
-      </div> */}
-
+      </div> 
       {/* Apply Form Section */}
       <section className="max-w-3xl mx-auto px-6 py-12">
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">
@@ -202,7 +202,7 @@ function ApplyJob() {
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full bg-teal-500 hover:bg-teal-600 text-white font-medium py-3.5 rounded-xl transition flex items-center justify-center gap-2"
+              className="w-full bg-teal-500 cursor-pointer hover:bg-teal-600 text-white font-medium py-3.5 rounded-xl transition flex items-center justify-center gap-2"
             >
               Submit Application
               <span>→</span>
@@ -224,7 +224,7 @@ function ApplyJob() {
       {/* Success Popup Modal */}
       {showSuccess && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
-          <div className="bg-white dark:bg-[#0d2a28] border dark:border-slate-700 rounded-2xl p-8 max-w-md w-full text-center shadow-xl">
+          <div className="bg-white dark:bg-[#0d2a28] border border-white dark:border-slate-700 rounded-2xl p-8 max-w-md w-full text-center shadow-xl">
             <div className="w-16 h-16 bg-teal-100 dark:bg-teal-900/40 rounded-full flex items-center justify-center mx-auto mb-5">
               <FiCheckCircle className="w-8 h-8 text-teal-500" />
             </div>
@@ -235,7 +235,7 @@ function ApplyJob() {
             <p className="text-gray-600 dark:text-slate-300 mb-6">
               Your application has been successfully submitted. You will be
               redirected to{" "}
-              <span className="font-medium text-teal-500">My Applications</span>{" "}
+              <span className="font-medium text-teal-500 cursor-pointer">My Applications</span>{" "}
               shortly.
             </p>
 

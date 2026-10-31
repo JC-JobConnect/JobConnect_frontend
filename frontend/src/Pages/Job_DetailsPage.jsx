@@ -8,10 +8,10 @@ const JobDetailsPage = () => {
     <div className="min-h-screen bg-white text-zinc-900">
       <Hero />
       <JobDetails />
-      <RelatedJobs />
-      <JobOverview />
+      {/* <RelatedJobs />
+      <JobOverview /> */}
     </div>
   );
 };
 
-export default JobDetails;
+export default JobDetailsPage;

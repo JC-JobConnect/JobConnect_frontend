@@ -2,7 +2,7 @@
 import api from "./Api";
 
 export async function registerUser(formData) {
-  const response = await api.post("register/", {
+  const response = await api.post("v1/register/", {
     username: formData.username,
     email: formData.email,
     password: formData.password,
