@@ -1,15 +1,17 @@
-import { Routes, Route, useLocation } from 'react-router-dom'
+import { Routes, Route, useLocation } from "react-router-dom";
 import ScrollToTop from "./Components/ScrollToTop";
-import Navbar from './Components/Navbar'
-import Footer from './Components/Footer'
-import My_Appications from './Pages/My_Appications'
-import Home from './Pages/Home'
-import Jobs from './Pages/Jobs'
-import About from './Pages/About'
-import Contact from './Pages/Contact'
-import Login from './Pages/Login'
-import UserProfile from './Pages/UserProfile'
-import Register from './Pages/Register'
+import Navbar from "./Components/Navbar";
+import Footer from "./Components/Footer";
+import My_Appications from "./Pages/My_Appications";
+import Home from "./Pages/Home";
+import Jobs from "./Pages/Jobs";
+import About from "./Pages/About";
+import Contact from "./Pages/Contact";
+import Login from "./Pages/Login";
+import UserProfile from "./Pages/UserProfile";
+import Register from "./Pages/Register";
+import JobDetails from "./Pages/Job_DetailsPage";
+import ApplyJob from "./Pages/Apply_Jobs";
 
 const App = () => {
   const location = useLocation();
@@ -30,10 +32,12 @@ const App = () => {
         <Route path="/profile" element={<UserProfile />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/job_details" element={<JobDetails />} />
+        <Route path="/apply_jobs" element={<ApplyJob />} />
       </Routes>
 
       {!isAuthPage && <Footer />}
-      
+
       <ScrollToTop />
     </div>
   );
