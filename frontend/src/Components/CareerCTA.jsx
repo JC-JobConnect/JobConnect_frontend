@@ -7,7 +7,7 @@ import Model from "../Assets/images/model.webp"
 function CareerCTA() {
   return (
     <section className="px-4 py-10 sm:px-6 lg:px-8">
-      <div className="relative mx-auto max-w-7xl overflow-hidden rounded-3xl border border-teal-100 bg-gradient-to-br from-teal-50 via-white to-emerald-100 shadow-lg shadow-teal-900/5 dark:border-teal-900/60 dark:from-[#0B2421] dark:via-[#0D302A] dark:to-[#10483C]">
+      <div className="relative mx-auto max-w-7xl overflow-hidden rounded-3xl border border-teal-100 bg-linear-to-br from-teal-50 via-white to-emerald-100 shadow-lg shadow-teal-900/5 dark:border-teal-900/60 dark:from-[#0B2421] dark:via-[#0D302A] dark:to-[#10483C]">
 
         {/* Decorative background */}
         <div className="pointer-events-none absolute -right-20 -top-24 h-72 w-72 rounded-full bg-teal-300/20 blur-3xl dark:bg-teal-400/10" />
@@ -70,10 +70,10 @@ function CareerCTA() {
           </div>
 
           {/* Right model image */}
-          <div className="relative mx-auto flex w-full max-w-md items-end justify-center md:min-h-[350px] md:self-stretch">
+          <div className="relative mx-auto flex w-full max-w-md items-end justify-center md:min-h-88 md:self-stretch">
 
             {/* Image backdrop */}
-            <div className="absolute bottom-0 h-56 w-56 rounded-full bg-gradient-to-br from-teal-200 to-emerald-300/70 dark:from-teal-700/60 dark:to-emerald-500/20 sm:h-72 sm:w-72" />
+            <div className="absolute bottom-0 h-56 w-56 rounded-full bg-linear-to-br from-teal-200 to-emerald-300/70 dark:from-teal-700/60 dark:to-emerald-500/20 sm:h-72 sm:w-72" />
 
             {/* Decorative circles */}
             <div className="absolute right-8 top-10 h-12 w-12 rounded-2xl border border-teal-200 bg-white/60 dark:border-teal-700 dark:bg-teal-900/40" />
@@ -83,7 +83,7 @@ function CareerCTA() {
             <img
               src={ Model }
               alt="Professional looking forward to new career opportunities"
-              className="relative z-10 max-h-[340px] w-auto max-w-full object-contain object-bottom drop-shadow-xl sm:max-h-[390px] md:absolute md:bottom-0 md:max-h-[390px]"
+              className="relative z-10 max-h-85 w-auto max-w-full object-contain object-bottom drop-shadow-xl sm:max-h-97 md:absolute md:bottom-0 md:max-h-98"
               loading="lazy"
             />
 
