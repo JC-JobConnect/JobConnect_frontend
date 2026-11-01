@@ -13,16 +13,17 @@ import UserProfile from "./Pages/UserProfile";
 import Register from "./Pages/Register";
 import JobDetails from "./Pages/Job_DetailsPage";
 import ApplyJob from "./Pages/Apply_Jobs";
+import AdminDashboard from "./Pages/AdminDashboard";
 
 const App = () => {
   const location = useLocation();
 
-  const authPages = ["/login", "/register"];
-  const isAuthPage = authPages.includes(location.pathname);
+  const hideLayoutPages = ["/login", "/register", "/admin"];
+  const hideLayout = hideLayoutPages.includes(location.pathname);
 
   return (
     <div>
-      {!isAuthPage && <Navbar />}
+      {!hideLayout && <Navbar />}
 
       <Routes>
         <Route path="/" element={<Home />} />
@@ -36,9 +37,10 @@ const App = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/job_details" element={<JobDetails />} />
         <Route path="/apply_jobs" element={<ApplyJob />} />
+        <Route path="/admin" element={<AdminDashboard />} />
       </Routes>
 
-      {!isAuthPage && <Footer />}
+      {!hideLayout && <Footer />}
 
       <ScrollToTop />
     </div>
