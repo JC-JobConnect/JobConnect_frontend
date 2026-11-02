@@ -4,7 +4,7 @@ import Sidebar from "../../Components/admin/Sidebar";
 import TopBar from "../../Components/admin/TopBar";
 
 const AdminCategory = () => {
-  return (
+    return (
         <div className="flex min-h-screen bg-slate-50 dark:bg-[#071A19]">
             <Sidebar />
 
@@ -16,10 +16,10 @@ const AdminCategory = () => {
                     <div className="flex items-center justify-between">
                         <div>
                             <h1 className="text-xl font-bold text-slate-900 dark:text-white">
-                                Jobs
+                                Categories
                             </h1>
                             <p className="text-sm text-slate-400">
-                                Create and manage job postings
+                                Create and manage job categories
                             </p>
                         </div>
 
@@ -38,7 +38,7 @@ const AdminCategory = () => {
                 </div>
             </main>
         </div>
-  )
+    )
 }
 
 export default AdminCategory
