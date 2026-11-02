@@ -1,4 +1,5 @@
 import axios from "axios";
+import { attachAuthInterceptors } from "./authInterceptor";
 
 const jobsApi = axios.create({
   baseURL: "http://127.0.0.1:8000/job/",
@@ -7,15 +8,6 @@ const jobsApi = axios.create({
   },
 });
 
-// Attach JWT token
-jobsApi.interceptors.request.use((config) => {
-  const accessToken = sessionStorage.getItem("access_token");
-
-  if (accessToken) {
-    config.headers.Authorization = `Bearer ${accessToken}`;
-  }
-
-  return config;
-});
+attachAuthInterceptors(jobsApi);
 
 export default jobsApi;

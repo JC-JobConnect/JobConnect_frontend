@@ -10,14 +10,11 @@ const TopBar = () => {
         <p className="text-sm text-slate-400">Welcome back, Admin</p>
       </div>
       <div className="flex items-center gap-3">
-        <button className="px-4 py-2 text-sm border border-slate-200 dark:border-teal-800 rounded-lg hover:bg-slate-50 dark:hover:bg-teal-900/30 text-slate-600 dark:text-slate-300">
-          🔔 Notifications
-        </button>
         <Link
-          to="/admin/jobs"
+          to="/"
           className="px-4 py-2 text-sm bg-teal-600 hover:bg-teal-700 text-white rounded-lg font-medium"
         >
-          + Post Job
+          Back to JobConnect
         </Link>
       </div>
     </header>

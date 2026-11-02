@@ -17,6 +17,7 @@ import AdminDashboard from "./Pages/AdminDashboard";
 import AdminJobs from "./Pages/admin/AdminJobs";
 import AdminCategory from "./Pages/admin/AdminCatagory";
 import AdminCompany from "./Pages/admin/AdminCompany";
+import ProtectedRoute from "./Components/ProtectedRoute";
 
 const App = () => {
   const location = useLocation();
@@ -43,10 +44,12 @@ const App = () => {
         <Route path="/apply_jobs" element={<ApplyJob />} />
 
         {/* Admin */}
-        <Route path="/admin" element={<AdminDashboard />} />
-        <Route path="/admin/jobs" element={<AdminJobs />} />
-        <Route path="/admin/categories" element={<AdminCategory />} />
-        <Route path="/admin/companies" element={<AdminCompany />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/admin/jobs" element={<AdminJobs />} />
+          <Route path="/admin/categories" element={<AdminCategory />} />
+          <Route path="/admin/companies" element={<AdminCompany />} />
+        </Route>
       </Routes>
 
       {!hideLayout && <Footer />}

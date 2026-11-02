@@ -1,19 +1,16 @@
 import { NavLink } from "react-router-dom";
+import { MdSpaceDashboard } from "react-icons/md";
+import { FiBriefcase } from "react-icons/fi";
+import { IoFileTrayFullOutline } from "react-icons/io5";
+import { MdOutlineMapsHomeWork } from "react-icons/md";
 
 const links = [
-  { path: "/admin", label: "Dashboard", icon: "📊", end: true },
-  { path: "/admin/jobs", label: "Jobs", icon: "💼" },
-  { path: "/admin/categories", label: "Categories", icon: "📁" },
-  { path: "/admin/companies", label: "Companies", icon: "🏢" },
-  { path: "/admin/applications", label: "Applications", icon: "📄" },
-  { path: "/admin/users", label: "Users", icon: "👥" },
+  { path: "/admin", label: "Dashboard", icon: <MdSpaceDashboard />, end: true },
+  { path: "/admin/jobs", label: "Jobs", icon: <FiBriefcase /> },
+  { path: "/admin/categories", label: "Categories", icon: <IoFileTrayFullOutline /> },
+  { path: "/admin/companies", label: "Companies", icon:<MdOutlineMapsHomeWork /> },
 ];
 
-const quickActions = [
-  { path: "/admin/jobs", label: "Post a Job", icon: "➕" },
-  { path: "/admin/categories", label: "Add Category", icon: "🏷️" },
-  { path: "/admin/companies", label: "Add Company", icon: "🏛️" },
-];
 
 const Sidebar = () => {
   const linkClass = ({ isActive }) =>
@@ -51,16 +48,6 @@ const Sidebar = () => {
             end={link.end}
             className={linkClass}
           >
-            <span>{link.icon}</span> {link.label}
-          </NavLink>
-        ))}
-
-        <p className="px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 mt-6">
-          Quick Actions
-        </p>
-
-        {quickActions.map((link) => (
-          <NavLink key={link.label} to={link.path} className={linkClass}>
             <span>{link.icon}</span> {link.label}
           </NavLink>
         ))}
