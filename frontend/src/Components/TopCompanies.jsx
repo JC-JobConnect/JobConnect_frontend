@@ -1,4 +1,8 @@
+
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import jobsApi from "../Api/api/JobApi.js";
+
 import {
   FaStar,
   FaRegUser,
@@ -8,40 +12,43 @@ import {
   FaCheckCircle,
 } from "react-icons/fa";
 
-const companies = [
-  {
-    id: 1,
-    name: "TechWorks",
-    suffix: "Corporation",
-    employees: "1,235",
-    jobs: 8,
-    rating: 4,
-    initials: "TW",
-    color: "from-teal-500 to-emerald-600",
-  },
-  {
-    id: 2,
-    name: "Bright Future",
-    suffix: "Solutions",
-    employees: "3,567",
-    jobs: 20,
-    rating: 5,
-    initials: "BF",
-    color: "from-emerald-500 to-teal-600",
-  },
-  {
-    id: 3,
-    name: "SkyView",
-    suffix: "Enterprises",
-    employees: "7,824",
-    jobs: 14,
-    rating: 5,
-    initials: "SV",
-    color: "from-cyan-500 to-teal-600",
-  },
-];
-
 const TopCompanies = () => {
+  const [companies, setCompanies] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  // Fetch companies from the same API used by Companies.jsx
+  useEffect(() => {
+    const fetchCompanies = async () => {
+      try {
+        const response = await jobsApi.get("v1/companies/");
+
+        // Support both normal and paginated DRF responses
+        const data = Array.isArray(response.data)
+          ? response.data
+          : response.data.results || [];
+
+        setCompanies(data.slice(0, 3));
+      } catch (err) {
+        console.error("Error fetching top companies:", err);
+        setError("Unable to load companies. Please try again.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCompanies();
+  }, []);
+
+  // Handle company logo URL
+  const getLogoUrl = (logo) => {
+    if (!logo) return null;
+
+    return logo.startsWith("http")
+      ? logo
+      : `http://127.0.0.1:8000${logo.startsWith("/") ? "" : "/"}${logo}`;
+  };
+
   return (
     <section className="relative overflow-hidden bg-white py-16 dark:bg-[#071A19] sm:py-20 lg:py-24">
 
@@ -79,82 +86,101 @@ const TopCompanies = () => {
 
             {/* Company List */}
             <div className="space-y-4">
-              {companies.map((company) => (
-                <Link
-                  key={company.id}
-                  to={`/companies`}
-                  className="group flex items-center gap-3 rounded-2xl border border-transparent p-3 transition-all duration-300 hover:border-teal-100 hover:bg-teal-50/60 hover:shadow-lg hover:shadow-teal-900/5 dark:hover:border-teal-800/70 dark:hover:bg-teal-950/40 sm:gap-5 sm:p-4"
-                >
 
-                  {/* Number */}
-                  <div className="w-12 shrink-0 text-2xl font-extrabold tracking-tight text-teal-500/80 transition-colors group-hover:text-emerald-500 sm:w-16 sm:text-3xl">
-                    {String(company.id).padStart(2, "0")}
-                    <span className="text-teal-300 dark:text-teal-700">.</span>
-                  </div>
-
-                  {/* Company Card */}
-                  <div className="flex min-w-0 flex-1 items-center gap-3 rounded-xl border border-slate-100 bg-white p-3 shadow-sm transition-all duration-300 group-hover:border-teal-100 group-hover:shadow-md dark:border-white/5 dark:bg-[#0B2422] dark:group-hover:border-teal-800 sm:gap-4 sm:p-4">
-
-                    {/* Company Logo Placeholder */}
+              {/* Loading State */}
+              {loading && (
+                <div className="space-y-3">
+                  {[1, 2, 3].map((item) => (
                     <div
-                      className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-linear-to-br ${company.color} text-sm font-extrabold text-white shadow-sm sm:h-14 sm:w-14`}
-                    >
-                      {company.initials}
+                      key={item}
+                      className="h-24 animate-pulse rounded-2xl bg-slate-100 dark:bg-[#0B2422]"
+                    />
+                  ))}
+                </div>
+              )}
+
+              {/* Error State */}
+              {!loading && error && (
+                <p className="rounded-xl bg-red-50 p-4 text-sm text-red-600 dark:bg-red-950/20 dark:text-red-400">
+                  {error}
+                </p>
+              )}
+
+              {/* Empty State */}
+              {!loading && !error && companies.length === 0 && (
+                <p className="rounded-xl bg-slate-50 p-4 text-sm text-slate-500 dark:bg-[#0B2422] dark:text-slate-400">
+                  No companies available at the moment.
+                </p>
+              )}
+
+              {/* Dynamic Company Cards */}
+              {!loading &&
+                !error &&
+                companies.map((company, index) => (
+                  <Link
+                    key={company.id}
+                    to="/companies"
+                    className="group flex items-center gap-3 rounded-2xl border border-transparent p-3 transition-all duration-300 hover:border-teal-100 hover:bg-teal-50/60 hover:shadow-lg hover:shadow-teal-900/5 dark:hover:border-teal-800/70 dark:hover:bg-teal-950/40 sm:gap-5 sm:p-4"
+                  >
+
+                    {/* Number */}
+                    <div className="w-12 shrink-0 text-2xl font-extrabold tracking-tight text-teal-500/80 transition-colors group-hover:text-emerald-500 sm:w-16 sm:text-3xl">
+                      {String(index + 1).padStart(2, "0")}
+                      <span className="text-teal-300 dark:text-teal-700">
+                        .
+                      </span>
                     </div>
 
-                    {/* Company Information */}
-                    <div className="min-w-0 flex-1">
+                    {/* Company Card */}
+                    <div className="flex min-w-0 flex-1 items-center gap-3 rounded-xl border border-slate-100 bg-white p-3 shadow-sm transition-all duration-300 group-hover:border-teal-100 group-hover:shadow-md dark:border-white/5 dark:bg-[#0B2422] dark:group-hover:border-teal-800 sm:gap-4 sm:p-4">
 
-                      <h3 className="truncate text-sm font-bold text-slate-900 transition-colors group-hover:text-teal-700 dark:text-white dark:group-hover:text-teal-300 sm:text-base">
-                        {company.name}
-                      </h3>
-
-                      <p className="truncate text-xs font-medium text-slate-500 dark:text-slate-400 sm:text-sm">
-                        {company.suffix}
-                      </p>
-
-                      {/* Ratings */}
-                      <div className="mt-1 flex items-center gap-0.5">
-                        {Array.from({ length: 5 }).map((_, index) => (
-                          <FaStar
-                            key={index}
-                            className={
-                              index < company.rating
-                                ? "text-amber-400"
-                                : "text-slate-200 dark:text-slate-700"
-                            }
-                            size={11}
+                      {/* Company Logo */}
+                      <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-teal-50 dark:bg-teal-900/30 sm:h-14 sm:w-14">
+                        {company.logo ? (
+                          <img
+                            src={getLogoUrl(company.logo)}
+                            alt={`${company.name} logo`}
+                            className="h-full w-full object-cover"
                           />
-                        ))}
-
-                        <span className="ml-1 text-[10px] text-slate-400">
-                          {company.rating}.0
-                        </span>
+                        ) : (
+                          <FaBriefcase className="text-xl text-teal-600 dark:text-teal-400" />
+                        )}
                       </div>
 
+                      {/* Company Information */}
+                      <div className="min-w-0 flex-1">
+
+                        <h3 className="truncate text-sm font-bold text-slate-900 transition-colors group-hover:text-teal-700 dark:text-white dark:group-hover:text-teal-300 sm:text-base">
+                          {company.name}
+                        </h3>
+
+                        <p className="mt-1 line-clamp-2 text-xs text-slate-500 dark:text-slate-400 sm:text-sm">
+                          {company.bio || company.location || "Company"}
+                        </p>
+
+                      </div>
+
+                      {/* Jobs & Location */}
+                      <div className="hidden shrink-0 flex-col items-end gap-2 text-xs text-slate-500 dark:text-slate-400 sm:flex">
+
+                        <span className="flex items-center gap-1.5">
+                          <FaRegUser className="text-teal-500" />
+                          {company.location || "Location unavailable"}
+                        </span>
+
+                        <span className="flex items-center gap-1.5 font-semibold text-teal-700 dark:text-teal-300">
+                          <FaBriefcase />
+                          {company.vacancy ?? company.jobs?.length ?? 0} jobs open
+                        </span>
+
+                      </div>
+
+                      {/* Arrow */}
+                      <FaArrowRight className="shrink-0 text-sm text-teal-500 transition-transform duration-300 group-hover:translate-x-1" />
+
                     </div>
-
-                    {/* Employees & Vacancies */}
-                    <div className="hidden shrink-0 flex-col items-end gap-2 text-xs text-slate-500 dark:text-slate-400 sm:flex">
-
-                      <span className="flex items-center gap-1.5">
-                        <FaRegUser className="text-teal-500" />
-                        {company.employees} employees
-                      </span>
-
-                      <span className="flex items-center gap-1.5 font-semibold text-teal-700 dark:text-teal-300">
-                        <FaBriefcase />
-                        {company.jobs} jobs open
-                      </span>
-
-                    </div>
-
-                    {/* Arrow */}
-                    <FaArrowRight className="shrink-0 text-sm text-teal-500 transition-transform duration-300 group-hover:translate-x-1" />
-
-                  </div>
-                </Link>
-              ))}
+                  </Link>
+                ))}
             </div>
 
             {/* View All */}
@@ -300,6 +326,7 @@ const TopCompanies = () => {
                   <p className="text-sm font-bold text-slate-900 dark:text-white">
                     Find Your Match
                   </p>
+
                   <p className="text-xs text-slate-500 dark:text-slate-400">
                     Your career starts here
                   </p>
@@ -312,6 +339,7 @@ const TopCompanies = () => {
           </div>
 
         </div>
+
       </div>
     </section>
   );
