@@ -1,10 +1,7 @@
 import Sidebar from "../Components/admin/Sidebar";
 import TopBar from "../Components/admin/TopBar";
 import StatsCards from "../Components/admin/StatsCards";
-import PostJobForm from "../Components/admin/PostJobForm";
 import ApplicationsTable from "../Components/admin/ApplicationsTable";
-import CategoryForm from "../Components/admin/CategoryForm";
-import CompanyForm from "../Components/admin/CompanyForm";
 import UsersTable from "../Components/admin/UsersTable";
 
 const AdminDashboard = () => {
@@ -16,22 +13,13 @@ const AdminDashboard = () => {
         <TopBar />
 
         <div className="p-6 lg:p-8 space-y-8">
+          {/* Stats */}
           <StatsCards />
 
-          <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-            <div className="xl:col-span-1">
-              <PostJobForm />
-            </div>
-            <div className="xl:col-span-2">
-              <ApplicationsTable />
-            </div>
-          </div>
+          {/* Applications */}
+          <ApplicationsTable />
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <CategoryForm />
-            <CompanyForm />
-          </div>
-
+          {/* Users */}
           <UsersTable />
         </div>
       </main>
