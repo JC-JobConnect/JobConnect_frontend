@@ -85,7 +85,7 @@ function Companies() {
   return (
     <div className="min-h-screen bg-white dark:bg-[#071A19] font-sans text-gray-900 dark:text-gray-100 transition-colors duration-300">
       {/* Header */}
-      <section className="max-w-5xl mx-auto px-6 pt-14 pb-8">
+      <section className="max-w-7xl mx-auto px-6 pt-14 pb-8">
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
           Companies
         </h1>
@@ -96,7 +96,7 @@ function Companies() {
       </section>
 
       {/* Companies List */}
-      <section className="max-w-5xl mx-auto px-6 pb-16">
+      <section className="max-w-7xl mx-auto px-6 pb-16">
         {/* Loading */}
         {loading && (
           <p className="text-center py-10 text-gray-500 dark:text-slate-400">
@@ -177,7 +177,7 @@ function Companies() {
                       {/* Expand Button */}
                       <button
                         onClick={() => toggleCompany(company.id)}
-                        className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-medium transition whitespace-nowrap ${
+                        className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-medium transition cursor-pointer whitespace-nowrap ${
                           isOpen
                             ? "bg-teal-600 text-white"
                             : "bg-gray-100 dark:bg-[#123836] text-gray-700 dark:text-slate-200 hover:bg-gray-200 dark:hover:bg-[#1a4542]"
@@ -295,7 +295,7 @@ function Companies() {
 
       {/* CTA */}
       <section className="max-w-4xl mx-auto px-6 pb-20">
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-teal-50 to-emerald-100 dark:from-[#0A2A28] dark:to-[#0D3D38] p-10 md:p-14 text-center">
+        <div className="relative overflow-hidden rounded-3xl bg-linear-to-br from-teal-50 to-emerald-100 dark:from-[#0A2A28] dark:to-[#0D3D38] p-10 md:p-14 text-center">
           <div className="absolute -right-10 -top-10 w-40 h-40 rounded-full bg-teal-200/40 dark:bg-teal-700/20" />
 
           <div className="absolute -left-8 bottom-6 w-28 h-28 rounded-full bg-emerald-200/40 dark:bg-emerald-700/20" />
