@@ -21,7 +21,19 @@ export default function Navbar() {
   const navigate = useNavigate();
 
   const [isOpen, setIsOpen] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(() => {
+    return localStorage.getItem("theme") === "dark";
+  });
+
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+    }
+  }, [darkMode]);
 
   const [isLoggedIn, setIsLoggedIn] = useState(
     () => Boolean(sessionStorage.getItem("access_token"))
@@ -59,14 +71,14 @@ export default function Navbar() {
 
   const navItems = isLoggedIn
     ? [
-        ...publicNavItems.slice(0, 3),
-        {
-          id: "my-applications",
-          name: "My Applications",
-          path: "/my-applications",
-        },
-        ...publicNavItems.slice(3),
-      ]
+      ...publicNavItems.slice(0, 3),
+      {
+        id: "my-applications",
+        name: "My Applications",
+        path: "/my-applications",
+      },
+      ...publicNavItems.slice(3),
+    ]
     : publicNavItems;
 
   return (
@@ -96,10 +108,9 @@ export default function Navbar() {
                     <NavLink
                       to={item.path}
                       className={({ isActive }) =>
-                        `px-4 py-2 text-sm font-semibold rounded-full transition-colors ${
-                          isActive
-                            ? "text-white bg-white/10"
-                            : "text-gray-300 hover:text-white"
+                        `px-4 py-2 text-sm font-semibold rounded-full transition-colors ${isActive
+                          ? "text-white bg-white/10"
+                          : "text-gray-300 hover:text-white"
                         }`
                       }
                     >
@@ -234,10 +245,9 @@ export default function Navbar() {
                       to={item.path}
                       onClick={() => setIsOpen(false)}
                       className={({ isActive }) =>
-                        `block rounded-lg px-3 py-4 text-base font-medium transition-colors ${
-                          isActive
-                            ? "bg-teal-50 dark:bg-teal-900/40 text-teal-600 dark:text-teal-300"
-                            : "text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800/60 hover:text-teal-600 dark:hover:text-teal-300"
+                        `block rounded-lg px-3 py-4 text-base font-medium transition-colors ${isActive
+                          ? "bg-teal-50 dark:bg-teal-900/40 text-teal-600 dark:text-teal-300"
+                          : "text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800/60 hover:text-teal-600 dark:hover:text-teal-300"
                         }`
                       }
                     >

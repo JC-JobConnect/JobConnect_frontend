@@ -1,7 +1,6 @@
 import { Link, useParams, useNavigate } from "react-router-dom";
 
 import {
-  FiBookmark,
   FiCheck,
   FiBriefcase,
   FiArrowRight,

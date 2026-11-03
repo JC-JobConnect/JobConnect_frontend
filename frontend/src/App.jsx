@@ -13,16 +13,22 @@ import UserProfile from "./Pages/UserProfile";
 import Register from "./Pages/Register";
 import JobDetails from "./Pages/Job_DetailsPage";
 import ApplyJob from "./Pages/Apply_Jobs";
+import AdminDashboard from "./Pages/AdminDashboard";
+import AdminJobs from "./Pages/admin/AdminJobs";
+import AdminCategory from "./Pages/admin/AdminCatagory";
+import AdminCompany from "./Pages/admin/AdminCompany";
+import ProtectedRoute from "./Components/ProtectedRoute";
 
 const App = () => {
   const location = useLocation();
 
-  const authPages = ["/login", "/register"];
-  const isAuthPage = authPages.includes(location.pathname);
+  const hideLayout =
+    location.pathname.startsWith("/admin") ||
+    ["/login", "/register"].includes(location.pathname);
 
   return (
     <div>
-      {!isAuthPage && <Navbar />}
+      {!hideLayout && <Navbar />}
 
       <Routes>
         <Route path="/" element={<Home />} />
@@ -36,9 +42,17 @@ const App = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/job_details" element={<JobDetails />} />
         <Route path="/apply_jobs" element={<ApplyJob />} />
+
+        {/* Admin */}
+        <Route element={<ProtectedRoute />}>
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/admin/jobs" element={<AdminJobs />} />
+          <Route path="/admin/categories" element={<AdminCategory />} />
+          <Route path="/admin/companies" element={<AdminCompany />} />
+        </Route>
       </Routes>
 
-      {!isAuthPage && <Footer />}
+      {!hideLayout && <Footer />}
 
       <ScrollToTop />
     </div>
