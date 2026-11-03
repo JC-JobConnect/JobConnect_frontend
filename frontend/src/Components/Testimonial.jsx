@@ -1,4 +1,12 @@
 import { useState } from "react";
+import Img1 from "../assets/images/text1.webp";
+import Img2 from "../assets/images/text2.webp";
+import Img3 from "../assets/images/text3.webp";
+import Img4 from "../assets/images/text4.webp";
+import Img5 from "../assets/images/text5.webp";
+import Img6 from "../assets/images/text6.webp";
+import Img7 from "../assets/images/text7.webp";
+import Img8 from "../assets/images/text8.webp";
 import {
   FaStar,
   FaQuoteRight,
@@ -14,17 +22,17 @@ const testimonials = [
     company: "Google",
     rating: 5,
     text: "JobConnect made my job search so much easier! I discovered great opportunities that matched my skills and landed my dream job.",
-    image: "/images/testimonials/person-1.jpg",
+    image: Img1,
     color: "from-teal-400 to-emerald-500",
   },
   {
     id: 2,
-    name: "Sarah Ahmed",
+    name: "Akash Roy",
     role: "UI/UX Designer",
     company: "Creative Studio",
     rating: 5,
     text: "I found an amazing opportunity through JobConnect. The platform is easy to use, and the application process was incredibly smooth.",
-    image: "/images/testimonials/person-2.jpg",
+    image: Img2,
     color: "from-emerald-400 to-teal-600",
   },
   {
@@ -34,17 +42,17 @@ const testimonials = [
     company: "TechNova",
     rating: 5,
     text: "I had been searching for the right position for months. JobConnect helped me discover relevant openings and move forward in my career.",
-    image: "/images/testimonials/person-3.jpg",
+    image: Img3,
     color: "from-cyan-400 to-teal-500",
   },
   {
     id: 4,
-    name: "Nusrat Jahan",
+    name: "Robin Hossain",
     role: "Product Designer",
     company: "DesignHub",
     rating: 5,
     text: "The personalized job opportunities saved me so much time. I could focus on applying for positions that really suited my experience.",
-    image: "/images/testimonials/person-4.jpg",
+    image: Img4,
     color: "from-teal-300 to-emerald-500",
   },
   {
@@ -54,27 +62,27 @@ const testimonials = [
     company: "NextGen Technologies",
     rating: 5,
     text: "JobConnect helped me take the next step in my professional journey. I especially love how simple it is to track my applications.",
-    image: "/images/testimonials/person-5.jpg",
+    image: Img5,
     color: "from-emerald-400 to-teal-600",
   },
   {
     id: 6,
-    name: "Mim Akter",
+    name: "Tanvir Hasan",
     role: "Digital Marketer",
     company: "GrowthLab",
     rating: 5,
     text: "A fantastic platform for discovering career opportunities. The clean interface and relevant listings made my search much easier.",
-    image: "/images/testimonials/person-6.jpg",
+    image: Img6,
     color: "from-cyan-400 to-emerald-500",
   },
   {
     id: 7,
-    name: "Tanvir Hasan",
+    name: "Mim Akter",
     role: "Backend Developer",
     company: "CloudSoft",
     rating: 5,
     text: "From finding suitable jobs to keeping track of applications, everything feels organized. I would recommend JobConnect to other job seekers.",
-    image: "/images/testimonials/person-7.jpg",
+    image: Img7,
     color: "from-teal-400 to-cyan-600",
   },
   {
@@ -84,7 +92,7 @@ const testimonials = [
     company: "PeopleFirst",
     rating: 5,
     text: "JobConnect provides a straightforward way to explore new career possibilities. It helped me connect with opportunities I might otherwise have missed.",
-    image: "/images/testimonials/person-8.jpg",
+    image: Img8,
     color: "from-emerald-400 to-teal-500",
   },
 ];
@@ -220,7 +228,7 @@ export default function Testimonials() {
                   </div>
 
                   {/* Quote Badge */}
-                  <div className="absolute -bottom-1 -right-1 flex h-10 w-10 items-center justify-center rounded-full border-4 border-[#F9FAFB] bg-teal-500 text-white dark:border-[#071A19]">
+                  <div className="absolute -bottom-1 -right-1 flex h-10 w-10 items-center justify-center rounded-full border-4 border-[#F9FAFB] bg-teal-500 text-white dark:border-[#071A19] ">
                     <FaQuoteRight className="text-sm" />
                   </div>
                 </div>
@@ -297,7 +305,7 @@ export default function Testimonials() {
                     type="button"
                     onClick={showPrevious}
                     aria-label="Previous testimonial"
-                    className="flex h-12 w-12 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 transition-all duration-300 hover:border-teal-500 hover:bg-teal-50 hover:text-teal-600 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-teal-400/30 dark:border-white/10 dark:bg-[#102A27] dark:text-slate-300 dark:hover:border-teal-500 dark:hover:bg-teal-900/40"
+                    className="flex h-12 w-12 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 transition-all duration-300 hover:border-teal-500 hover:bg-teal-50 hover:text-teal-600 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-teal-400/30 dark:border-white/10 dark:bg-[#102A27] dark:text-slate-300 dark:hover:border-teal-500 dark:hover:bg-teal-900/40 cursor-pointer"
                   >
                     <FaArrowLeft />
                   </button>
@@ -306,7 +314,7 @@ export default function Testimonials() {
                     type="button"
                     onClick={showNext}
                     aria-label="Next testimonial"
-                    className="flex h-12 w-12 items-center justify-center rounded-xl bg-teal-600 text-white shadow-lg shadow-teal-600/20 transition-all duration-300 hover:-translate-y-0.5 hover:bg-teal-700 hover:shadow-xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-teal-400/40 dark:bg-teal-500 dark:hover:bg-teal-400 dark:hover:text-[#071A19]"
+                    className="flex h-12 w-12 items-center justify-center rounded-xl bg-teal-600 text-white shadow-lg shadow-teal-600/20 transition-all duration-300 hover:-translate-y-0.5 hover:bg-teal-700 hover:shadow-xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-teal-400/40 dark:bg-teal-500 dark:hover:bg-teal-400 dark:hover:text-[#071A19] cursor-pointer"
                   >
                     <FaArrowRight />
                   </button>
