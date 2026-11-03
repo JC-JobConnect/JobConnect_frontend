@@ -1,112 +1,78 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CiSearch } from "react-icons/ci";
 import { FiGrid, FiList } from "react-icons/fi";
 import JobsFilter from "../Components/JobsFilter";
 import PageHero from "../Components/PageHero";
 import JobsCard from "../Components/JobsCard";
-
-const jobsData = [
-  {
-    id: 1,
-    title: "Frontend Developer",
-    company: "TechFlow Ltd.",
-    logo: "F",
-    logoColor: "bg-gray-900",
-    featured: true,
-    type: "Full Time",
-    location: "Dhaka",
-    experience: "1-3 Years",
-    salary: "৳40,000 - ৳70,000",
-    posted: "2 days ago",
-  },
-  {
-    id: 2,
-    title: "Full Stack Developer",
-    company: "NextGen Solutions",
-    logo: "N",
-    logoColor: "bg-blue-600",
-    featured: false,
-    type: "Full Time",
-    location: "Remote",
-    experience: "2-5 Years",
-    salary: "৳60,000 - ৳90,000",
-    posted: "3 days ago",
-  },
-  {
-    id: 3,
-    title: "UI/UX Designer",
-    company: "Creative Minds",
-    logo: "C",
-    logoColor: "bg-lime-500",
-    featured: false,
-    type: "Full Time",
-    location: "Dhaka",
-    experience: "1-3 Years",
-    salary: "৳35,000 - ৳60,000",
-    posted: "3 days ago",
-  },
-  {
-    id: 4,
-    title: "Backend Engineer",
-    company: "Cloudify",
-    logo: "B",
-    logoColor: "bg-purple-600",
-    featured: true,
-    type: "Full Time",
-    location: "Chittagong",
-    experience: "2-4 Years",
-    salary: "৳55,000 - ৳85,000",
-    posted: "1 day ago",
-  },
-  {
-    id: 5,
-    title: "Backend Engineer",
-    company: "Cloudify",
-    logo: "B",
-    logoColor: "bg-purple-600",
-    featured: true,
-    type: "Full Time",
-    location: "Chittagong",
-    experience: "2-4 Years",
-    salary: "৳55,000 - ৳85,000",
-    posted: "1 day ago",
-  },
-  {
-    id: 6,
-    title: "Backend Engineer",
-    company: "Cloudify",
-    logo: "B",
-    logoColor: "bg-purple-600",
-    featured: true,
-    type: "Full Time",
-    location: "Chittagong",
-    experience: "2-4 Years",
-    salary: "৳55,000 - ৳85,000",
-    posted: "1 day ago",
-  },
-];
+import jobsApi from "../Api/api/JobApi";
 
 const Jobs = () => {
+  // API data
+  const [jobsData, setJobsData] = useState([]);
+
+  // UI states
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  // Existing pagination and toggle states
   const [currentPage, setCurrentPage] = useState(1);
-  const [active, setActive] = useState("all"); 
+  const [active, setActive] = useState("all");
+
   const jobsPerPage = 5;
 
+  // 1. Fetch jobs from Django API
+  useEffect(() => {
+    const fetchJobs = async () => {
+      try {
+        setLoading(true);
+        setError("");
 
+        const response = await jobsApi.get("v1/jobs/");
+
+        // Supports both normal lists and paginated DRF responses
+        const data = Array.isArray(response.data)
+          ? response.data
+          : response.data.results || [];
+
+        setJobsData(data);
+      } catch (err) {
+        console.error("Error fetching jobs:", err);
+
+        setError(
+          err.response?.data?.detail ||
+            "Failed to load jobs. Please try again.",
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchJobs();
+  }, []);
+
+  // 2. Filter featured jobs
   const filteredJobs =
     active === "featured"
-      ? jobsData.filter((job) => job.featured === true)
+      ? jobsData.filter((job) => job.is_featured === true)
       : jobsData;
 
+  // 3. Pagination
   const totalPages = Math.ceil(filteredJobs.length / jobsPerPage) || 1;
+
   const startIndex = (currentPage - 1) * jobsPerPage;
+
   const currentJobs = filteredJobs.slice(startIndex, startIndex + jobsPerPage);
 
+  // 4. Toggle between all and featured jobs
   const handleToggle = (value) => {
     setActive(value);
-    setCurrentPage(1); 
+    setCurrentPage(1);
   };
 
-  const featuredCount = jobsData.filter((j) => j.featured).length;
+  // 5. Calculate featured jobs count from API data
+  const featuredCount = jobsData.filter(
+    (job) => job.is_featured === true,
+  ).length;
 
   return (
     <section>
@@ -114,7 +80,6 @@ const Jobs = () => {
 
       <div className="min-h-screen bg-white dark:bg-[#071A19] py-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
           {/* Top Row: Toggle + Search */}
           <div className="flex flex-col lg:flex-row lg:items-center gap-4 mb-6">
             <div className="inline-flex items-center bg-gray-100 dark:bg-[#0F2A28] rounded-full p-1 shrink-0">
@@ -146,12 +111,14 @@ const Jobs = () => {
             <div className="flex flex-1 gap-3">
               <div className="flex-1 flex items-center gap-2 bg-white dark:bg-[#0F2A28] border border-gray-200 dark:border-teal-900/40 rounded-full px-4 py-3 shadow-sm">
                 <CiSearch className="text-gray-400 text-xl" />
+
                 <input
                   type="text"
                   placeholder="Search jobs, companies, or categories..."
                   className="w-full bg-transparent outline-none text-sm text-gray-700 dark:text-gray-200 placeholder:text-gray-400"
                 />
               </div>
+
               <button className="bg-teal-500 hover:bg-teal-600 text-white font-semibold px-6 py-3 rounded-full transition-colors text-sm shrink-0 cursor-pointer">
                 Search
               </button>
@@ -172,6 +139,7 @@ const Jobs = () => {
                     <option>Part Time</option>
                     <option>Remote</option>
                   </select>
+
                   <select className="bg-white dark:bg-[#0F2A28] border border-gray-200 dark:border-teal-900/40 rounded-full px-4 py-2 text-sm text-gray-700 dark:text-gray-200 outline-none">
                     <option>Sort: Newest</option>
                     <option>Sort: Oldest</option>
@@ -183,65 +151,80 @@ const Jobs = () => {
                   <button className="w-9 h-9 rounded-full bg-teal-500 text-white flex items-center justify-center cursor-pointer">
                     <FiGrid />
                   </button>
+
                   <button className="w-9 h-9 rounded-full bg-white dark:bg-[#0F2A28] border border-gray-200 dark:border-teal-900/40 text-gray-500 flex items-center justify-center cursor-pointer">
                     <FiList />
                   </button>
                 </div>
               </div>
 
-              <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
-                Showing{" "}
-                {filteredJobs.length === 0 ? 0 : startIndex + 1}–
-                {Math.min(startIndex + jobsPerPage, filteredJobs.length)} of{" "}
-                {filteredJobs.length} jobs
-              </p>
-
-              {/* Cards */}
-              {currentJobs.length > 0 ? (
-                <JobsCard jobs={currentJobs} />
-              ) : (
+              {/* Loading State */}
+              {loading ? (
                 <div className="text-center py-16 text-gray-500 dark:text-gray-400">
-                  No jobs found.
+                  Loading jobs...
                 </div>
-              )}
+              ) : error ? (
+                /* Error State */
+                <div className="text-center py-16 text-red-500">{error}</div>
+              ) : (
+                <>
+                  {/* Job Count */}
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+                    Showing {filteredJobs.length === 0 ? 0 : startIndex + 1}–
+                    {Math.min(startIndex + jobsPerPage, filteredJobs.length)} of{" "}
+                    {filteredJobs.length} jobs
+                  </p>
 
-              {/* Pagination */}
-              {totalPages > 1 && (
-                <div className="mt-8 flex items-center justify-center gap-2">
-                  <button
-                    onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-                    disabled={currentPage === 1}
-                    className="px-4 py-2 rounded-full border border-gray-200 dark:border-teal-900/40 text-sm text-gray-600 dark:text-gray-300 disabled:opacity-40 hover:bg-teal-50 dark:hover:bg-teal-900/30 transition cursor-pointer"
-                  >
-                    Previous
-                  </button>
-
-                  {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                    (page) => (
-                      <button
-                        key={page}
-                        onClick={() => setCurrentPage(page)}
-                        className={`w-10 h-10 rounded-full text-sm font-medium transition cursor-pointer ${
-                          currentPage === page
-                            ? "bg-teal-500 text-white"
-                            : "border border-gray-200 dark:border-teal-900/40 text-gray-600 dark:text-gray-300 hover:bg-teal-50 dark:hover:bg-teal-900/30"
-                        }`}
-                      >
-                        {page}
-                      </button>
-                    )
+                  {/* Job Cards */}
+                  {currentJobs.length > 0 ? (
+                    <JobsCard jobs={currentJobs} />
+                  ) : (
+                    <div className="text-center py-16 text-gray-500 dark:text-gray-400">
+                      No jobs found.
+                    </div>
                   )}
 
-                  <button
-                    onClick={() =>
-                      setCurrentPage((p) => Math.min(p + 1, totalPages))
-                    }
-                    disabled={currentPage === totalPages}
-                    className="px-4 py-2 rounded-full border border-gray-200 dark:border-teal-900/40 text-sm text-gray-600 dark:text-gray-300 disabled:opacity-40 hover:bg-teal-50 dark:hover:bg-teal-900/30 transition cursor-pointer"
-                  >
-                    Next
-                  </button>
-                </div>
+                  {/* Pagination */}
+                  {totalPages > 1 && (
+                    <div className="mt-8 flex items-center justify-center gap-2">
+                      <button
+                        onClick={() =>
+                          setCurrentPage((p) => Math.max(p - 1, 1))
+                        }
+                        disabled={currentPage === 1}
+                        className="px-4 py-2 rounded-full border border-gray-200 dark:border-teal-900/40 text-sm text-gray-600 dark:text-gray-300 disabled:opacity-40 hover:bg-teal-50 dark:hover:bg-teal-900/30 transition cursor-pointer"
+                      >
+                        Previous
+                      </button>
+
+                      {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                        (page) => (
+                          <button
+                            key={page}
+                            onClick={() => setCurrentPage(page)}
+                            className={`w-10 h-10 rounded-full text-sm font-medium transition cursor-pointer ${
+                              currentPage === page
+                                ? "bg-teal-500 text-white"
+                                : "border border-gray-200 dark:border-teal-900/40 text-gray-600 dark:text-gray-300 hover:bg-teal-50 dark:hover:bg-teal-900/30"
+                            }`}
+                          >
+                            {page}
+                          </button>
+                        ),
+                      )}
+
+                      <button
+                        onClick={() =>
+                          setCurrentPage((p) => Math.min(p + 1, totalPages))
+                        }
+                        disabled={currentPage === totalPages}
+                        className="px-4 py-2 rounded-full border border-gray-200 dark:border-teal-900/40 text-sm text-gray-600 dark:text-gray-300 disabled:opacity-40 hover:bg-teal-50 dark:hover:bg-teal-900/30 transition cursor-pointer"
+                      >
+                        Next
+                      </button>
+                    </div>
+                  )}
+                </>
               )}
             </div>
           </div>

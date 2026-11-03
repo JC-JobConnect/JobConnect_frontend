@@ -1,18 +1,47 @@
-import { FiUser, FiClock, FiBriefcase, FiDollarSign, FiMapPin } from "react-icons/fi";
+import {
+  FiUser,
+  FiClock,
+  FiBriefcase,
+  FiCreditCard,
+  FiMapPin,
+} from "react-icons/fi";
 
-const JobOverview = ({
-  title = "Corporate Solutions Executive",
-  type = "Full Time",
-  category = "Commerce",
-  salary = "$40000-$42000",
-  location = "New-York, USA",
-}) => {
+const JobOverview = ({ job }) => {
+  // Format values such as full_time → Full Time
+  const formatValue = (value) => {
+    if (!value) return "Not specified";
+
+    return String(value)
+      .replace(/_/g, " ")
+      .replace(/\b\w/g, (char) => char.toUpperCase());
+  };
+
   const items = [
-    { icon: FiUser, label: "Job Title", value: title },
-    { icon: FiClock, label: "Job Type", value: type },
-    { icon: FiBriefcase, label: "Category", value: category },
-    { icon: FiDollarSign, label: "Offered Salary", value: salary },
-    { icon: FiMapPin, label: "Location", value: location },
+    {
+      icon: FiUser,
+      label: "Job Title",
+      value: job?.title,
+    },
+    {
+      icon: FiClock,
+      label: "Job Type",
+      value: job?.employmentType,
+    },
+    {
+      icon: FiBriefcase,
+      label: "Category",
+      value: job?.category,
+    },
+    {
+      icon: FiCreditCard,
+      label: "Offered Salary",
+      value: job?.salary,
+    },
+    {
+      icon: FiMapPin,
+      label: "Location",
+      value: job?.location,
+    },
   ];
 
   return (
@@ -24,17 +53,22 @@ const JobOverview = ({
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-5">
         {items.map((item) => {
           const Icon = item.icon;
+
           return (
             <div key={item.label} className="flex items-start gap-3">
               <div className="w-9 h-9 rounded-full bg-white dark:bg-teal-900/40 border border-teal-100 dark:border-teal-800 flex items-center justify-center shrink-0 text-teal-600 dark:text-teal-400">
                 <Icon className="text-base" />
               </div>
-              <div>
+
+              <div className="min-w-0">
                 <p className="text-xs text-gray-500 dark:text-gray-400 mb-0.5">
                   {item.label}
                 </p>
-                <p className="text-sm font-semibold text-gray-800 dark:text-white leading-snug">
-                  {item.value}
+
+                <p className="text-sm font-semibold text-gray-800 dark:text-white leading-snug break-words">
+                  {item.label === "Offered Salary"
+                    ? item.value || "Negotiable"
+                    : formatValue(item.value)}
                 </p>
               </div>
             </div>
