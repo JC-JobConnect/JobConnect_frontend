@@ -1,12 +1,12 @@
 import { useState } from "react";
-import Img1 from "../assets/images/text1.webp";
-import Img2 from "../assets/images/text2.webp";
-import Img3 from "../assets/images/text3.webp";
-import Img4 from "../assets/images/text4.webp";
-import Img5 from "../assets/images/text5.webp";
-import Img6 from "../assets/images/text6.webp";
-import Img7 from "../assets/images/text7.webp";
-import Img8 from "../assets/images/text8.webp";
+import Img1 from "../Assets/images/text1.webp";
+import Img2 from "../Assets/images/text2.webp";
+import Img3 from "../Assets/images/text3.webp";
+import Img4 from "../Assets/images/text4.webp";
+import Img5 from "../Assets/images/text5.webp";
+import Img6 from "../Assets/images/text6.webp";
+import Img7 from "../Assets/images/text7.webp";
+import Img8 from "../Assets/images/text8.webp";
 import {
   FaStar,
   FaQuoteRight,
@@ -97,7 +97,6 @@ const testimonials = [
   },
 ];
 
-
 const orbitSlots = [
   "top-0 left-1/2 -translate-x-1/2",
   "top-[16%] right-[10%]",
@@ -125,7 +124,7 @@ export default function Testimonials() {
 
   const showPrevious = () => {
     selectTestimonial(
-      (activeIndex - 1 + testimonials.length) % testimonials.length
+      (activeIndex - 1 + testimonials.length) % testimonials.length,
     );
   };
 
@@ -152,14 +151,12 @@ export default function Testimonials() {
 
           <h2 className="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-4xl lg:text-5xl">
             What Our Jobholders{" "}
-            <span className="text-teal-600 dark:text-teal-400">
-              Are Saying
-            </span>
+            <span className="text-teal-600 dark:text-teal-400">Are Saying</span>
           </h2>
 
           <p className="mx-auto mt-4 max-w-xl text-base leading-7 text-slate-600 dark:text-slate-400">
-            Discover how JobConnect helps job seekers find opportunities,
-            build confidence, and take the next step in their careers.
+            Discover how JobConnect helps job seekers find opportunities, build
+            confidence, and take the next step in their careers.
           </p>
         </div>
 
@@ -185,9 +182,7 @@ export default function Testimonials() {
                 <button
                   key={person.id}
                   type="button"
-                  onClick={() =>
-                    selectTestimonial(person.originalIndex)
-                  }
+                  onClick={() => selectTestimonial(person.originalIndex)}
                   aria-label={`View testimonial from ${person.name}`}
                   aria-pressed={false}
                   title={person.name}
@@ -330,9 +325,7 @@ export default function Testimonials() {
                       type="button"
                       onClick={() => selectTestimonial(index)}
                       aria-label={`Show testimonial ${index + 1}`}
-                      aria-current={
-                        index === activeIndex ? "true" : undefined
-                      }
+                      aria-current={index === activeIndex ? "true" : undefined}
                       className={`h-1.5 rounded-full transition-all duration-300 ${
                         index === activeIndex
                           ? "w-8 bg-teal-500"

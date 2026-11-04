@@ -1,48 +1,60 @@
 import { Link } from "react-router-dom";
-import {
-  FiBriefcase,
-  FiClock,
-  FiMapPin,
-  FiCreditCard,
-} from "react-icons/fi";
+import { useEffect, useState } from "react";
+import jobsApi from "../Api/api/JobApi";
+import { FiBriefcase, FiClock, FiCreditCard, FiMapPin } from "react-icons/fi";
 
-const relatedJobsData = [
-  {
-    id: 1,
-    time: "24 min ago",
-    logo: "🎨",
-    title: "Internal Creative Coordinator",
-    company: "Green Group",
-    category: "Commerce",
-    type: "Full time",
-    salary: "৳25000",
-    location: "Gulshan, Dhaka",
-  },
-  {
-    id: 2,
-    time: "24 min ago",
-    logo: "🌀",
-    title: "District Intranet Director",
-    company: "Daraz",
-    category: "Commerce",
-    type: "Full time",
-    salary: "৳40000",
-    location: "Banani, Dhaka",
-  },
-  {
-    id: 3,
-    time: "26 min ago",
-    logo: "🎯",
-    title: "Corporate Tactics Facilitator",
-    company: "Pathao",
-    category: "Commerce",
-    type: "Full time",
-    salary: "৳25000-৳35000",
-    location: "Mirpur, Dhaka",
-  },
-];
+export default function RelatedJobs({ job }) {
+  const [relatedJobs, setRelatedJobs] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-export default function RelatedJobs() {
+  useEffect(() => {
+    // If no job or category yet, stop loading and return early
+    if (!job?.category) {
+      setLoading(false);
+      return;
+    }
+
+    const fetchRelatedJobs = async () => {
+      try {
+        setLoading(true);
+
+        // Handle category safely whether it's an ID, String, or Object
+        const categoryParam =
+          typeof job.category === "object"
+            ? job.category.id || job.category.name
+            : job.category;
+
+        const response = await jobsApi.get("v1/jobs/", {
+          params: {
+            category: categoryParam,
+            exclude: job.id,
+          },
+        });
+
+        const data = Array.isArray(response.data)
+          ? response.data
+          : response.data.results || [];
+
+        setRelatedJobs(data.slice(0, 3));
+      } catch (error) {
+        console.error("Related jobs error:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRelatedJobs();
+  }, [job?.id, job?.category]);
+
+  if (loading)
+    return (
+      <p className="text-gray-500 dark:text-slate-400 text-center py-6">
+        Loading related jobs...
+      </p>
+    );
+
+  if (!relatedJobs.length) return null;
+
   return (
     <section className="max-w-7xl mx-auto px-6 pb-20">
       <div className="mb-8">
@@ -55,29 +67,29 @@ export default function RelatedJobs() {
       </div>
 
       <div className="space-y-4">
-        {relatedJobsData.map((job) => (
+        {relatedJobs.map((item) => (
           <div
-            key={job.id}
+            key={item.id}
             className="bg-white dark:bg-[#0d2a28] border border-gray-100 dark:border-slate-700 dark:shadow-black/20 rounded-2xl p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:shadow-md dark:hover:border-teal-500 transition"
           >
             {/* Left Content */}
             <div className="flex-1">
               <div className="mb-3">
                 <span className="text-xs text-gray-400 dark:text-slate-400">
-                  {job.time}
+                  {item.time || "Recently posted"}
                 </span>
               </div>
 
               <div className="flex items-start gap-3 mb-3">
                 <div className="w-10 h-10 rounded-full bg-linear-to-br from-teal-400 to-teal-600 flex items-center justify-center text-white text-sm font-bold shrink-0">
-                  {job.logo}
+                  {item.logo || item.company?.charAt(0) || "J"}
                 </div>
                 <div>
                   <h3 className="font-semibold text-gray-900 dark:text-white">
-                    {job.title}
+                    {item.title}
                   </h3>
                   <p className="text-sm text-gray-500 dark:text-slate-400">
-                    {job.company}
+                    {item.company}
                   </p>
                 </div>
               </div>
@@ -85,19 +97,21 @@ export default function RelatedJobs() {
               <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-gray-600 dark:text-slate-300">
                 <span className="flex items-center gap-1">
                   <FiBriefcase className="w-3.5 h-3.5 text-teal-500" />
-                  {job.category}
+                  {typeof item.category === "object"
+                    ? item.category.name
+                    : item.category}
                 </span>
                 <span className="flex items-center gap-1">
                   <FiClock className="w-3.5 h-3.5 text-teal-500" />
-                  {job.type}
+                  {item.type}
                 </span>
                 <span className="flex items-center gap-1">
                   <FiCreditCard className="w-3.5 h-3.5 text-teal-500" />
-                  {job.salary}
+                  {item.salary}
                 </span>
                 <span className="flex items-center gap-1">
                   <FiMapPin className="w-3.5 h-3.5 text-teal-500" />
-                  {job.location}
+                  {item.location}
                 </span>
               </div>
             </div>
@@ -105,8 +119,8 @@ export default function RelatedJobs() {
             {/* Job Details button */}
             <div className="flex flex-col items-end justify-between self-stretch md:self-auto gap-16">
               <Link
-                to="/job_details"
-                className="bg-teal-500 hover:bg-teal-600 text-white text-sm font-medium px-5 py-2.5 rounded-lg transition whitespace-nowrap"
+                to={`/job_details/${item.id}`}
+                className="bg-teal-500 hover:bg-teal-600 text-white text-sm font-medium px-5 py-2.5 rounded-lg transition whitespace-nowrap text-center"
               >
                 See Details
               </Link>
