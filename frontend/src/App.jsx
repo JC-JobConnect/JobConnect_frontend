@@ -41,6 +41,7 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/job_details" element={<JobDetails />} />
+        <Route path="/job_details/:id" element={<JobDetails />} />
         <Route path="/apply_jobs" element={<ApplyJob />} />
 
         {/* Admin */}
