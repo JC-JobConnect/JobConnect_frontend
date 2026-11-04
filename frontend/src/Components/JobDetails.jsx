@@ -31,6 +31,7 @@ function JobDetails() {
           title: data.title,
 
           company: data.company_name || "Company",
+          companyLogo: data.company_logo || null,
 
           companyInitials: (data.company_name || "C")
             .substring(0, 2)
@@ -41,9 +42,7 @@ function JobDetails() {
             : "Recently posted",
 
           employmentType: data.job_type,
-
           workMode: data.work_mode,
-
           category: data.category_name || "General",
 
           salary: data.salary
@@ -60,7 +59,9 @@ function JobDetails() {
             ? data.responsibilities
             : [],
 
-          skills: Array.isArray(data.requirements) ? data.requirements : [],
+          skills: Array.isArray(data.requirements)
+            ? data.requirements
+            : [],
         };
 
         setJob(formattedJob);
@@ -72,7 +73,7 @@ function JobDetails() {
         } else {
           setError(
             err.response?.data?.detail ||
-              "Unable to load job details. Please try again.",
+              "Unable to load job details. Please try again."
           );
         }
       } finally {
@@ -146,8 +147,28 @@ function JobDetails() {
 
             <div className="mb-7 flex items-start justify-between gap-4">
               <div className="flex min-w-0 items-center gap-4">
-                <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-linear-to-br from-teal-400 to-emerald-600 text-lg font-bold text-white shadow-sm">
-                  {job.companyInitials}
+
+                {/* Company Logo */}
+                <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-gray-100 shadow-sm dark:bg-teal-900">
+                  {job.companyLogo ? (
+                    <img
+                      src={job.companyLogo}
+                      alt={`${job.company} logo`}
+                      className="h-full w-full object-contain"
+                      onError={(e) => {
+                        e.currentTarget.style.display = "none";
+                        e.currentTarget.nextElementSibling.style.display = "flex";
+                      }}
+                    />
+                  ) : null}
+
+                  <span
+                    className={`h-full w-full items-center justify-center bg-linear-to-br from-teal-400 to-emerald-600 text-lg font-bold text-white ${
+                      job.companyLogo ? "hidden" : "flex"
+                    }`}
+                  >
+                    {job.companyInitials}
+                  </span>
                 </div>
 
                 <div className="min-w-0">
@@ -174,7 +195,9 @@ function JobDetails() {
             <div className="space-y-4 text-sm leading-7 text-slate-600 dark:text-slate-300 sm:text-base">
               {job.description.length > 0 ? (
                 job.description.map((paragraph, index) => (
-                  <p key={`${job.id}-description-${index}`}>{paragraph}</p>
+                  <p key={`${job.id}-description-${index}`}>
+                    {paragraph}
+                  </p>
                 ))
               ) : (
                 <p>Job description is not available.</p>
@@ -250,7 +273,7 @@ function JobDetails() {
               <button
                 type="button"
                 onClick={handleApply}
-                className="inline-flex w-full shrink-0 items-center justify-center gap-2 rounded-xl bg-teal-500 px-6 py-3.5 font-semibold text-white shadow-md shadow-teal-500/20 transition duration-200 hover:-translate-y-0.5 hover:bg-teal-600 focus:outline-none focus:ring-4 focus:ring-teal-500/30 sm:w-auto cursor-pointer"
+                className="inline-flex w-full shrink-0 cursor-pointer items-center justify-center gap-2 rounded-xl bg-teal-500 px-6 py-3.5 font-semibold text-white shadow-md shadow-teal-500/20 transition duration-200 hover:-translate-y-0.5 hover:bg-teal-600 focus:outline-none focus:ring-4 focus:ring-teal-500/30 sm:w-auto"
               >
                 <FiBriefcase className="h-5 w-5" />
                 Apply Now

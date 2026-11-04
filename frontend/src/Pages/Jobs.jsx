@@ -14,9 +14,10 @@ const Jobs = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  // Existing pagination and toggle states
+  // Pagination, filter and view mode
   const [currentPage, setCurrentPage] = useState(1);
   const [active, setActive] = useState("all");
+  const [viewMode, setViewMode] = useState("list"); // "grid" or "list"
 
   const jobsPerPage = 5;
 
@@ -58,9 +59,7 @@ const Jobs = () => {
 
   // 3. Pagination
   const totalPages = Math.ceil(filteredJobs.length / jobsPerPage) || 1;
-
   const startIndex = (currentPage - 1) * jobsPerPage;
-
   const currentJobs = filteredJobs.slice(startIndex, startIndex + jobsPerPage);
 
   // 4. Toggle between all and featured jobs
@@ -69,7 +68,7 @@ const Jobs = () => {
     setCurrentPage(1);
   };
 
-  // 5. Calculate featured jobs count from API data
+  // 5. Calculate featured jobs count
   const featuredCount = jobsData.filter(
     (job) => job.is_featured === true,
   ).length;
@@ -111,7 +110,6 @@ const Jobs = () => {
             <div className="flex flex-1 gap-3">
               <div className="flex-1 flex items-center gap-2 bg-white dark:bg-[#0F2A28] border border-gray-200 dark:border-teal-900/40 rounded-full px-4 py-3 shadow-sm">
                 <CiSearch className="text-gray-400 text-xl" />
-
                 <input
                   type="text"
                   placeholder="Search jobs, companies, or categories..."
@@ -130,7 +128,7 @@ const Jobs = () => {
             <JobsFilter />
 
             <div className="flex-1">
-              {/* Sort Row */}
+              {/* Sort + View Toggle Row */}
               <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
                 <div className="flex items-center gap-2">
                   <select className="bg-white dark:bg-[#0F2A28] border border-gray-200 dark:border-teal-900/40 rounded-full px-4 py-2 text-sm text-gray-700 dark:text-gray-200 outline-none">
@@ -147,24 +145,38 @@ const Jobs = () => {
                   </select>
                 </div>
 
+                {/* Grid / List Toggle */}
                 <div className="flex items-center gap-2">
-                  <button className="w-9 h-9 rounded-full bg-teal-500 text-white flex items-center justify-center cursor-pointer">
+                  <button
+                    onClick={() => setViewMode("grid")}
+                    className={`w-9 h-9 rounded-full flex items-center justify-center cursor-pointer transition-colors ${
+                      viewMode === "grid"
+                        ? "bg-teal-500 text-white"
+                        : "bg-white dark:bg-[#0F2A28] border border-gray-200 dark:border-teal-900/40 text-gray-500 hover:text-teal-600"
+                    }`}
+                  >
                     <FiGrid />
                   </button>
 
-                  <button className="w-9 h-9 rounded-full bg-white dark:bg-[#0F2A28] border border-gray-200 dark:border-teal-900/40 text-gray-500 flex items-center justify-center cursor-pointer">
+                  <button
+                    onClick={() => setViewMode("list")}
+                    className={`w-9 h-9 rounded-full flex items-center justify-center cursor-pointer transition-colors ${
+                      viewMode === "list"
+                        ? "bg-teal-500 text-white"
+                        : "bg-white dark:bg-[#0F2A28] border border-gray-200 dark:border-teal-900/40 text-gray-500 hover:text-teal-600"
+                    }`}
+                  >
                     <FiList />
                   </button>
                 </div>
               </div>
 
-              {/* Loading State */}
+              {/* Loading / Error / Content */}
               {loading ? (
                 <div className="text-center py-16 text-gray-500 dark:text-gray-400">
                   Loading jobs...
                 </div>
               ) : error ? (
-                /* Error State */
                 <div className="text-center py-16 text-red-500">{error}</div>
               ) : (
                 <>
@@ -177,7 +189,7 @@ const Jobs = () => {
 
                   {/* Job Cards */}
                   {currentJobs.length > 0 ? (
-                    <JobsCard jobs={currentJobs} />
+                    <JobsCard jobs={currentJobs} viewMode={viewMode} />
                   ) : (
                     <div className="text-center py-16 text-gray-500 dark:text-gray-400">
                       No jobs found.
