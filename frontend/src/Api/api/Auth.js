@@ -1,8 +1,7 @@
-
 import api from "./Api";
 
 export async function registerUser(formData) {
-  const response = await api.post("v1/register/", {
+  const response = await api.post("api/v1/register/", {
     username: formData.username,
     email: formData.email,
     password: formData.password,
@@ -13,7 +12,7 @@ export async function registerUser(formData) {
 }
 
 export async function loginUser(username, password) {
-  const response = await api.post("token/", {
+  const response = await api.post("api/token/", {
     username,
     password,
   });
@@ -36,6 +35,6 @@ export function logoutUser() {
 }
 
 export async function getCurrentUser() {
-  const response = await api.get("me/");
+  const response = await api.get("api/me/");
   return response.data;
 }
