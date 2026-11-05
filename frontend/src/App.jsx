@@ -18,6 +18,8 @@ import AdminJobs from "./Pages/admin/AdminJobs";
 import AdminCategory from "./Pages/admin/AdminCatagory";
 import AdminCompany from "./Pages/admin/AdminCompany";
 import ProtectedRoute from "./Components/ProtectedRoute";
+import TermsAndConditions from "./Pages/TermsAndConditions";
+import PrivacyPolicy from "./Pages/PrivacyPolicy";
 
 const App = () => {
   const location = useLocation();
@@ -28,6 +30,7 @@ const App = () => {
 
   return (
     <div>
+      <ScrollToTop />
       {!hideLayout && <Navbar />}
 
       <Routes>
@@ -43,6 +46,8 @@ const App = () => {
         <Route path="/job_details" element={<JobDetails />} />
         <Route path="/job_details/:id" element={<JobDetails />} />
         <Route path="/apply_jobs" element={<ApplyJob />} />
+        <Route path="/terms" element={<TermsAndConditions />} />
+        <Route path="/privacy" element={<PrivacyPolicy />} />
 
         {/* Admin */}
         <Route element={<ProtectedRoute />}>
@@ -55,7 +60,7 @@ const App = () => {
 
       {!hideLayout && <Footer />}
 
-      <ScrollToTop />
+     
     </div>
   );
 };
