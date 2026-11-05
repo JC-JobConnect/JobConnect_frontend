@@ -81,7 +81,7 @@ export default function Login() {
         <div className="flex w-full max-w-7xl flex-col overflow-hidden rounded-3xl bg-white md:flex-row md:shadow-2xl">
 
           {/* LEFT SIDE */}
-          <div className="relative hidden w-full flex-col bg-gradient-to-br from-[#064E4A] via-[#0F766E] to-[#0D9488] p-6 text-white md:flex md:w-[55%] md:p-10">
+          <div className="relative hidden w-full flex-col bg-linear-to-br from-[#064E4A] via-[#0F766E] to-[#0D9488] p-6 text-white md:flex md:w-[55%] md:p-10">
 
             {/* Logo */}
             <Link to="/" className="group flex items-center gap-3">
