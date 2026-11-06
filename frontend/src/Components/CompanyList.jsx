@@ -236,7 +236,7 @@ function Companies() {
                                 </div>
 
                                 <Link
-                                  to={`/job-details/${job.id}`}
+                                  to={`/job_details/${job.id}`}
                                   className="bg-teal-500 hover:bg-teal-600 text-white text-sm font-medium px-5 py-2 rounded-lg transition whitespace-nowrap text-center"
                                 >
                                   View Job Details
