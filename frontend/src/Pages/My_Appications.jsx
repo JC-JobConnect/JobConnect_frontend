@@ -1,6 +1,8 @@
-import PageHero from "../Components/PageHero"
+import { useMemo, useState, useEffect } from "react";
+import jobsApi from "../Api/api/JobApi.js";
+import PageHero from "../Components/PageHero";
 import { Link } from "react-router-dom";
-import { useMemo, useState } from "react";
+
 import {
   FiBriefcase,
   FiCalendar,
@@ -64,7 +66,11 @@ const applicationsData = [
     timeline: [
       { label: "Application submitted", date: "Apr 20, 2026", completed: true },
       { label: "Application reviewed", date: "Apr 23, 2026", completed: true },
-      { label: "Next recruitment stage", date: "Awaiting update", completed: false },
+      {
+        label: "Next recruitment stage",
+        date: "Awaiting update",
+        completed: false,
+      },
     ],
   },
   {
@@ -87,7 +93,11 @@ const applicationsData = [
     timeline: [
       { label: "Application submitted", date: "Apr 18, 2026", completed: true },
       { label: "Employer review", date: "In progress", completed: false },
-      { label: "Next recruitment stage", date: "Awaiting update", completed: false },
+      {
+        label: "Next recruitment stage",
+        date: "Awaiting update",
+        completed: false,
+      },
     ],
   },
   {
@@ -133,46 +143,45 @@ const applicationsData = [
     timeline: [
       { label: "Application submitted", date: "Apr 10, 2026", completed: true },
       { label: "Employer review", date: "Waiting", completed: false },
-      { label: "Next recruitment stage", date: "Awaiting update", completed: false },
+      {
+        label: "Next recruitment stage",
+        date: "Awaiting update",
+        completed: false,
+      },
     ],
   },
 ];
 
 const statusConfig = {
-  Pending: {
+  pending: {
     icon: FiClock,
     badge:
       "bg-amber-50 text-amber-700 ring-1 ring-amber-200 dark:bg-amber-400/10 dark:text-amber-300 dark:ring-amber-400/20",
     dot: "bg-amber-500",
     heading: "Waiting for review",
   },
-  Reviewed: {
+
+  accepted: {
     icon: FiCheckCircle,
     badge:
       "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200 dark:bg-emerald-400/10 dark:text-emerald-300 dark:ring-emerald-400/20",
     dot: "bg-emerald-500",
-    heading: "Application reviewed",
+    heading: "Application accepted",
   },
-  Interview: {
-    icon: FiCalendar,
-    badge:
-      "bg-blue-50 text-blue-700 ring-1 ring-blue-200 dark:bg-blue-400/10 dark:text-blue-300 dark:ring-blue-400/20",
-    dot: "bg-blue-500",
-    heading: "Interview stage",
-  },
-  Rejected: {
+
+  rejected: {
     icon: FiXCircle,
     badge:
       "bg-rose-50 text-rose-700 ring-1 ring-rose-200 dark:bg-rose-400/10 dark:text-rose-300 dark:ring-rose-400/20",
     dot: "bg-rose-500",
-    heading: "Application closed",
+    heading: "Application rejected",
   },
 };
 
-const filters = ["All", "Pending", "Reviewed", "Interview", "Rejected"];
+const filters = ["All", "pending", "accepted", "rejected"];
 
 function StatusBadge({ status }) {
-  const config = statusConfig[status] || statusConfig.Pending;
+  const config = statusConfig[status?.toLowerCase()] || statusConfig.pending;
   const Icon = config.icon;
 
   return (
@@ -180,7 +189,7 @@ function StatusBadge({ status }) {
       className={`inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold ${config.badge}`}
     >
       <Icon className="h-4 w-4" />
-      {status}
+      {status?.charAt(0).toUpperCase() + status?.slice(1)}
     </span>
   );
 }
@@ -193,9 +202,7 @@ function DetailItem({ icon: Icon, label, value }) {
       </div>
 
       <div className="min-w-0">
-        <p className="text-xs text-slate-500 dark:text-slate-400">
-          {label}
-        </p>
+        <p className="text-xs text-slate-500 dark:text-slate-400">{label}</p>
         <p className="mt-1 wrap-break-word text-sm font-medium text-slate-800 dark:text-slate-100">
           {value || "Not provided"}
         </p>
@@ -221,7 +228,7 @@ function ApplicationCard({ application, isExpanded, onToggle }) {
     statusMessage,
   } = application;
 
-  const config = statusConfig[status] || statusConfig.Pending;
+  const config = statusConfig[status?.toLowerCase()] || statusConfig.pending;
 
   return (
     <article className="overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-sm transition-all duration-300 hover:border-teal-200 hover:shadow-md dark:border-slate-700/70 dark:bg-[#0B2221] dark:hover:border-teal-800">
@@ -281,10 +288,11 @@ function ApplicationCard({ application, isExpanded, onToggle }) {
           type="button"
           onClick={onToggle}
           aria-expanded={isExpanded}
-          className={`inline-flex shrink-0 items-center justify-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-semibold transition-all duration-200 lg:w-36 cursor-pointer ${isExpanded
+          className={`inline-flex shrink-0 items-center justify-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-semibold transition-all duration-200 lg:w-36 cursor-pointer ${
+            isExpanded
               ? "border-teal-600 bg-teal-600 text-white shadow-sm"
               : "border-slate-200 bg-white text-slate-700 hover:border-teal-400 hover:bg-teal-50 hover:text-teal-700 dark:border-slate-600 dark:bg-transparent dark:text-slate-200 dark:hover:border-teal-600 dark:hover:bg-teal-900/30 dark:hover:text-teal-300"
-            }`}
+          }`}
         >
           {isExpanded ? "Hide Details" : "View Details"}
 
@@ -382,14 +390,29 @@ export default function My_Appications() {
   const [expandedId, setExpandedId] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const applications = applicationsData;
+  const [applications, setApplications] = useState([]);
+
+  useEffect(() => {
+    const fetchApplications = async () => {
+      try {
+        const response = await jobsApi.get("v1/my-applications/");
+        setApplications(response.data.results || response.data);
+      } catch (error) {
+        console.error("Failed to load applications:", error);
+      }
+    };
+
+    fetchApplications();
+  }, []);
 
   const counts = useMemo(() => {
     return filters.reduce((result, filter) => {
       result[filter] =
         filter === "All"
           ? applications.length
-          : applications.filter((app) => app.status === filter).length;
+          : applications.filter(
+              (app) => app.status?.toLowerCase() === filter.toLowerCase(),
+            ).length;
 
       return result;
     }, {});
@@ -398,18 +421,20 @@ export default function My_Appications() {
   const filteredApplications = useMemo(() => {
     return activeFilter === "All"
       ? applications
-      : applications.filter((app) => app.status === activeFilter);
+      : applications.filter(
+          (app) => app.status?.toLowerCase() === activeFilter.toLowerCase(),
+        );
   }, [applications, activeFilter]);
 
   const pageSize = 5;
   const totalPages = Math.max(
     1,
-    Math.ceil(filteredApplications.length / pageSize)
+    Math.ceil(filteredApplications.length / pageSize),
   );
 
   const paginatedApplications = filteredApplications.slice(
     (currentPage - 1) * pageSize,
-    currentPage * pageSize
+    currentPage * pageSize,
   );
 
   const changeFilter = (filter) => {
@@ -451,17 +476,19 @@ export default function My_Appications() {
                   key={filter}
                   type="button"
                   onClick={() => changeFilter(filter)}
-                  className={`inline-flex shrink-0 items-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold transition-all duration-200 cursor-pointer ${activeFilter === filter
+                  className={`inline-flex shrink-0 items-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold transition-all duration-200 cursor-pointer ${
+                    activeFilter === filter
                       ? "bg-linear-to-r from-teal-600 to-emerald-500 text-white shadow-md shadow-teal-500/20"
                       : "border border-slate-200 bg-white text-slate-600 hover:border-teal-300 hover:text-teal-700 dark:border-slate-700 dark:bg-[#0B2221] dark:text-slate-300 dark:hover:border-teal-700 dark:hover:text-teal-300"
-                    }`}
+                  }`}
                 >
                   {filter}
                   <span
-                    className={`rounded-full px-1.5 py-0.5 text-xs ${activeFilter === filter
+                    className={`rounded-full px-1.5 py-0.5 text-xs ${
+                      activeFilter === filter
                         ? "bg-white/20 text-white"
                         : "bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-300"
-                      }`}
+                    }`}
                   >
                     {counts[filter]}
                   </span>
@@ -489,7 +516,8 @@ export default function My_Appications() {
               </div>
 
               <h3 className="mt-5 text-lg font-bold text-slate-900 dark:text-white">
-                No {activeFilter === "All" ? "" : activeFilter.toLowerCase() + " "}
+                No{" "}
+                {activeFilter === "All" ? "" : activeFilter.toLowerCase() + " "}
                 applications found
               </h3>
 
@@ -576,5 +604,3 @@ export default function My_Appications() {
     </>
   );
 }
-
-

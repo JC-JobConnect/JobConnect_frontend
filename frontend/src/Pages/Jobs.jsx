@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { CiSearch } from "react-icons/ci";
 import { FiGrid, FiList } from "react-icons/fi";
 import JobsFilter from "../Components/JobsFilter";
@@ -13,11 +13,28 @@ const Jobs = () => {
   // UI states
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
 
   // Pagination, filter and view mode
   const [currentPage, setCurrentPage] = useState(1);
   const [active, setActive] = useState("all");
   const [viewMode, setViewMode] = useState("list"); // "grid" or "list"
+
+  // Filter states
+  const [filters, setFilters] = useState({
+    categories: [],
+    locations: [],
+    experience: [],
+    minSalary: "",
+    maxSalary: "",
+  });
+
+  // Receive filters from JobsFilter
+  const handleFilterChange = useCallback((newFilters) => {
+    setFilters(newFilters);
+    setCurrentPage(1);
+  }, []);
 
   const jobsPerPage = 5;
 
@@ -28,8 +45,17 @@ const Jobs = () => {
         setLoading(true);
         setError("");
 
-        const response = await jobsApi.get("v1/jobs/");
-
+        const response = await jobsApi.get("v1/jobs/", {
+          params: {
+            min_salary: filters.minSalary || undefined,
+            max_salary: filters.maxSalary || undefined,
+            category:
+              filters.categories.length === 1
+                ? filters.categories[0]
+                : undefined,
+            search: searchQuery || undefined,
+          },
+        });
         // Supports both normal lists and paginated DRF responses
         const data = Array.isArray(response.data)
           ? response.data
@@ -49,13 +75,22 @@ const Jobs = () => {
     };
 
     fetchJobs();
-  }, []);
+  }, [filters.minSalary, filters.maxSalary, filters.categories,searchQuery,]);
 
   // 2. Filter featured jobs
-  const filteredJobs =
-    active === "featured"
-      ? jobsData.filter((job) => job.is_featured === true)
-      : jobsData;
+  const filteredJobs = jobsData.filter((job) => {
+    const matchesFeatured = active !== "featured" || job.is_featured === true;
+
+    const matchesLocation =
+      filters.locations.length === 0 ||
+      filters.locations.includes(job.location);
+
+    const matchesExperience =
+      filters.experience.length === 0 ||
+      filters.experience.includes(job.experience_level);
+
+    return matchesFeatured && matchesLocation && matchesExperience;
+  });
 
   // 3. Pagination
   const totalPages = Math.ceil(filteredJobs.length / jobsPerPage) || 1;
@@ -113,11 +148,19 @@ const Jobs = () => {
                 <input
                   type="text"
                   placeholder="Search jobs, companies, or categories..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
                   className="w-full bg-transparent outline-none text-sm text-gray-700 dark:text-gray-200 placeholder:text-gray-400"
                 />
               </div>
 
-              <button className="bg-teal-500 hover:bg-teal-600 text-white font-semibold px-6 py-3 rounded-full transition-colors text-sm shrink-0 cursor-pointer">
+              <button
+                onClick={() => {
+                  setCurrentPage(1);
+                  setSearchQuery(searchTerm);
+                }}
+                className="bg-teal-500 hover:bg-teal-600 text-white font-semibold px-6 py-3 rounded-full transition-colors text-sm shrink-0 cursor-pointer"
+              >
                 Search
               </button>
             </div>
@@ -125,8 +168,10 @@ const Jobs = () => {
 
           {/* Bottom Row: Sidebar + Content */}
           <div className="flex flex-col lg:flex-row gap-6">
-            <JobsFilter />
-
+            <JobsFilter
+              onFilterChange={handleFilterChange}
+              jobsData={jobsData}
+            />
             <div className="flex-1">
               {/* Sort + View Toggle Row */}
               <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
