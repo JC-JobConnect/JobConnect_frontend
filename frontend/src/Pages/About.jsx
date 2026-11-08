@@ -1,4 +1,4 @@
-import PageHero from "../Components/PageHero";
+import PageHero from "../Components/Common/PageHero";
 import { useState } from "react";
 
 import aboutHeroImg from "../Assets/images/image_1_about_us.webp";

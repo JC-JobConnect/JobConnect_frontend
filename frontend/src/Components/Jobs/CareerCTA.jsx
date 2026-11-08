@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { FiArrowRight, FiCheckCircle, FiBriefcase } from "react-icons/fi";
-import Model from "../Assets/images/model.webp"
+import Model from "../../Assets/images/model.webp"
 
 
 

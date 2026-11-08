@@ -1,5 +1,5 @@
-import PageHero from "../Components/PageHero";
-import CompanyList from "../Components/CompanyList";
+import PageHero from "../../Components/Common/PageHero";
+import CompanyList from "../../Components/CompanyList";
 
 const Companies = () => {
   return (

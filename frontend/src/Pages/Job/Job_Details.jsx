@@ -1,7 +1,7 @@
-import PageHero from "../Components/PageHero";
-import JobDetails from "../Components/JobDetails";
-import CareerCTA from "../Components/CareerCTA";
-import RelatedJobs from "../Components/RelatedJobs";
+import PageHero from "../../Components/Common/PageHero";
+import JobDetails from "../../Components/Jobs/JobDetails";
+import CareerCTA from "../../Components/Jobs/CareerCTA";
+import RelatedJobs from "../../Components/Jobs/RelatedJobs";
 
 const JobDetailsPage = () => {
   return (

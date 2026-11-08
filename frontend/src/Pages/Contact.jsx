@@ -1,4 +1,4 @@
-import PageHero from "../Components/PageHero";
+import PageHero from "../Components/Common/PageHero";
 import { useState } from "react";
 import { FiPhoneCall, FiMail, FiClock, FiMapPin } from "react-icons/fi";
 

@@ -1,12 +1,12 @@
-import Category from '../Components/Catagory'
-import TopCompanies from '../Components/TopCompanies'
-import Hero from '../Components/Hero'
-import HowItWorks from '../Components/HowItWorks'
-import Subscribe from '../Components/Suscribe'
-import WhyChooseUs from '../Components/WhyChooseUs'
-import FeaturedJobCard from '../Components/FeaturedJobCard'
-import Testimonials from '../Components/Testimonial'
-import HomePageJobs from '../Components/HomePageJobs'
+import Category from '../Components/Home/Catagory'
+import TopCompanies from '../Components/Home/TopCompanies'
+import Hero from '../Components/Home/Hero'
+import HowItWorks from '../Components/Home/HowItWorks'
+import Subscribe from '../Components/Home/Suscribe'
+import WhyChooseUs from '../Components/Home/WhyChooseUs'
+import FeaturedJobCard from '../Components/Home/FeaturedJobCard'
+import Testimonials from '../Components/Home/Testimonial'
+import HomePageJobs from '../Components/Home/JobCards'
 
 
 const Home = () => {

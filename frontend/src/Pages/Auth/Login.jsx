@@ -10,14 +10,14 @@ import {
   useSearchParams,
 } from "react-router-dom";
 
-import globeImg from "../Assets/images/Globe.webp";
-import googleImg from "../Assets/images/Google.webp";
-import logo from "../Assets/images/logo2.svg";
+import globeImg from "../../Assets/images/Globe.webp";
+import googleImg from "../../Assets/images/Google.webp";
+import logo from "../../Assets/images/logo2.svg";
 
 import {
   loginUser,
   getCurrentUser,
-} from "../Api/api/Auth";
+} from "../../Api/api/Auth";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);

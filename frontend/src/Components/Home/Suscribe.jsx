@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { HiOutlineMail } from "react-icons/hi";
 import { IoSend } from "react-icons/io5";
 

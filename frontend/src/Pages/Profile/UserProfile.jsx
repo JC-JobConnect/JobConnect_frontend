@@ -1,11 +1,11 @@
 
 import { useEffect, useState } from "react";
 
-import PageHero from "../Components/PageHero";
-import ProfileSidebar from "../Components/Profile/ProfileSidebar";
-import ProfileMainContent from "../Components/Profile/ProfileMainContent";
+import PageHero from "../../Components/Common/PageHero";
+import ProfileSidebar from "../../Components/Profile/ProfileSidebar";
+import ProfileMainContent from "../../Components/Profile/ProfileMainContent";
 
-import { getProfile } from "../Api/api/ProfileApi";
+import { getProfile } from "../../Api/api/ProfileApi";
 
 const UserProfile = () => {
   const [profile, setProfile] = useState(null);

@@ -1,10 +1,10 @@
 import { useState, useEffect, useCallback } from "react";
 import { CiSearch } from "react-icons/ci";
 import { FiGrid, FiList } from "react-icons/fi";
-import JobsFilter from "../Components/JobsFilter";
-import PageHero from "../Components/PageHero";
-import JobsCard from "../Components/JobsCard";
-import jobsApi from "../Api/api/JobApi";
+import JobsFilter from "../../Components/Jobs/JobsFilter";
+import PageHero from "../../Components/Common/PageHero";
+import JobsCard from "../../Components/Jobs/JobsCard";
+import jobsApi from "../../Api/api/JobApi";
 
 const Jobs = () => {
   // API data

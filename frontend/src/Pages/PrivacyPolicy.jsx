@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import PageHero from "../Components/PageHero";
+import PageHero from "../Components/Common/PageHero";
 import {
   FiChevronRight,
   FiArrowUp,

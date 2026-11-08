@@ -1,5 +1,5 @@
 import { HiOutlineRefresh } from "react-icons/hi";
-import Test from "../Components/Test";
+import JobCTA from "./JobCTA";
 import {
   FiGrid,
   FiSliders,
@@ -8,7 +8,7 @@ import {
   FiChevronDown,
 } from "react-icons/fi";
 import { useState, useEffect } from "react";
-import jobsApi from "../Api/api/JobApi";
+import jobsApi from "../../Api/api/JobApi";
 
 const experienceLevels = [
   { name: "Entry Level", value: "entry" },
@@ -231,7 +231,7 @@ const JobsFilter = ({ onFilterChange, jobsData = [] }) => {
           </button>
         </div>
       </div>
-      <Test />
+      <JobCTA />
     </aside>
   );
 };

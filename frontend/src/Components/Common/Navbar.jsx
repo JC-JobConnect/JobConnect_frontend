@@ -1,13 +1,11 @@
-import { NavLink, Link, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { FiAlignJustify } from "react-icons/fi";
 import { useEffect, useState } from "react";
-import { logoutUser } from "../Api/api/Auth";
-import { IoLogOutOutline } from "react-icons/io5";
-import { IoLogInOutline } from "react-icons/io5";
-import { MdOutlineWbSunny } from "react-icons/md";
-import { MdOutlineDarkMode } from "react-icons/md";
-import logo from "../Assets/images/logo.svg";
-import logo2 from "../Assets/images/logo2.svg";
+import { logoutUser } from "../../Api/api/Auth";
+import { IoLogOutOutline,IoLogInOutline } from "react-icons/io5";
+import { MdOutlineWbSunny,MdOutlineDarkMode } from "react-icons/md";
+import logo from "../../Assets/images/logo.svg";
+import logo2 from "../../Assets/images/logo2.svg";
 
 const publicNavItems = [
   { id: "home", name: "Home", path: "/" },

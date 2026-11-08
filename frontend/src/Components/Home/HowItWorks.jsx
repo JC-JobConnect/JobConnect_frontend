@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import Img1 from "../Assets/images/register.webp";
-import Img2 from "../Assets/images/uploadcv.webp";
-import Img3 from "../Assets/images/searchjob.webp";
-import Img4 from "../Assets/images/status.webp";
+import Img1 from "../../Assets/images/register.webp";
+import Img2 from "../../Assets/images/uploadcv.webp";
+import Img3 from "../../Assets/images/searchjob.webp";
+import Img4 from "../../Assets/images/status.webp";
 
 const HowItWorks = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(() =>

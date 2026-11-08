@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import jobsApi from "../Api/api/JobApi.js";
+import jobsApi from "../../Api/api/JobApi.js";
 
 import {
   FaRegUser,

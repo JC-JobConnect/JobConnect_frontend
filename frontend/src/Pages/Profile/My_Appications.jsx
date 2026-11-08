@@ -1,6 +1,6 @@
 import { useMemo, useState, useEffect } from "react";
-import jobsApi from "../Api/api/JobApi.js";
-import PageHero from "../Components/PageHero";
+import jobsApi from "../../Api/api/JobApi.js";
+import PageHero from "../../Components/Common/PageHero";
 import { Link } from "react-router-dom";
 
 import {
@@ -11,7 +11,6 @@ import {
   FiClock,
   FiCheckCircle,
   FiXCircle,
-  FiEye,
   FiFileText,
   FiMail,
   FiUser,

@@ -1,7 +1,7 @@
 import { CiSearch } from "react-icons/ci";
 import { CiLocationOn } from "react-icons/ci";
 import { FaArrowRightLong } from "react-icons/fa6";
-import Interview from "../Assets/images/test.webp";
+import Interview from "../../Assets/images/test.webp";
 import { Link } from "react-router-dom";
 import { FaCheckCircle } from "react-icons/fa";
 

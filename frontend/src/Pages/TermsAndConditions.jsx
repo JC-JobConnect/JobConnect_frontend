@@ -1,6 +1,6 @@
 import { useState } from "react";
 import {FiChevronRight, FiArrowUp } from "react-icons/fi";
-import PageHero from "../Components/PageHero";
+import PageHero from "../Components/Common/PageHero";
 
 const sections = [
     {

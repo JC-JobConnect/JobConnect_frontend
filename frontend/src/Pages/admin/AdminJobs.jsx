@@ -1,3 +1,7 @@
+import Sidebar from "../../Components/admin/Sidebar";
+import TopBar from "../../Components/admin/TopBar";
+import PostJobForm from "../../Components/admin/PostJobForm";
+import jobsApi from "../../Api/api/JobApi.js";
 
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -6,15 +10,9 @@ import {
   FaCheckCircle,
   FaStar,
   FaSyncAlt,
-  FaEdit,
-  FaTrash,
-  FaPowerOff,
 } from "react-icons/fa";
 
-import Sidebar from "../../Components/admin/Sidebar";
-import TopBar from "../../Components/admin/TopBar";
-import PostJobForm from "../../Components/admin/PostJobForm";
-import jobsApi from "../../Api/api/JobApi.js";
+
 
 const AdminJobs = () => {
   const [jobs, setJobs] = useState([]);

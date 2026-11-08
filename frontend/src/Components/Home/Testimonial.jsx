@@ -1,12 +1,12 @@
 import { useState } from "react";
-import Img1 from "../Assets/images/text1.webp";
-import Img2 from "../Assets/images/text2.webp";
-import Img3 from "../Assets/images/text3.webp";
-import Img4 from "../Assets/images/text4.webp";
-import Img5 from "../Assets/images/text5.webp";
-import Img6 from "../Assets/images/text6.webp";
-import Img7 from "../Assets/images/text7.webp";
-import Img8 from "../Assets/images/text8.webp";
+import Img1 from "../../Assets/images/text1.webp";
+import Img2 from "../../Assets/images/text2.webp";
+import Img3 from "../../Assets/images/text3.webp";
+import Img4 from "../../Assets/images/text4.webp";
+import Img5 from "../../Assets/images/text5.webp";
+import Img6 from "../../Assets/images/text6.webp";
+import Img7 from "../../Assets/images/text7.webp";
+import Img8 from "../../Assets/images/text8.webp";
 import {
   FaStar,
   FaQuoteRight,

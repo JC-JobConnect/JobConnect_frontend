@@ -1,7 +1,7 @@
 
 import { Link } from "react-router-dom";
 import { FiArrowUpRight } from "react-icons/fi";
-import Img from "../Assets/images/searchjob.webp"
+import Img from "../../Assets/images/searchjob.webp"
 
 export default function HiringCTACard({
   title = "WE ARE HIRING",

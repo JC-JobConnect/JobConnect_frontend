@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import logo from "../Assets/images/logo.svg";
-import logo2 from "../Assets/images/logo2.svg";
+import logo from "../../Assets/images/logo.svg";
+import logo2 from "../../Assets/images/logo2.svg";
 
 
 const Footer = () => {

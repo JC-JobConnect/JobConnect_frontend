@@ -1,14 +1,32 @@
 import { CiSearch, CiLocationOn } from "react-icons/ci";
-import modelimg from "../Assets/images/model.webp"
+import modelimg from "../../Assets/images/model.webp"
 import { LuBriefcaseBusiness } from "react-icons/lu";
 import { BsPersonBoundingBox } from "react-icons/bs";
 import { MdOutlineMarkEmailRead } from "react-icons/md";
 import { FiLayers } from "react-icons/fi";
 import { FaArrowRightLong } from "react-icons/fa6";
-import profileImg from "../Assets/images/group_profile.webp"
+import profileImg from "../../Assets/images/group_profile.webp"
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 const Hero = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const checkAuth = () => {
+      const token = sessionStorage.getItem("access_token");
+      setIsLoggedIn(!!token);
+    };
+
+    checkAuth();
+
+    // Listen when login/logout happens
+    window.addEventListener("authChanged", checkAuth);
+
+    return () => {
+      window.removeEventListener("authChanged", checkAuth);
+    };
+  }, []);
 
   return (
     <section className="bg-[#F9FAFB] dark:bg-[#071A19] pt-28 pb-16 ">
@@ -51,7 +69,7 @@ const Hero = () => {
             {/* Call to Action Buttons */}
             <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2">
               <Link
-                to="/register"
+                to={isLoggedIn ? "/profile" : "/register" }
                 className="px-7 py-3.5 rounded-full bg-[#0fa988] hover:bg-[#0d9488] text-white font-semibold text-base shadow-lg shadow-teal-600/20 hover:scale-[1.02] transition-all flex items-center gap-2"
               >
                 Get Started

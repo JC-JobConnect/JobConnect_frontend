@@ -1,26 +1,29 @@
 import { Routes, Route, useLocation } from "react-router-dom";
-import ScrollToTop from "./Components/ScrollToTop";
-import Navbar from "./Components/Navbar";
-import Footer from "./Components/Footer";
-import My_Appications from "./Pages/My_Appications";
+
+import Navbar from "./Components/Common/Navbar";
+import Footer from "./Components/Common/Footer";
+import ScrollToTop from "./Components/Common/ScrollToTop";
+import ProtectedRoute from "./Components/Common/ProtectedRoute";
+
+import My_Appications from "./Pages/Profile/My_Appications";
 import Home from "./Pages/Home";
-import Jobs from "./Pages/Jobs";
-import Companies from "./Pages/Companies";
+import Jobs from "./Pages/Job/Jobs";
+import Companies from "./Pages/Company/Companies";
 import About from "./Pages/About";
 import Contact from "./Pages/Contact";
-import Login from "./Pages/Login";
-import UserProfile from "./Pages/UserProfile";
-import Register from "./Pages/Register";
-import JobDetails from "./Pages/Job_DetailsPage";
-import ApplyJob from "./Pages/Apply_Jobs";
-import AdminDashboard from "./Pages/AdminDashboard";
+import Login from "./Pages/Auth/Login";
+import UserProfile from "./Pages/Profile/UserProfile";
+import Register from "./Pages/Auth/Register";
+import JobDetails from "./Pages/Job/Job_Details";
+import ApplyJob from "./Pages/Job/Apply_Jobs";
+import AdminDashboard from "./Pages/Admin/AdminDashboard";
 import AdminJobs from "./Pages/admin/AdminJobs";
 import AdminCategory from "./Pages/admin/AdminCatagory";
 import AdminCompany from "./Pages/admin/AdminCompany";
-import ProtectedRoute from "./Components/ProtectedRoute";
+
 import TermsAndConditions from "./Pages/TermsAndConditions";
 import PrivacyPolicy from "./Pages/PrivacyPolicy";
-import TopCompanyView from "./Pages/TopCompanyView";
+import TopCompanyView from "./Pages/Company/TopCompanyView";
 
 const App = () => {
   const location = useLocation();

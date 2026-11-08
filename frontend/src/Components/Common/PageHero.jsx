@@ -1,5 +1,5 @@
 
-import Hero from "../Assets/images/Hero.webp";
+import Hero from "../../Assets/images/Hero.webp";
 
 const PageHero = ({ title }) => {
   return (

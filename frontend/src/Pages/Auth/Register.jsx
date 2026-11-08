@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { registerUser } from "../Api/api/Auth";
+import { registerUser } from "../../Api/api/Auth";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { MdOutlineMarkEmailRead } from "react-icons/md";
-import globeImg from "../Assets/images/Globe.webp";
-import googleImg from "../Assets/images/Google.webp";
-import logo from "../Assets/images/logo2.svg";
+import globeImg from "../../Assets/images/Globe.webp";
+import googleImg from "../../Assets/images/Google.webp";
+import logo from "../../Assets/images/logo2.svg";
 
 const Register = () => {
   const navigate = useNavigate();
