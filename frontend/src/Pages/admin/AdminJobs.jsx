@@ -1,6 +1,6 @@
 import Sidebar from "../../Components/admin/Sidebar";
 import TopBar from "../../Components/admin/TopBar";
-import PostJobForm from "../../Components/admin/PostJobForm";
+import PostJobForm from "../../Components/Admin/PostJobForm";
 import jobsApi from "../../Services/JobApi.js";
 
 import { useEffect, useState } from "react";
@@ -164,7 +164,7 @@ const AdminJobs = () => {
               {editingJob && (
                 <button
                   onClick={() => setEditingJob(null)}
-                  className="mt-3 w-full rounded-lg border border-slate-200 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-100 dark:border-teal-900 dark:text-slate-300 dark:hover:bg-[#0F2A28]"
+                  className="mt-3 w-full rounded-lg border border-slate-200 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-100 dark:border-teal-900 dark:text-slate-300 dark:hover:bg-[#0F2A28] cursor-pointer"
                 >
                   Cancel Editing
                 </button>
