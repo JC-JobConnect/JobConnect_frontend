@@ -20,6 +20,7 @@ import AdminCompany from "./Pages/admin/AdminCompany";
 import ProtectedRoute from "./Components/ProtectedRoute";
 import TermsAndConditions from "./Pages/TermsAndConditions";
 import PrivacyPolicy from "./Pages/PrivacyPolicy";
+import TopCompanyView from "./Pages/TopCompanyView";
 
 const App = () => {
   const location = useLocation();
@@ -37,6 +38,7 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/jobs" element={<Jobs />} />
         <Route path="/companies" element={<Companies />} />
+        <Route path="/company/:companyId/jobs" element={<TopCompanyView />} />
         <Route path="/my-applications" element={<My_Appications />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
