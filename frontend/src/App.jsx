@@ -1,29 +1,44 @@
 import { Routes, Route, useLocation } from "react-router-dom";
 
-import Navbar from "./Components/Common/Navbar";
+// COMMON COMPONENTS
 import Footer from "./Components/Common/Footer";
-import ScrollToTop from "./Components/Common/ScrollToTop";
+import Navbar from "./Components/Common/Navbar";
 import ProtectedRoute from "./Components/Common/ProtectedRoute";
+import ScrollToTop from "./Components/Common/ScrollToTop";
 
-import My_Appications from "./Pages/Profile/My_Appications";
+// HOME
 import Home from "./Pages/Home";
-import Jobs from "./Pages/Job/Jobs";
-import Companies from "./Pages/Company/Companies";
-import About from "./Pages/About";
-import Contact from "./Pages/Contact";
-import Login from "./Pages/Auth/Login";
-import UserProfile from "./Pages/Profile/UserProfile";
-import Register from "./Pages/Auth/Register";
-import JobDetails from "./Pages/Job/Job_Details";
+
+// JOB PAGES
 import ApplyJob from "./Pages/Job/Apply_Jobs";
-import AdminDashboard from "./Pages/Admin/AdminDashboard";
-import AdminJobs from "./Pages/admin/AdminJobs";
+import JobDetails from "./Pages/Job/Job_Details";
+import Jobs from "./Pages/Job/Jobs";
+
+// COMPANY PAGES
+import Companies from "./Pages/Company/Companies";
+import TopCompanyView from "./Pages/Company/TopCompanyView";
+
+// PROFILE PAGES
+import My_Appications from "./Pages/Profile/My_Appications";
+import UserProfile from "./Pages/Profile/UserProfile";
+
+// AUTHENTICATION PAGES
+import Login from "./Pages/Auth/Login";
+import Register from "./Pages/Auth/Register";
+
+// ADMIN PAGES
 import AdminCategory from "./Pages/admin/AdminCatagory";
 import AdminCompany from "./Pages/admin/AdminCompany";
+import AdminDashboard from "./Pages/Admin/AdminDashboard";
+import AdminJobs from "./Pages/admin/AdminJobs";
 
-import TermsAndConditions from "./Pages/TermsAndConditions";
+// INFORMATIONAL PAGES
+import About from "./Pages/About";
+import Contact from "./Pages/Contact";
+
+// LEGAL PAGES
 import PrivacyPolicy from "./Pages/PrivacyPolicy";
-import TopCompanyView from "./Pages/Company/TopCompanyView";
+import TermsAndConditions from "./Pages/TermsAndConditions";
 
 const App = () => {
   const location = useLocation();
