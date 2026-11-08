@@ -8,7 +8,7 @@ import {
   FiDollarSign,
   FiTag,
 } from "react-icons/fi";
-import jobsApi from "../../Api/api/JobApi";
+import jobsApi from "../../Services/JobApi";
 
 export default function TopCompanyView() {
   const { companyId } = useParams();

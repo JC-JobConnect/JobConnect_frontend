@@ -4,7 +4,7 @@ import { FiGrid, FiList } from "react-icons/fi";
 import JobsFilter from "../../Components/Jobs/JobsFilter";
 import PageHero from "../../Components/Common/PageHero";
 import JobsCard from "../../Components/Jobs/JobsCard";
-import jobsApi from "../../Api/api/JobApi";
+import jobsApi from "../../Services/JobApi";
 
 const Jobs = () => {
   // API data

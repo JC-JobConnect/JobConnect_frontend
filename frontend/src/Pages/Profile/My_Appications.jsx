@@ -1,5 +1,5 @@
 import { useMemo, useState, useEffect } from "react";
-import jobsApi from "../../Api/api/JobApi.js";
+import jobsApi from "../../Services/JobApi.js";
 import PageHero from "../../Components/Common/PageHero";
 import { Link } from "react-router-dom";
 

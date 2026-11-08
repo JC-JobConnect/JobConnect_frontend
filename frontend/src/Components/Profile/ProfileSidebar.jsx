@@ -1,7 +1,7 @@
 
 import { useRef, useState } from "react";
 import { FiCamera, FiPhone, FiMapPin } from "react-icons/fi";
-import { updateProfile } from "../../Api/api/ProfileApi";
+import { updateProfile } from "../../Services/ProfileApi";
 
 const API_ORIGIN = "http://127.0.0.1:8000";
 

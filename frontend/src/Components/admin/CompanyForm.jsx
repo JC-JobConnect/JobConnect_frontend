@@ -1,7 +1,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { FaSave, FaTimes } from "react-icons/fa";
-import jobsApi from "../../Api/api/JobApi.js";
+import jobsApi from "../../Services/JobApi.js";
 
 const initialForm = {
   name: "",

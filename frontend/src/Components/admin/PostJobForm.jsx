@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import jobsApi from "../../Api/api/JobApi.js";
+import jobsApi from "../../Services/JobApi.js";
 
 const initialForm = {
   title: "",

@@ -1,6 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import jobsApi from "../../Api/api/JobApi";
+import jobsApi from "../../Services/JobApi";
 import { FiBriefcase, FiClock, FiCreditCard, FiMapPin } from "react-icons/fi";
 
 export default function RelatedJobs({ job: propJob }) {

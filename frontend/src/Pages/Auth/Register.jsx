@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { registerUser } from "../../Api/api/Auth";
+import { registerUser } from "../../Services/Auth";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { MdOutlineMarkEmailRead } from "react-icons/md";
 import globeImg from "../../Assets/images/Globe.webp";

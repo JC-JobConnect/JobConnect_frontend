@@ -2,7 +2,7 @@ import PageHero from "../../Components/Common/PageHero";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import jobsApi from "../../Api/api/JobApi";
+import jobsApi from "../../Services/JobApi";
 import {
   FiUser,
   FiBriefcase,

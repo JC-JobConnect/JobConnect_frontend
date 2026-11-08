@@ -14,7 +14,7 @@ import {
   addSkill,
   updateSkill,
   deleteSkill,
-} from "../../Api/api/ProfileApi";
+} from "../../Services/ProfileApi";
 
 const API_ORIGIN = "http://127.0.0.1:8000";
 

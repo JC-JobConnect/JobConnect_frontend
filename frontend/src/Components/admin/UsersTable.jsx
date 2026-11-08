@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { FaTimes, FaUserSlash, FaUserCheck, FaTrash, } from "react-icons/fa";
-import jobsApi from "../../Api/api/JobApi";
+import jobsApi from "../../Services/JobApi";
 
 const formatDate = (dateStr) => {
   if (!dateStr) return "—";

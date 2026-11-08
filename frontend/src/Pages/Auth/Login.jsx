@@ -17,7 +17,7 @@ import logo from "../../Assets/images/logo2.svg";
 import {
   loginUser,
   getCurrentUser,
-} from "../../Api/api/Auth";
+} from "../../Services/Auth";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { FiCheck, FiBriefcase, FiArrowRight } from "react-icons/fi";
-import jobsApi from "../../Api/api/JobApi.js";
+import jobsApi from "../../Services/JobApi.js";
 import JobOverview from "./JobOverview.jsx";
 
 function JobDetails() {

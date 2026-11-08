@@ -1,7 +1,7 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { FiAlignJustify } from "react-icons/fi";
 import { useEffect, useState } from "react";
-import { logoutUser } from "../../Api/api/Auth";
+import { logoutUser } from "../../Services/Auth";
 import { IoLogOutOutline,IoLogInOutline } from "react-icons/io5";
 import { MdOutlineWbSunny,MdOutlineDarkMode } from "react-icons/md";
 import logo from "../../Assets/images/logo.svg";

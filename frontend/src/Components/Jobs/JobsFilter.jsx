@@ -8,7 +8,7 @@ import {
   FiChevronDown,
 } from "react-icons/fi";
 import { useState, useEffect } from "react";
-import jobsApi from "../../Api/api/JobApi";
+import jobsApi from "../../Services/JobApi";
 
 const experienceLevels = [
   { name: "Entry Level", value: "entry" },

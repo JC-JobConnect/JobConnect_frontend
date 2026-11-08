@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { FaTimes } from "react-icons/fa";
-import JobsApi from "../../Api/api/JobApi";
+import JobsApi from "../../Services/JobApi";
 
 const statusColors = {
   pending: "bg-amber-50 text-amber-600",

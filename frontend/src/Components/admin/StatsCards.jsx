@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from "react";
-import JobsApi from "../../Api/api/JobApi";
+import JobsApi from "../../Services/JobApi";
 import { MdStarOutline } from "react-icons/md";
 import { FiUser,FiBriefcase } from "react-icons/fi";
 import { IoDocumentTextOutline } from "react-icons/io5";

@@ -1,7 +1,7 @@
 import Sidebar from "../../Components/admin/Sidebar";
 import TopBar from "../../Components/admin/TopBar";
 import PostJobForm from "../../Components/admin/PostJobForm";
-import jobsApi from "../../Api/api/JobApi.js";
+import jobsApi from "../../Services/JobApi.js";
 
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
