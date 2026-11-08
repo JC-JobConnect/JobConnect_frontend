@@ -1,6 +1,8 @@
 import PageHero from "../Components/PageHero";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams, useNavigate } from "react-router-dom";
+import jobsApi from "../Api/api/JobApi.js";
 import {
   FiUser,
   FiBriefcase,
@@ -13,6 +15,15 @@ import {
 } from "react-icons/fi";
 
 function ApplyJob() {
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+
+  const jobId = searchParams.get("jobId");
+
+  const [job, setJob] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -20,32 +31,76 @@ function ApplyJob() {
   });
 
   const [showSuccess, setShowSuccess] = useState(false);
+  useEffect(() => {
+    const fetchJob = async () => {
+      try {
+        setLoading(true);
+        setError("");
+
+        const response = await jobsApi.get(`v1/jobs/${jobId}/`);
+        setJob(response.data);
+      } catch (err) {
+        console.error(err);
+        setError("Unable to load job details.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (jobId) {
+      fetchJob();
+    } else {
+      setError("Job ID is missing.");
+      setLoading(false);
+    }
+  }, [jobId]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Basic validation
     if (!formData.fullName || !formData.email) {
-      alert("Please fill in Full Name and Email");
+      setError("Please fill in Full Name and Email.");
       return;
     }
 
-    // Show success popup
-    setShowSuccess(true);
+    try {
+      setSubmitting(true);
+      setError("");
 
-    // Redirect after 2.5 seconds
-    setTimeout(() => {
-      // If you use React Router:
-      // navigate("/my-applications");
+      await jobsApi.post("v1/applications/", {
+        job: Number(jobId),
+        full_name: formData.fullName,
+        email: formData.email,
+        cover_letter: formData.coverLetter,
+      });
 
-      // Simple redirect (works without router)
-      window.location.href = "/my-applications";
-    }, 2500);
+      setShowSuccess(true);
+    } catch (err) {
+      console.error("Application error:", err);
+
+      const data = err.response?.data;
+
+      setError(
+        data?.detail ||
+          data?.non_field_errors?.[0] ||
+          data?.job?.[0] ||
+          "Unable to submit application.",
+      );
+    } finally {
+      setSubmitting(false);
+    }
   };
+  if (loading) {
+    return <p className="text-center py-20">Loading job details...</p>;
+  }
+
+  if (!job) {
+    return <p className="text-center py-20 text-red-500">{error}</p>;
+  }
 
   return (
     <div className="min-h-screen bg-white dark:bg-[#071A19] font-sans text-gray-900 dark:text-gray-100 transition-colors duration-300">
@@ -63,9 +118,7 @@ function ApplyJob() {
               <p className="text-xs text-gray-500 dark:text-slate-400">
                 Job Title
               </p>
-              <p className="font-medium text-sm">
-                Corporate Solutions Executive
-              </p>
+              <p className="font-medium text-sm">{job?.title}</p>
             </div>
           </div>
 
@@ -77,7 +130,9 @@ function ApplyJob() {
               <p className="text-xs text-gray-500 dark:text-slate-400">
                 Job Type
               </p>
-              <p className="font-medium text-sm">Full Time</p>
+              <p className="font-medium text-sm">
+                {job?.job_type || "Not specified"}
+              </p>
             </div>
           </div>
 
@@ -89,7 +144,9 @@ function ApplyJob() {
               <p className="text-xs text-gray-500 dark:text-slate-400">
                 Category
               </p>
-              <p className="font-medium text-sm">Commerce</p>
+              <p className="font-medium text-sm">
+                {job?.category_name || "Not specified"}
+              </p>
             </div>
           </div>
 
@@ -101,7 +158,11 @@ function ApplyJob() {
               <p className="text-xs text-gray-500 dark:text-slate-400">
                 Offered Salary
               </p>
-              <p className="font-medium text-sm">$40000-$42000</p>
+              <p className="font-medium text-sm">
+                {job?.salary
+                  ? `৳${Number(job.salary).toLocaleString("en-BD")}`
+                  : "Negotiable"}
+              </p>
             </div>
           </div>
 
@@ -113,11 +174,13 @@ function ApplyJob() {
               <p className="text-xs text-gray-500 dark:text-slate-400">
                 Location
               </p>
-              <p className="font-medium text-sm">New-York, USA</p>
+              <p className="font-medium text-sm">
+                {job?.location || "Not specified"}
+              </p>
             </div>
           </div>
         </div>
-      </div> 
+      </div>
       {/* Apply Form Section */}
       <section className="max-w-3xl mx-auto px-6 py-12">
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">
@@ -132,10 +195,11 @@ function ApplyJob() {
             </div>
             <div>
               <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-                Forward Security Director
+                {job?.title}
               </h2>
+
               <p className="text-gray-500 dark:text-slate-400 text-sm">
-                Bauch, Schuppe and Schulist Co
+                {job?.company_name}
               </p>
             </div>
           </div>
@@ -199,13 +263,15 @@ function ApplyJob() {
                 />
               </div>
             </div>
-
+            {/* Error Message */}
+            {error && <p className="text-red-500 text-sm">{error}</p>}
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full bg-teal-500 cursor-pointer hover:bg-teal-600 text-white font-medium py-3.5 rounded-xl transition flex items-center justify-center gap-2"
+              disabled={submitting}
+              className="w-full bg-teal-500 cursor-pointer hover:bg-teal-600 disabled:opacity-50 text-white font-medium py-3.5 rounded-xl transition flex items-center justify-center gap-2"
             >
-              Submit Application
+              {submitting ? "Submitting..." : "Submit Application"}
               <span>→</span>
             </button>
           </form>
@@ -236,12 +302,14 @@ function ApplyJob() {
             <p className="text-gray-600 dark:text-slate-300 mb-6">
               Your application has been successfully submitted. You will be
               redirected to{" "}
-              <span className="font-medium text-teal-500 cursor-pointer">My Applications</span>{" "}
+              <span className="font-medium text-teal-500 cursor-pointer">
+                My Applications
+              </span>{" "}
               shortly.
             </p>
 
             <button
-              onClick={() => (window.location.href = "/my-applications")}
+              onClick={() => navigate("/my-applications")}
               className="bg-teal-500 hover:bg-teal-600 text-white font-medium px-8 py-2.5 rounded-xl transition"
             >
               Go to My Applications
