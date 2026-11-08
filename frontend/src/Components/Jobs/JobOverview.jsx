@@ -65,7 +65,7 @@ const JobOverview = ({ job }) => {
                   {item.label}
                 </p>
 
-                <p className="text-sm font-semibold text-gray-800 dark:text-white leading-snug break-words">
+                <p className="text-sm font-semibold text-gray-800 dark:text-white leading-snug wrap-break-word">
                   {item.label === "Offered Salary"
                     ? item.value || "Negotiable"
                     : formatValue(item.value)}

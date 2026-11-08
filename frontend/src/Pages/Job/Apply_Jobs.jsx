@@ -190,7 +190,7 @@ function ApplyJob() {
         <div className="bg-white dark:bg-[#0d2a28] border border-gray-100 dark:border-slate-700 dark:shadow-black/20 rounded-2xl p-8">
           {/* Job Header inside form */}
           <div className="flex items-center gap-4 mb-8">
-            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center text-white text-lg font-bold">
+            <div className="w-12 h-12 rounded-full bg-linear-to-br from-teal-400 to-teal-600 flex items-center justify-center text-white text-lg font-bold">
               FS
             </div>
             <div>

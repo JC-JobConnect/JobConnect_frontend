@@ -129,7 +129,7 @@ export default function RelatedJobs({ job: propJob }) {
                 </div>
 
                 <div className="flex items-start gap-3 mb-3">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center text-white text-sm font-bold shrink-0">
+                  <div className="w-10 h-10 rounded-full bg-linear-to-br from-teal-400 to-teal-600 flex items-center justify-center text-white text-sm font-bold shrink-0">
                     {companyName?.charAt(0) || "J"}
                   </div>
 
