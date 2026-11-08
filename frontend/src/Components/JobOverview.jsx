@@ -30,7 +30,7 @@ const JobOverview = ({ job }) => {
     {
       icon: FiBriefcase,
       label: "Category",
-      value: job?.category,
+      value: job?.categoryName,
     },
     {
       icon: FiCreditCard,

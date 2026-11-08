@@ -43,7 +43,8 @@ function JobDetails() {
 
           employmentType: data.job_type,
           workMode: data.work_mode,
-          category: data.category_name || "General",
+          category: data.category,
+          categoryName: data.category_name || "General",
 
           salary: data.salary
             ? `৳${Number(data.salary).toLocaleString("en-BD")}`
@@ -59,9 +60,7 @@ function JobDetails() {
             ? data.responsibilities
             : [],
 
-          skills: Array.isArray(data.requirements)
-            ? data.requirements
-            : [],
+          skills: Array.isArray(data.requirements) ? data.requirements : [],
         };
 
         setJob(formattedJob);
@@ -73,7 +72,7 @@ function JobDetails() {
         } else {
           setError(
             err.response?.data?.detail ||
-              "Unable to load job details. Please try again."
+              "Unable to load job details. Please try again.",
           );
         }
       } finally {
@@ -147,7 +146,6 @@ function JobDetails() {
 
             <div className="mb-7 flex items-start justify-between gap-4">
               <div className="flex min-w-0 items-center gap-4">
-
                 {/* Company Logo */}
                 <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-gray-100 shadow-sm dark:bg-teal-900">
                   {job.companyLogo ? (
@@ -157,7 +155,8 @@ function JobDetails() {
                       className="h-full w-full object-contain"
                       onError={(e) => {
                         e.currentTarget.style.display = "none";
-                        e.currentTarget.nextElementSibling.style.display = "flex";
+                        e.currentTarget.nextElementSibling.style.display =
+                          "flex";
                       }}
                     />
                   ) : null}
@@ -195,9 +194,7 @@ function JobDetails() {
             <div className="space-y-4 text-sm leading-7 text-slate-600 dark:text-slate-300 sm:text-base">
               {job.description.length > 0 ? (
                 job.description.map((paragraph, index) => (
-                  <p key={`${job.id}-description-${index}`}>
-                    {paragraph}
-                  </p>
+                  <p key={`${job.id}-description-${index}`}>{paragraph}</p>
                 ))
               ) : (
                 <p>Job description is not available.</p>
