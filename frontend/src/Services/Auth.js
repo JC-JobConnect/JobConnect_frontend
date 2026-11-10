@@ -19,8 +19,8 @@ export async function loginUser(username, password) {
 
   const { access, refresh } = response.data;
 
-  sessionStorage.setItem("access_token", access);
-  sessionStorage.setItem("refresh_token", refresh);
+  localStorage.setItem("access_token", access);
+  localStorage.setItem("refresh_token", refresh);
 
   window.dispatchEvent(new Event("authChanged"));
 
@@ -28,8 +28,8 @@ export async function loginUser(username, password) {
 }
 
 export function logoutUser() {
-  sessionStorage.removeItem("access_token");
-  sessionStorage.removeItem("refresh_token");
+  localStorage.removeItem("access_token");
+  localStorage.removeItem("refresh_token");
 
   window.dispatchEvent(new Event("authChanged"));
 }
