@@ -34,12 +34,12 @@ export default function Navbar() {
   }, [darkMode]);
 
   const [isLoggedIn, setIsLoggedIn] = useState(
-    () => Boolean(sessionStorage.getItem("access_token"))
+    () => Boolean(localStorage.getItem("access_token"))
   );
 
   useEffect(() => {
     const syncAuth = () => {
-      setIsLoggedIn(Boolean(sessionStorage.getItem("access_token")));
+      setIsLoggedIn(Boolean(localStorage.getItem("access_token")));
     };
 
     window.addEventListener("authChanged", syncAuth);

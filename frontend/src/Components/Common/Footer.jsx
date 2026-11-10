@@ -1,22 +1,44 @@
+
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
+import jobsApi from "../../Services/JobApi";
 import logo from "../../Assets/images/logo.svg";
 import logo2 from "../../Assets/images/logo2.svg";
 
-
 const Footer = () => {
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const { data } = await jobsApi.get("/v1/categories/");
+
+        const results = Array.isArray(data)
+          ? data
+          : data.results || [];
+
+        setCategories(results);
+      } catch (error) {
+        console.error("Failed to fetch footer categories:", error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
   const [isLoggedIn, setIsLoggedIn] = useState(
-    () => Boolean(sessionStorage.getItem("access_token"))
+    () => Boolean(localStorage.getItem("access_token"))
   );
 
   useEffect(() => {
     const syncAuth = () => {
-      setIsLoggedIn(Boolean(sessionStorage.getItem("access_token")));
+      setIsLoggedIn(Boolean(localStorage.getItem("access_token")));
     };
 
     window.addEventListener("authChanged", syncAuth);
     return () => window.removeEventListener("authChanged", syncAuth);
   }, []);
+
   return (
     <footer className="relative isolate overflow-hidden border-t border-emerald-100 bg-linear-to-b from-white to-emerald-50/70 text-slate-700 transition-colors duration-300 dark:border-emerald-900/50 dark:from-[#061714] dark:to-[#04110F] dark:text-slate-300">
 
@@ -28,10 +50,11 @@ const Footer = () => {
       {/* Main Footer */}
       <div className="mx-auto max-w-7xl px-5 pb-12 pt-14 sm:px-8 lg:px-10 lg:pb-16 lg:pt-20">
 
-        <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-12 lg:gap-10">
+        {/* FIX: items-start prevents columns from stretching */}
+        <div className="grid grid-cols-1 items-start gap-10 sm:grid-cols-2 lg:grid-cols-12 lg:gap-10">
 
           {/* Brand Section */}
-          <div className="lg:col-span-5">
+          <div className="self-start lg:col-span-5">
 
             <Link
               to="/"
@@ -51,7 +74,7 @@ const Footer = () => {
               />
 
               <span className="text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-3xl">
-                Job<span className="text-teal-500 transition-colors group-hover:text-teal-600 dark:text-emerald-400 dark:group-hover:text-teal-400 ">Connect</span>
+                Job<span className="text-teal-500 transition-colors group-hover:text-teal-600 dark:text-emerald-400 dark:group-hover:text-teal-400">Connect</span>
               </span>
             </Link>
 
@@ -65,7 +88,7 @@ const Footer = () => {
           </div>
 
           {/* Quick Links */}
-          <div className="lg:col-span-2">
+          <div className="self-start lg:col-span-2">
 
             <h3 className="mb-6 text-xs font-bold uppercase tracking-[0.22em] text-emerald-700 dark:text-emerald-400">
               Explore
@@ -93,8 +116,41 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Job Seekers */}
-          <div className="lg:col-span-2">
+          {/* Categories */}
+          <div className="min-w-0 self-start lg:col-span-2">
+
+            <h3 className="mb-6 text-xs font-bold uppercase tracking-[0.22em] text-emerald-700 dark:text-emerald-400">
+              Categories
+            </h3>
+
+            
+            <ul className="!m-0 !flex !h-auto !list-none !flex-col !items-start !justify-start !gap-4 !space-y-0 p-0">
+
+              {categories.slice(0, 4).map((item) => (
+                <li key={item.id} className="!m-0 !block">
+                  <Link
+                    to={`/jobs?category=${item.id}`}
+                    className="group inline-flex items-center gap-2 text-sm text-slate-600 transition-colors duration-200 hover:text-emerald-600 dark:text-slate-400 dark:hover:text-emerald-400"
+                  >
+                    <span className="h-1 w-1 rounded-full bg-emerald-500 opacity-0 transition-all group-hover:opacity-100" />
+
+                    {item.name}
+                  </Link>
+                </li>
+              ))}
+
+              {categories.length === 0 && (
+                <li className="!m-0 text-sm text-slate-400">
+                  No categories available.
+                </li>
+              )}
+
+            </ul>
+
+          </div>
+
+          {/* Job Seekers  */}
+          <div className="self-start lg:col-span-3">
 
             <h3 className="mb-6 text-xs font-bold uppercase tracking-[0.22em] text-emerald-700 dark:text-emerald-400">
               Job Seekers
@@ -102,7 +158,8 @@ const Footer = () => {
 
             <ul className="space-y-4">
 
-              {[,
+              {[
+                ,
                 isLoggedIn ? { label: "FAQ", href: "/about#FAQ" } : { label: "Create an Account", href: "/register" },
                 isLoggedIn ? { label: "My Applications", href: "/my-applications" } : { label: "Sign In", href: "/login" },
                 isLoggedIn ? { label: "My Profile", href: "/profile" } : { label: "FAQ", href: "/about#FAQ" },
@@ -119,21 +176,9 @@ const Footer = () => {
               ))}
 
             </ul>
-          </div>
-
-          {/* Newsletter */}
-          <div className="lg:col-span-3">
-
-            <h3 className="mb-3 text-xs font-bold uppercase tracking-[0.22em] text-emerald-700 dark:text-emerald-400">
-              Stay Connected
-            </h3>
-
-            <p className="mb-5 text-sm leading-6 text-slate-600 dark:text-slate-400">
-              Stay informed about new opportunities and career updates.
-            </p>
-
 
           </div>
+
         </div>
       </div>
 

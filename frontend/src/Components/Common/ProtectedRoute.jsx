@@ -7,7 +7,7 @@ const ProtectedRoute = () => {
 
   useEffect(() => {
     const checkAdmin = async () => {
-      const accessToken = sessionStorage.getItem("access_token");
+      const accessToken = localStorage.getItem("access_token");
 
       if (!accessToken) {
         setStatus("unauthorized");

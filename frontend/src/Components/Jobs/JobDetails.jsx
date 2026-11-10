@@ -12,7 +12,7 @@ function JobDetails() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  const isLoggedIn = Boolean(sessionStorage.getItem("access_token"));
+  const isLoggedIn = Boolean(localStorage.getItem("access_token"));
 
   // Fetch the selected job from Django
   useEffect(() => {
