@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import { useSearchParams } from "react-router-dom";
 import { CiSearch } from "react-icons/ci";
 import { FiGrid, FiList } from "react-icons/fi";
 import JobsFilter from "../../Components/Jobs/JobsFilter";
@@ -7,21 +8,20 @@ import JobsCard from "../../Components/Jobs/JobsCard";
 import jobsApi from "../../Services/JobApi";
 
 const Jobs = () => {
-  // API data
-  const [jobsData, setJobsData] = useState([]);
+  const [searchParams] = useSearchParams();
+  const [jobType, setJobType] = useState("");
+  const [sortBy, setSortBy] = useState("newest");
 
-  // UI states
+  const [jobsData, setJobsData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
 
-  // Pagination, filter and view mode
   const [currentPage, setCurrentPage] = useState(1);
   const [active, setActive] = useState("all");
-  const [viewMode, setViewMode] = useState("list"); // "grid" or "list"
+  const [viewMode, setViewMode] = useState("list");
 
-  // Filter states
   const [filters, setFilters] = useState({
     categories: [],
     locations: [],
@@ -30,7 +30,6 @@ const Jobs = () => {
     maxSalary: "",
   });
 
-  // Receive filters from JobsFilter
   const handleFilterChange = useCallback((newFilters) => {
     setFilters(newFilters);
     setCurrentPage(1);
@@ -38,7 +37,31 @@ const Jobs = () => {
 
   const jobsPerPage = 5;
 
-  // 1. Fetch jobs from Django API
+  // Read from URL (Homepage search)
+  useEffect(() => {
+    const searchFromUrl = searchParams.get("search") || "";
+    const locationFromUrl = searchParams.get("location") || "";
+    const categoryFromUrl = searchParams.get("category") || "";
+
+    if (searchFromUrl) {
+      setSearchTerm(searchFromUrl);
+      setSearchQuery(searchFromUrl);
+    }
+
+    if (locationFromUrl) {
+      setFilters((prev) => ({
+        ...prev,
+        locations: [locationFromUrl],
+      }));
+    }
+
+    if (categoryFromUrl && !searchFromUrl) {
+      setSearchTerm(categoryFromUrl);
+      setSearchQuery(categoryFromUrl);
+    }
+  }, [searchParams]);
+
+  // Fetch jobs
   useEffect(() => {
     const fetchJobs = async () => {
       try {
@@ -47,16 +70,17 @@ const Jobs = () => {
 
         const response = await jobsApi.get("v1/jobs/", {
           params: {
-            min_salary: filters.minSalary || undefined,
-            max_salary: filters.maxSalary || undefined,
+            search: searchQuery || undefined,
+            location: filters.locations[0] || undefined,
             category:
               filters.categories.length === 1
                 ? filters.categories[0]
                 : undefined,
-            search: searchQuery || undefined,
+            min_salary: filters.minSalary || undefined,
+            max_salary: filters.maxSalary || undefined,
           },
         });
-        // Supports both normal lists and paginated DRF responses
+
         const data = Array.isArray(response.data)
           ? response.data
           : response.data.results || [];
@@ -64,10 +88,9 @@ const Jobs = () => {
         setJobsData(data);
       } catch (err) {
         console.error("Error fetching jobs:", err);
-
         setError(
           err.response?.data?.detail ||
-            "Failed to load jobs. Please try again.",
+          "Failed to load jobs. Please try again."
         );
       } finally {
         setLoading(false);
@@ -75,38 +98,69 @@ const Jobs = () => {
     };
 
     fetchJobs();
-  }, [filters.minSalary, filters.maxSalary, filters.categories,searchQuery,]);
+  }, [filters, searchQuery]);
 
-  // 2. Filter featured jobs
-  const filteredJobs = jobsData.filter((job) => {
-    const matchesFeatured = active !== "featured" || job.is_featured === true;
+  const filteredJobs = jobsData
+    .filter((job) => {
+      const matchesFeatured =
+        active !== "featured" || job.is_featured === true;
 
-    const matchesLocation =
-      filters.locations.length === 0 ||
-      filters.locations.includes(job.location);
+      const matchesLocation =
+        filters.locations.length === 0 ||
+        filters.locations.some((loc) =>
+          job.location?.toLowerCase().includes(loc.toLowerCase())
+        );
 
-    const matchesExperience =
-      filters.experience.length === 0 ||
-      filters.experience.includes(job.experience_level);
+      const matchesExperience =
+        filters.experience.length === 0 ||
+        filters.experience.includes(job.experience_level);
 
-    return matchesFeatured && matchesLocation && matchesExperience;
-  });
+      const matchesJobType =
+        !jobType || job.job_type === jobType;
 
-  // 3. Pagination
+      return (
+        matchesFeatured &&
+        matchesLocation &&
+        matchesExperience &&
+        matchesJobType
+      );
+    })
+    .sort((a, b) => {
+      if (sortBy === "newest") {
+        return new Date(b.created_at) - new Date(a.created_at);
+      }
+      if (sortBy === "oldest") {
+        return new Date(a.created_at) - new Date(b.created_at);
+      }
+      if (sortBy === "salary") {
+        return (b.salary || 0) - (a.salary || 0);
+      }
+      return 0;
+    });
+
   const totalPages = Math.ceil(filteredJobs.length / jobsPerPage) || 1;
   const startIndex = (currentPage - 1) * jobsPerPage;
   const currentJobs = filteredJobs.slice(startIndex, startIndex + jobsPerPage);
 
-  // 4. Toggle between all and featured jobs
   const handleToggle = (value) => {
     setActive(value);
     setCurrentPage(1);
   };
 
-  // 5. Calculate featured jobs count
-  const featuredCount = jobsData.filter(
-    (job) => job.is_featured === true,
-  ).length;
+  const featuredCount = jobsData.filter((job) => job.is_featured === true).length;
+
+  const clearAllFilters = () => {
+    setSearchTerm("");
+    setSearchQuery("");
+    setFilters({
+      categories: [],
+      locations: [],
+      experience: [],
+      minSalary: "",
+      maxSalary: "",
+    });
+    setCurrentPage(1);
+  };
 
   return (
     <section>
@@ -114,31 +168,27 @@ const Jobs = () => {
 
       <div className="min-h-screen bg-white dark:bg-[#071A19] py-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Top Row: Toggle + Search */}
-          <div className="flex flex-col lg:flex-row lg:items-center gap-4 mb-6">
+          {/* Top Row */}
+          <div className="flex flex-col lg:flex-row lg:items-center gap-4 mb-4">
             <div className="inline-flex items-center bg-gray-100 dark:bg-[#0F2A28] rounded-full p-1 shrink-0">
               <button
                 onClick={() => handleToggle("all")}
-                className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all cursor-pointer ${
-                  active === "all"
-                    ? "bg-teal-600 text-white shadow-sm"
-                    : "text-gray-500 dark:text-gray-400 hover:text-gray-700"
-                }`}
+                className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all cursor-pointer ${active === "all"
+                  ? "bg-teal-600 text-white shadow-sm"
+                  : "text-gray-500 dark:text-gray-400 hover:text-gray-700"
+                  }`}
               >
-                All Jobs
-                <span>{jobsData.length}</span>
+                All Jobs <span>{jobsData.length}</span>
               </button>
 
               <button
                 onClick={() => handleToggle("featured")}
-                className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all cursor-pointer ${
-                  active === "featured"
-                    ? "bg-teal-600 text-white shadow-sm"
-                    : "text-gray-500 dark:text-gray-400 hover:text-gray-700"
-                }`}
+                className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all cursor-pointer ${active === "featured"
+                  ? "bg-teal-600 text-white shadow-sm"
+                  : "text-gray-500 dark:text-gray-400 hover:text-gray-700"
+                  }`}
               >
-                Featured Jobs
-                <span>{featuredCount}</span>
+                Featured Jobs <span>{featuredCount}</span>
               </button>
             </div>
 
@@ -166,116 +216,181 @@ const Jobs = () => {
             </div>
           </div>
 
-          {/* Bottom Row: Sidebar + Content */}
+          {/* ✅ Active Filters Chips */}
+          {(searchQuery || filters.locations.length > 0 || filters.categories.length > 0) && (
+            <div className="flex flex-wrap items-center gap-2 mb-5">
+              <span className="text-sm text-gray-500 dark:text-gray-400">
+                Active filters:
+              </span>
+
+              {searchQuery && (
+                <span className="inline-flex items-center gap-1.5 bg-teal-50 text-teal-700 dark:bg-teal-900/40 dark:text-teal-300 px-3 py-1.5 rounded-full text-sm font-medium">
+                  Search: {searchQuery}
+                  <button
+                    onClick={() => {
+                      setSearchTerm("");
+                      setSearchQuery("");
+                    }}
+                    className="ml-1 hover:text-teal-900 dark:hover:text-white"
+                  >
+                    ×
+                  </button>
+                </span>
+              )}
+
+              {filters.locations.map((loc) => (
+                <span
+                  key={loc}
+                  className="inline-flex items-center gap-1.5 bg-blue-50 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300 px-3 py-1.5 rounded-full text-sm font-medium"
+                >
+                  Location: {loc}
+                  <button
+                    onClick={() =>
+                      setFilters((prev) => ({
+                        ...prev,
+                        locations: prev.locations.filter((l) => l !== loc),
+                      }))
+                    }
+                    className="ml-1 hover:text-blue-900 dark:hover:text-white"
+                  >
+                    ×
+                  </button>
+                </span>
+              ))}
+
+              {filters.categories.length > 0 && (
+                <span className="inline-flex items-center gap-1.5 bg-purple-50 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300 px-3 py-1.5 rounded-full text-sm font-medium">
+                  Category selected
+                  <button
+                    onClick={() =>
+                      setFilters((prev) => ({
+                        ...prev,
+                        categories: [],
+                      }))
+                    }
+                    className="ml-1 hover:text-purple-900 dark:hover:text-white"
+                  >
+                    ×
+                  </button>
+                </span>
+              )}
+
+              <button
+                onClick={clearAllFilters}
+                className="text-sm text-red-500 hover:text-red-600 font-medium ml-1 cursor-pointer"
+              >
+                Clear all
+              </button>
+            </div>
+          )}
+
+          {/* Main Content */}
           <div className="flex flex-col lg:flex-row gap-6">
             <JobsFilter
               onFilterChange={handleFilterChange}
               jobsData={jobsData}
+              initialLocations={filters.locations} // pass initial location
             />
+
             <div className="flex-1">
-              {/* Sort + View Toggle Row */}
               <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
                 <div className="flex items-center gap-2">
-                  <select className="bg-white dark:bg-[#0F2A28] border border-gray-200 dark:border-teal-900/40 rounded-full px-4 py-2 text-sm text-gray-700 dark:text-gray-200 outline-none">
-                    <option>All Types</option>
-                    <option>Full Time</option>
-                    <option>Part Time</option>
-                    <option>Remote</option>
+                  {/* Job Type Filter */}
+                  <select
+                    value={jobType}
+                    onChange={(e) => {
+                      setJobType(e.target.value);
+                      setCurrentPage(1);
+                    }}
+                    className="bg-white dark:bg-[#0F2A28] border border-gray-200 dark:border-teal-900/40 rounded-full px-4 py-2 text-sm text-gray-700 dark:text-gray-200 outline-none cursor-pointer"
+                  >
+                    <option value="">All Types</option>
+                    <option value="full_time">Full Time</option>
+                    <option value="part_time">Part Time</option>
+                    <option value="remote">Remote</option>
+                    <option value="internship">Internship</option>
+                    <option value="contract">Contract</option>
                   </select>
 
-                  <select className="bg-white dark:bg-[#0F2A28] border border-gray-200 dark:border-teal-900/40 rounded-full px-4 py-2 text-sm text-gray-700 dark:text-gray-200 outline-none">
-                    <option>Sort: Newest</option>
-                    <option>Sort: Oldest</option>
-                    <option>Sort: Salary</option>
+                  {/* Sort Filter */}
+                  <select
+                    value={sortBy}
+                    onChange={(e) => setSortBy(e.target.value)}
+                    className="bg-white dark:bg-[#0F2A28] border border-gray-200 dark:border-teal-900/40 rounded-full px-4 py-2 text-sm text-gray-700 dark:text-gray-200 outline-none cursor-pointer"
+                  >
+                    <option value="newest">Sort: Newest</option>
+                    <option value="oldest">Sort: Oldest</option>
+                    <option value="salary">Sort: Salary</option>
                   </select>
                 </div>
 
-                {/* Grid / List Toggle */}
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => setViewMode("grid")}
-                    className={`w-9 h-9 rounded-full flex items-center justify-center cursor-pointer transition-colors ${
-                      viewMode === "grid"
-                        ? "bg-teal-500 text-white"
-                        : "bg-white dark:bg-[#0F2A28] border border-gray-200 dark:border-teal-900/40 text-gray-500 hover:text-teal-600"
-                    }`}
+                    className={`w-9 h-9 rounded-full flex items-center justify-center cursor-pointer ${viewMode === "grid"
+                      ? "bg-teal-500 text-white"
+                      : "bg-white dark:bg-[#0F2A28] border border-gray-200 dark:border-teal-900/40 text-gray-500"
+                      }`}
                   >
                     <FiGrid />
                   </button>
-
                   <button
                     onClick={() => setViewMode("list")}
-                    className={`w-9 h-9 rounded-full flex items-center justify-center cursor-pointer transition-colors ${
-                      viewMode === "list"
-                        ? "bg-teal-500 text-white"
-                        : "bg-white dark:bg-[#0F2A28] border border-gray-200 dark:border-teal-900/40 text-gray-500 hover:text-teal-600"
-                    }`}
+                    className={`w-9 h-9 rounded-full flex items-center justify-center cursor-pointer ${viewMode === "list"
+                      ? "bg-teal-500 text-white"
+                      : "bg-white dark:bg-[#0F2A28] border border-gray-200 dark:border-teal-900/40 text-gray-500"
+                      }`}
                   >
                     <FiList />
                   </button>
                 </div>
               </div>
 
-              {/* Loading / Error / Content */}
               {loading ? (
-                <div className="text-center py-16 text-gray-500 dark:text-gray-400">
-                  Loading jobs...
-                </div>
+                <div className="text-center py-16 text-gray-500">Loading jobs...</div>
               ) : error ? (
                 <div className="text-center py-16 text-red-500">{error}</div>
               ) : (
                 <>
-                  {/* Job Count */}
                   <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
                     Showing {filteredJobs.length === 0 ? 0 : startIndex + 1}–
                     {Math.min(startIndex + jobsPerPage, filteredJobs.length)} of{" "}
                     {filteredJobs.length} jobs
                   </p>
 
-                  {/* Job Cards */}
                   {currentJobs.length > 0 ? (
                     <JobsCard jobs={currentJobs} viewMode={viewMode} />
                   ) : (
-                    <div className="text-center py-16 text-gray-500 dark:text-gray-400">
-                      No jobs found.
-                    </div>
+                    <div className="text-center py-16 text-gray-500">No jobs found.</div>
                   )}
 
-                  {/* Pagination */}
                   {totalPages > 1 && (
                     <div className="mt-8 flex items-center justify-center gap-2">
                       <button
-                        onClick={() =>
-                          setCurrentPage((p) => Math.max(p - 1, 1))
-                        }
+                        onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
                         disabled={currentPage === 1}
-                        className="px-4 py-2 rounded-full border border-gray-200 dark:border-teal-900/40 text-sm text-gray-600 dark:text-gray-300 disabled:opacity-40 hover:bg-teal-50 dark:hover:bg-teal-900/30 transition cursor-pointer"
+                        className="px-4 py-2 rounded-full border text-sm disabled:opacity-40"
                       >
                         Previous
                       </button>
 
-                      {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                        (page) => (
-                          <button
-                            key={page}
-                            onClick={() => setCurrentPage(page)}
-                            className={`w-10 h-10 rounded-full text-sm font-medium transition cursor-pointer ${
-                              currentPage === page
-                                ? "bg-teal-500 text-white"
-                                : "border border-gray-200 dark:border-teal-900/40 text-gray-600 dark:text-gray-300 hover:bg-teal-50 dark:hover:bg-teal-900/30"
+                      {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                        <button
+                          key={page}
+                          onClick={() => setCurrentPage(page)}
+                          className={`w-10 h-10 rounded-full text-sm font-medium ${currentPage === page
+                            ? "bg-teal-500 text-white"
+                            : "border text-gray-600"
                             }`}
-                          >
-                            {page}
-                          </button>
-                        ),
-                      )}
+                        >
+                          {page}
+                        </button>
+                      ))}
 
                       <button
-                        onClick={() =>
-                          setCurrentPage((p) => Math.min(p + 1, totalPages))
-                        }
+                        onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
                         disabled={currentPage === totalPages}
-                        className="px-4 py-2 rounded-full border border-gray-200 dark:border-teal-900/40 text-sm text-gray-600 dark:text-gray-300 disabled:opacity-40 hover:bg-teal-50 dark:hover:bg-teal-900/30 transition cursor-pointer"
+                        className="px-4 py-2 rounded-full border text-sm disabled:opacity-40"
                       >
                         Next
                       </button>

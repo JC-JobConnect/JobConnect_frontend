@@ -6,11 +6,16 @@ import { MdOutlineMarkEmailRead } from "react-icons/md";
 import { FiLayers } from "react-icons/fi";
 import { FaArrowRightLong } from "react-icons/fa6";
 import profileImg from "../../Assets/images/group_profile.webp"
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 const Hero = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
+
+  const [search, setSearch] = useState("");
+  const [location, setLocation] = useState("");
+  const [category, setCategory] = useState("");
 
   useEffect(() => {
     const checkAuth = () => {
@@ -27,6 +32,18 @@ const Hero = () => {
       window.removeEventListener("authChanged", checkAuth);
     };
   }, []);
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+
+    const params = new URLSearchParams();
+
+    if (search.trim()) params.set("search", search.trim());
+    if (location.trim()) params.set("location", location.trim());
+    if (category) params.set("category", category);
+
+    navigate(`/jobs?${params.toString()}`);
+  };
 
   return (
     <section className="bg-[#F9FAFB] dark:bg-[#071A19] pt-28 pb-16 ">
@@ -69,7 +86,7 @@ const Hero = () => {
             {/* Call to Action Buttons */}
             <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2">
               <Link
-                to={isLoggedIn ? "/profile" : "/register" }
+                to={isLoggedIn ? "/profile" : "/register"}
                 className="px-7 py-3.5 rounded-full bg-[#0fa988] hover:bg-[#0d9488] text-white font-semibold text-base shadow-lg shadow-teal-600/20 hover:scale-[1.02] transition-all flex items-center gap-2"
               >
                 Get Started
@@ -174,14 +191,18 @@ const Hero = () => {
         {/* Search Bar Section */}
 
         <div className="mt-14">
-          <div className="bg-white dark:bg-[#102B2A] rounded-full shadow-md dark:shadow-black/20 border border-gray-100 dark:border-[#24504B] p-3 flex flex-col md:flex-row gap-2 items-center">
-
+          <form
+            onSubmit={handleSearch}
+            className="bg-white dark:bg-[#102B2A] rounded-full shadow-md dark:shadow-black/20 border border-gray-100 dark:border-[#24504B] p-3 flex flex-col md:flex-row gap-2 items-center"
+          >
             {/* Job Title */}
             <div className="flex-1 flex items-center gap-3 px-5 py-4 rounded-full border border-gray-200 dark:border-[#28514D] bg-white dark:bg-[#102F2D] w-full">
               <CiSearch className="text-gray-500 dark:text-[#A7B5B4] text-xl shrink-0" />
               <input
                 type="text"
                 placeholder="Job Title, Skill Or Company"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
                 className="bg-transparent outline-none w-full text-gray-700 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-[#A7B5B4] text-base lg:text-lg"
               />
             </div>
@@ -192,6 +213,8 @@ const Hero = () => {
               <input
                 type="text"
                 placeholder="Location"
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
                 className="bg-transparent outline-none w-full text-gray-700 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-[#A7B5B4] text-base lg:text-lg"
               />
             </div>
@@ -199,25 +222,29 @@ const Hero = () => {
             {/* Category */}
             <div className="flex-1 flex items-center gap-3 px-5 py-4 rounded-full border border-gray-200 dark:border-[#28514D] bg-white dark:bg-[#102F2D] w-full">
               <FiLayers className="text-gray-600 dark:text-[#A7B5B4] text-xl shrink-0" />
-              <select className="bg-transparent outline-none w-full text-gray-700 dark:text-gray-100 text-base lg:text-lg cursor-pointer">
+              <select
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                className="bg-transparent outline-none w-full text-gray-700 dark:text-gray-100 text-base lg:text-lg cursor-pointer"
+              >
                 <option value="">All Categories</option>
-                <option value="engineering" className="bg-white text-gray-900">Engineering</option>
-                <option value="marketing" className="bg-white text-gray-900">Marketing</option>
-                <option value="design" className="bg-white text-gray-900">Design</option>
-                <option value="sales" className="bg-white text-gray-900">Sales</option>
+                <option value="engineering">Engineering</option>
+                <option value="marketing">Marketing</option>
+                <option value="design">Design</option>
+                <option value="sales">Sales</option>
               </select>
             </div>
 
             {/* Search Button */}
             <button
-              type="button"
+              type="submit"
               className="bg-[#0D9488] hover:bg-[#0F766E] text-white font-semibold px-8 py-4 rounded-full transition-colors w-full md:w-auto cursor-pointer text-base lg:text-lg"
             >
               Search
             </button>
-          </div>
+          </form>
 
-          {/* Popular Searches */}
+          {/* Popular Searches - also make them clickable */}
           <div className="mt-10 text-center">
             <p className="text-[#0F766E] dark:text-[#2DD4BF] font-semibold mb-3 text-xl lg:text-2xl">
               Popular Searches By Categories
@@ -241,6 +268,7 @@ const Hero = () => {
                 <button
                   key={item}
                   type="button"
+                  onClick={() => navigate(`/jobs?search=${encodeURIComponent(item)}`)}
                   className="flex items-center gap-1.5 text-sm cursor-pointer text-gray-500 dark:text-[#A7B5B4] hover:text-[#0D9488] dark:hover:text-[#5EEAD4] transition-colors"
                 >
                   <CiSearch className="text-base" />

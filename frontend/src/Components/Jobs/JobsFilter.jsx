@@ -42,12 +42,24 @@ const FilterSection = ({ title, icon, children, defaultOpen = true }) => {
   );
 };
 
-const JobsFilter = ({ onFilterChange, jobsData = [] }) => {
+const JobsFilter = ({
+  onFilterChange,
+  jobsData = [],
+  initialLocations = [],
+  initialCategories = [],
+}) => {
   const [categories, setCategories] = useState([]);
   const locations = [
     ...new Set(jobsData.map((job) => job.location).filter(Boolean)),
   ];
 
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [selectedLocations, setSelectedLocations] = useState([]);
+  const [selectedExperience, setSelectedExperience] = useState([]);
+  const [minSalary, setMinSalary] = useState("");
+  const [maxSalary, setMaxSalary] = useState("");
+
+  // Fetch categories
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -57,15 +69,24 @@ const JobsFilter = ({ onFilterChange, jobsData = [] }) => {
         console.error("Category load failed:", error);
       }
     };
-
     fetchCategories();
   }, []);
 
-  const [selectedCategories, setSelectedCategories] = useState([]);
-  const [selectedLocations, setSelectedLocations] = useState([]);
-  const [selectedExperience, setSelectedExperience] = useState([]);
-  const [minSalary, setMinSalary] = useState("");
-  const [maxSalary, setMaxSalary] = useState("");
+  // ✅ Automatically check locations coming from Homepage
+  useEffect(() => {
+    if (initialLocations.length > 0) {
+      setSelectedLocations(initialLocations);
+    }
+  }, [initialLocations]);
+
+  // ✅ Automatically check categories coming from Homepage
+  useEffect(() => {
+    if (initialCategories.length > 0) {
+      setSelectedCategories(initialCategories);
+    }
+  }, [initialCategories]);
+
+  // Send selected filters to parent
   useEffect(() => {
     onFilterChange({
       categories: selectedCategories,
@@ -98,8 +119,9 @@ const JobsFilter = ({ onFilterChange, jobsData = [] }) => {
     setMinSalary("");
     setMaxSalary("");
   };
+
   return (
-    <aside className="w-full lg:w-72 shrink-0 ">
+    <aside className="w-full lg:w-72 shrink-0">
       <div>
         <div className="rounded-2xl border border-slate-200/80 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-[#0F2A28] lg:sticky lg:top-24">
           {/* Header */}
@@ -121,7 +143,6 @@ const JobsFilter = ({ onFilterChange, jobsData = [] }) => {
           <FilterSection
             title="Categories"
             icon={<FiGrid className="text-teal-600 dark:text-teal-400" />}
-            defaultOpen={true}
           >
             {categories.map((cat) => (
               <label
@@ -135,7 +156,7 @@ const JobsFilter = ({ onFilterChange, jobsData = [] }) => {
                     toggleFilter(
                       cat.id,
                       selectedCategories,
-                      setSelectedCategories,
+                      setSelectedCategories
                     )
                   }
                   className="h-4 w-4 rounded border-gray-300 text-teal-600 focus:ring-teal-500"
@@ -149,7 +170,6 @@ const JobsFilter = ({ onFilterChange, jobsData = [] }) => {
           <FilterSection
             title="Location"
             icon={<FiMapPin className="text-teal-600 dark:text-teal-400" />}
-            defaultOpen={true}
           >
             {locations.map((loc) => (
               <label
@@ -173,7 +193,6 @@ const JobsFilter = ({ onFilterChange, jobsData = [] }) => {
           <FilterSection
             title="Experience Level"
             icon={<FiTrendingUp className="text-teal-600 dark:text-teal-400" />}
-            defaultOpen={true}
           >
             {experienceLevels.map((exp) => (
               <label
@@ -187,7 +206,7 @@ const JobsFilter = ({ onFilterChange, jobsData = [] }) => {
                     toggleFilter(
                       exp.value,
                       selectedExperience,
-                      setSelectedExperience,
+                      setSelectedExperience
                     )
                   }
                   className="h-4 w-4 rounded border-gray-300 text-teal-600 focus:ring-teal-500"
@@ -196,6 +215,7 @@ const JobsFilter = ({ onFilterChange, jobsData = [] }) => {
               </label>
             ))}
           </FilterSection>
+
           {/* Salary Range */}
           <FilterSection
             title="Salary Range"
@@ -209,7 +229,6 @@ const JobsFilter = ({ onFilterChange, jobsData = [] }) => {
                 onChange={(e) => setMinSalary(e.target.value)}
                 className="w-full min-w-0 rounded-lg border border-gray-200 p-2 text-sm outline-none dark:bg-[#071A19] dark:text-white"
               />
-
               <input
                 type="number"
                 placeholder="Max Salary"
@@ -220,7 +239,6 @@ const JobsFilter = ({ onFilterChange, jobsData = [] }) => {
             </div>
           </FilterSection>
 
-          {/* Reset Button */}
           <button
             type="button"
             onClick={clearAll}
