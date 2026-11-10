@@ -31,6 +31,7 @@ import AdminCategory from "./Pages/Admin/AdminCatagory";
 import AdminCompany from "./Pages/Admin/AdminCompany";
 import AdminDashboard from "./Pages/Admin/AdminDashboard";
 import AdminJobs from "./Pages/Admin/AdminJobs";
+import AdminUserProfile from "./Pages/Admin/AdminUserProfile";
 
 // INFORMATIONAL PAGES
 import About from "./Pages/About";
@@ -75,6 +76,7 @@ const App = () => {
           <Route path="/admin/jobs" element={<AdminJobs />} />
           <Route path="/admin/categories" element={<AdminCategory />} />
           <Route path="/admin/companies" element={<AdminCompany />} />
+          <Route path="/admin/users/:id" element={<AdminUserProfile />} />
         </Route>
       </Routes>
 
