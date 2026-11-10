@@ -1,14 +1,14 @@
 
 import { Link } from "react-router-dom";
 import { FiArrowUpRight } from "react-icons/fi";
-import Img from "../../Assets/images/searchjob.webp"
+import Img from "../../Assets/images/uploadcv.webp"
 
 export default function HiringCTACard({
-  title = "WE ARE HIRING",
-  subtitle = "Apply Today!",
-  description = "Hellow All",
-  buttonText = "Jobs",
-  buttonLink = "/jobs",
+  title = "Get Hired Faster",
+  subtitle = "Complete your profile first",
+  description = "A strong profile helps you stand out from others. ",
+  buttonText = "My Profile",
+  buttonLink = "/profile",
   backgroundImage = Img,
 }) {
   return (

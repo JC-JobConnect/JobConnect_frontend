@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import {
   FiArrowLeft,
@@ -9,12 +9,14 @@ import {
   FiTag,
 } from "react-icons/fi";
 import jobsApi from "../../Services/JobApi";
+import PageHero from "../../Components/Common/PageHero";
 
 export default function TopCompanyView() {
   const { companyId } = useParams();
 
   const [jobs, setJobs] = useState([]);
   const [companyName, setCompanyName] = useState("");
+  const [companyLogo, setCompanyLogo] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -24,45 +26,32 @@ export default function TopCompanyView() {
         setLoading(true);
         setError("");
 
-        // Fetch all jobs from backend
-        const response = await jobsApi.get("v1/jobs/");
-
-        console.log("Company ID from URL:", companyId);
-        console.log("API Response:", response.data);
-
-        // Handle normal and paginated DRF responses
-        const data = Array.isArray(response.data)
+        // Option A: Use companies endpoint (already includes jobs)
+        const response = await jobsApi.get("v1/companies/");
+        const companies = Array.isArray(response.data)
           ? response.data
           : response.data.results || [];
 
-        // Filter jobs by company ID
-        const filteredJobs = data.filter((job) => {
-          const jobCompanyId =
-            typeof job.company === "object" ? job.company?.id : job.company;
+        const company = companies.find(
+          (c) => Number(c.id) === Number(companyId)
+        );
 
-          return Number(jobCompanyId) === Number(companyId);
-        });
-
-        console.log("Filtered Jobs:", filteredJobs);
-
-        setJobs(filteredJobs);
-
-        // Get company name
-        if (filteredJobs.length > 0) {
-          setCompanyName(
-            filteredJobs[0].company_name ||
-              filteredJobs[0].company?.name ||
-              "Company",
-          );
-        } else {
+        if (!company) {
+          setError("Company not found.");
+          setJobs([]);
           setCompanyName("Company");
+          setCompanyLogo(null);
+          return;
         }
+
+        setCompanyName(company.name || "Company");
+        setCompanyLogo(company.logo || null);
+        setJobs(company.jobs || []);
       } catch (err) {
         console.error("Error fetching company jobs:", err);
-
         setError(
           err.response?.data?.detail ||
-            "Unable to load positions for this company. Please try again.",
+            "Unable to load positions for this company. Please try again."
         );
       } finally {
         setLoading(false);
@@ -74,7 +63,7 @@ export default function TopCompanyView() {
     }
   }, [companyId]);
 
-  // Loading State
+  // Loading
   if (loading) {
     return (
       <div className="flex min-h-[50vh] items-center justify-center bg-white dark:bg-[#071A19]">
@@ -85,7 +74,7 @@ export default function TopCompanyView() {
     );
   }
 
-  // Error State
+  // Error
   if (error) {
     return (
       <div className="flex min-h-[50vh] items-center justify-center bg-white px-6 dark:bg-[#071A19]">
@@ -93,9 +82,7 @@ export default function TopCompanyView() {
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
             Oops! Something went wrong
           </h2>
-
           <p className="mt-2 text-slate-500 dark:text-slate-400">{error}</p>
-
           <Link
             to="/"
             className="mt-5 inline-flex items-center gap-2 rounded-xl bg-teal-600 px-5 py-3 font-semibold text-white transition hover:bg-teal-700"
@@ -107,42 +94,63 @@ export default function TopCompanyView() {
     );
   }
 
+  // Helper for logo URL
+  const getLogoUrl = (logo) => {
+    if (!logo) return null;
+    if (logo.startsWith("http")) return logo;
+    return `http://127.0.0.1:8000${logo.startsWith("/") ? "" : "/"}${logo}`;
+  };
+
   return (
     <div className="min-h-screen bg-[#F9FAFB] font-sans text-slate-900 transition-colors duration-300 dark:bg-[#071A19] dark:text-gray-100">
+      <PageHero title={companyName} />
+
       <main className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
         {/* Back Link */}
         <div className="mb-6">
           <Link
-            to="/"
+            to="/companies"
             className="inline-flex items-center gap-2 text-sm font-medium text-slate-500 transition hover:text-teal-600 dark:text-slate-400 dark:hover:text-teal-400"
           >
-            <FiArrowLeft /> Back to Companies
+            <FiArrowLeft /> View All Companies
           </Link>
         </div>
 
-        {/* Header Section */}
-        <div className="mb-8 border-b border-slate-200 pb-6 dark:border-teal-900/60">
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-3xl">
-            {companyName
-              ? `${companyName} Open Positions`
-              : "Company Positions"}
-          </h1>
+        {/* Header */}
+        <div className="mb-8 flex items-center gap-4 border-b border-slate-200 pb-6 dark:border-teal-900/60">
+          {/* Company Logo */}
+          <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-gray-100 dark:bg-[#123836]">
+            {companyLogo ? (
+              <img
+                src={getLogoUrl(companyLogo)}
+                alt={`${companyName} logo`}
+                className="h-full w-full object-cover"
+              />
+            ) : (
+              <FiBriefcase className="h-6 w-6 text-teal-600" />
+            )}
+          </div>
 
-          <p className="mt-1 text-slate-500 dark:text-slate-400">
-            {jobs.length} open position{jobs.length !== 1 && "s"} available at
-            this moment.
-          </p>
+          <div>
+            <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-3xl">
+              {companyName
+                ? `${companyName} Open Positions`
+                : "Company Positions"}
+            </h1>
+            <p className="mt-1 text-slate-500 dark:text-slate-400">
+              {jobs.length} open position{jobs.length !== 1 && "s"} available at
+              this moment.
+            </p>
+          </div>
         </div>
 
         {/* Jobs List / Empty State */}
         {jobs.length === 0 ? (
           <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-12 text-center dark:border-teal-900/60 dark:bg-[#0B2421]">
             <FiBriefcase className="mx-auto h-12 w-12 text-slate-400 dark:text-teal-500" />
-
             <h3 className="mt-4 text-lg font-bold text-slate-900 dark:text-white">
               No open positions
             </h3>
-
             <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
               This company doesn't have any active job listings right now. Check
               back later!
@@ -161,7 +169,6 @@ export default function TopCompanyView() {
                   className="flex flex-col justify-between gap-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-xs transition duration-200 hover:shadow-md dark:border-teal-900/60 dark:bg-[#0B2421] sm:flex-row sm:items-center"
                 >
                   <div className="space-y-3">
-                    {/* Job Title */}
                     <div className="flex flex-wrap items-center gap-3">
                       <h2 className="text-xl font-bold text-slate-900 dark:text-white">
                         {job.title}
@@ -174,7 +181,6 @@ export default function TopCompanyView() {
                       )}
                     </div>
 
-                    {/* Job Information */}
                     <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-slate-500 dark:text-slate-400">
                       <span className="flex items-center gap-1.5">
                         <FiMapPin className="text-teal-500" />
@@ -207,7 +213,6 @@ export default function TopCompanyView() {
                     </div>
                   </div>
 
-                  {/* View Details Button */}
                   <Link
                     to={`/job_details/${job.id}`}
                     className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-teal-500 px-5 py-3 font-semibold text-white shadow-md shadow-teal-500/20 transition duration-200 hover:bg-teal-600 focus:outline-none focus:ring-4 focus:ring-teal-500/30"

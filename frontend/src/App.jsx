@@ -27,10 +27,10 @@ import Login from "./Pages/Auth/Login";
 import Register from "./Pages/Auth/Register";
 
 // ADMIN PAGES
-import AdminCategory from "./Pages/admin/AdminCatagory";
-import AdminCompany from "./Pages/admin/AdminCompany";
+import AdminCategory from "./Pages/Admin/AdminCatagory";
+import AdminCompany from "./Pages/Admin/AdminCompany";
 import AdminDashboard from "./Pages/Admin/AdminDashboard";
-import AdminJobs from "./Pages/admin/AdminJobs";
+import AdminJobs from "./Pages/Admin/AdminJobs";
 
 // INFORMATIONAL PAGES
 import About from "./Pages/About";
