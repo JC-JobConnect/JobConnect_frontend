@@ -4,7 +4,6 @@ import { registerUser } from "../../Services/Auth";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { MdOutlineMarkEmailRead } from "react-icons/md";
 import globeImg from "../../Assets/images/Globe.webp";
-import googleImg from "../../Assets/images/Google.webp";
 import logo from "../../Assets/images/logo2.svg";
 
 const Register = () => {
@@ -306,26 +305,6 @@ const Register = () => {
                   Log in
                 </Link>
               </p>
-
-              {/* Divider */}
-              <div className="flex items-center gap-4 my-2">
-                <div className="flex-1 h-px bg-gray-200"></div>
-                <span className="text-sm text-gray-400">Or</span>
-                <div className="flex-1 h-px bg-gray-200"></div>
-              </div>
-
-              {/* Google Button */}
-              <button
-                type="button"
-                className="w-full flex items-center justify-center gap-3 border border-gray-200 cursor-pointer hover:bg-gray-50 text-gray-700 font-medium py-3 rounded-xl transition-colors"
-              >
-                <img
-                  src={googleImg}
-                  alt="Google"
-                  className="w-5 h-5"
-                />
-                Sign up with Google
-              </button>
 
               {/* Terms */}
               <p className="text-xs text-gray-500 text-center leading-relaxed mb-0">

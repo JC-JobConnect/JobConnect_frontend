@@ -11,7 +11,6 @@ import {
 } from "react-router-dom";
 
 import globeImg from "../../Assets/images/Globe.webp";
-import googleImg from "../../Assets/images/Google.webp";
 import logo from "../../Assets/images/logo2.svg";
 
 import {
@@ -299,29 +298,6 @@ export default function Login() {
                   Sign Up
                 </Link>
               </p>
-
-              {/* Divider */}
-              <div className="my-2 flex items-center gap-4">
-                <div className="h-px flex-1 bg-gray-200" />
-
-                <span className="text-sm text-gray-400">Or</span>
-
-                <div className="h-px flex-1 bg-gray-200" />
-              </div>
-
-              {/* Google Button */}
-              <button
-                type="button"
-                className="flex w-full cursor-pointer items-center justify-center gap-3 rounded-xl border border-gray-200 py-3 font-medium text-gray-700 transition-colors hover:bg-gray-50"
-              >
-                <img
-                  src={googleImg}
-                  alt=""
-                  className="h-5 w-5"
-                />
-
-                Continue with Google
-              </button>
 
               {/* Terms */}
               <p className="text-center text-xs leading-relaxed text-gray-500">
