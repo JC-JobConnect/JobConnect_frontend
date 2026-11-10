@@ -330,11 +330,11 @@ const Register = () => {
               {/* Terms */}
               <p className="text-xs text-gray-500 text-center leading-relaxed mb-0">
                 By signing up I confirm that I carefully have read and agree to the JobConnect{" "}
-                <Link to="/privacy-policy" className="text-teal-600 hover:underline">
+                <Link to="/privacy" className="text-teal-600 hover:underline">
                   Privacy Policy
                 </Link>{" "}
                 and{" "}
-                <Link to="/terms-of-service" className="text-teal-600 hover:underline">
+                <Link to="/terms" className="text-teal-600 hover:underline">
                   Terms of Service
                 </Link>
                 .

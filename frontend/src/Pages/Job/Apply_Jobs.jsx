@@ -300,17 +300,12 @@ function ApplyJob() {
               Application Submitted!
             </h3>
             <p className="text-gray-600 dark:text-slate-300 mb-6">
-              Your application has been successfully submitted. You will be
-              redirected to{" "}
-              <span className="font-medium text-teal-500 cursor-pointer">
-                My Applications
-              </span>{" "}
-              shortly.
+              Your application has been successfully submitted. You can check the status of your application in the "My Applications".
             </p>
 
             <button
               onClick={() => navigate("/my-applications")}
-              className="bg-teal-500 hover:bg-teal-600 text-white font-medium px-8 py-2.5 rounded-xl transition"
+              className="bg-teal-500 hover:bg-teal-600 text-white font-medium px-8 py-2.5 rounded-xl transition cursor-pointer"
             >
               Go to My Applications
             </button>

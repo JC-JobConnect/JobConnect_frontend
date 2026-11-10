@@ -327,14 +327,14 @@ export default function Login() {
               <p className="text-center text-xs leading-relaxed text-gray-500">
                 By signing in, you agree to our{" "}
                 <Link
-                  to="/privacy-policy"
+                  to="/privacy"
                   className="text-teal-600 hover:underline"
                 >
                   Privacy Policy
                 </Link>{" "}
                 and{" "}
                 <Link
-                  to="/terms-of-service"
+                  to="/terms"
                   className="text-teal-600 hover:underline"
                 >
                   Terms of Service
