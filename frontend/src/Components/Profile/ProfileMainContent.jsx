@@ -16,8 +16,7 @@ import {
   deleteSkill,
 } from "../../Services/ProfileApi";
 
-const API_ORIGIN = "http://127.0.0.1:8000";
-
+const API_ORIGIN = import.meta.env.VITE_API_URL;
 const getMediaUrl = (url) => {
   if (!url) return "";
   if (url.startsWith("http")) return url;

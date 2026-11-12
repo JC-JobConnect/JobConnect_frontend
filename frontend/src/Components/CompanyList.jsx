@@ -140,7 +140,7 @@ function Companies() {
                               src={
                                 company.logo.startsWith("http")
                                   ? company.logo
-                                  : `http://127.0.0.1:8000${company.logo.startsWith("/") ? "" : "/"}${company.logo}`
+                                  : `${import.meta.env.VITE_API_URL}${company.logo.startsWith("/") ? "" : "/"}${company.logo}`
                               }
                               alt={`${company.name} logo`}
                               className="w-full h-full object-cover"

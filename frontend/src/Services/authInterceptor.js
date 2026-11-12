@@ -3,6 +3,7 @@ import axios from "axios";
 let refreshPromise = null;
 
 export function attachAuthInterceptors(apiInstance) {
+  const API_URL = import.meta.env.VITE_API_URL;
   // 1. Attach access token
   apiInstance.interceptors.request.use((config) => {
     const accessToken = localStorage.getItem("access_token");
@@ -40,7 +41,7 @@ export function attachAuthInterceptors(apiInstance) {
       try {
         if (!refreshPromise) {
           refreshPromise = axios
-            .post("http://127.0.0.1:8000/api/token/refresh/", {
+            .post(`${API_URL}/api/token/refresh/`, {
               refresh: refreshToken,
             })
             .then((res) => {

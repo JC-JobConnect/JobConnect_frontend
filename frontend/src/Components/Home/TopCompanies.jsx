@@ -44,7 +44,7 @@ const TopCompanies = () => {
 
     return logo.startsWith("http")
       ? logo
-      : `http://127.0.0.1:8000${logo.startsWith("/") ? "" : "/"}${logo}`;
+       : `${import.meta.env.VITE_API_URL}${logo.startsWith("/") ? "" : "/"}${logo}`;
   };
 
   return (

@@ -98,7 +98,7 @@ export default function TopCompanyView() {
   const getLogoUrl = (logo) => {
     if (!logo) return null;
     if (logo.startsWith("http")) return logo;
-    return `http://127.0.0.1:8000${logo.startsWith("/") ? "" : "/"}${logo}`;
+    return `${import.meta.env.VITE_API_URL}${logo.startsWith("/") ? "" : "/"}${logo}`;
   };
 
   return (

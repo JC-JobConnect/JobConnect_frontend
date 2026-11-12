@@ -3,7 +3,7 @@ import { useRef, useState } from "react";
 import { FiCamera, FiPhone, FiMapPin } from "react-icons/fi";
 import { updateProfile } from "../../Services/ProfileApi";
 
-const API_ORIGIN = "http://127.0.0.1:8000";
+const API_ORIGIN = import.meta.env.VITE_API_URL;
 
 const getMediaUrl = (url) => {
   if (!url) return "";
