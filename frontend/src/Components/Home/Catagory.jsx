@@ -48,7 +48,6 @@ const Category = () => {
         const mapped = results.map((cat) => ({
           id: cat.id,
           name: cat.name,
-          // If your API later returns job_count, use it
           vacancies: cat.job_count
             ? `${cat.job_count.toLocaleString()} Job Vacancy`
             : "Browse jobs",
