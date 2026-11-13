@@ -1,7 +1,7 @@
-import CategoryForm from "../../Components/admin/CategoryForm";
+import CategoryForm from "../../Components/Admin/CategoryForm";
 import { Link } from "react-router-dom";
-import Sidebar from "../../Components/admin/Sidebar";
-import TopBar from "../../Components/admin/TopBar";
+import Sidebar from "../../Components/Admin/Sidebar";
+import TopBar from "../../Components/Admin/TopBar";
 
 const AdminCategory = () => {
     return (

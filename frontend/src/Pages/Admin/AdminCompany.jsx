@@ -1,7 +1,7 @@
-import CompanyForm from "../../Components/admin/CompanyForm";
+import CompanyForm from "../../Components/Admin/CompanyForm";
 import { Link } from "react-router-dom";
-import Sidebar from "../../Components/admin/Sidebar";
-import TopBar from "../../Components/admin/TopBar";
+import Sidebar from "../../Components/Admin/Sidebar";
+import TopBar from "../../Components/Admin/TopBar";
 
 const AdminCompany = () => {
     return (

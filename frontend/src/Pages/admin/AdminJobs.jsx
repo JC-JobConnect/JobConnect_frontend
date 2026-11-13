@@ -1,6 +1,6 @@
-import Sidebar from "../../Components/admin/Sidebar";
-import TopBar from "../../Components/admin/TopBar";
-import PostJobForm from "../../Components/Admin/PostJobForm";
+import Sidebar from "../../Components/Admin/Sidebar.jsx";
+import TopBar from "../../Components/Admin/TopBar.jsx";
+import PostJobForm from "../../Components/Admin/PostJobForm.jsx";
 import jobsApi from "../../Services/JobApi.js";
 
 import { useEffect, useState } from "react";

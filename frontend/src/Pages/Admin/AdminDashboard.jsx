@@ -1,8 +1,8 @@
-import Sidebar from "../../Components/admin/Sidebar";
-import TopBar from "../../Components/admin/TopBar";
+import Sidebar from "../../Components/Admin/Sidebar";
+import TopBar from "../../Components/Admin/TopBar";
 import StatsCards from "../../Components/Admin/StatsCards";
-import ApplicationsTable from "../../Components/admin/ApplicationsTable";
-import UsersTable from "../../Components/admin/UsersTable";
+import ApplicationsTable from "../../Components/Admin/ApplicationsTable";
+import UsersTable from "../../Components/Admin/UsersTable";
 
 const AdminDashboard = () => {
   return (
