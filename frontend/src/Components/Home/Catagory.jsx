@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { Cross } from "lucide-react";
 import {
   FiPenTool,
   FiLayers,
@@ -20,7 +21,7 @@ const iconMap = {
   "business development": FiBriefcase,
   "property": FiHome,
   "marketing": FiTarget,
-  "education": FiBookOpen,
+  "healthcare": Cross,
   "accounting & finance": FiDollarSign,
 };
 
