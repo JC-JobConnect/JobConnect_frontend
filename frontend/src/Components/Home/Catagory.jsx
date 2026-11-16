@@ -1,28 +1,19 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Cross } from "lucide-react";
-import {
-  FiPenTool,
-  FiLayers,
-  FiMonitor,
-  FiBriefcase,
-  FiHome,
-  FiTarget,
-  FiBookOpen,
-  FiDollarSign,
-  FiGrid,
-} from "react-icons/fi";
+import { Cross,GlobeCheck, DollarSign, Van,Lightbulb, Layers, UsersRound } from "lucide-react";
+import {  FiTarget,FiGrid,} from "react-icons/fi";
+
 import jobsApi from "../../Services/JobApi"; 
 
 const iconMap = {
-  "art & design": FiPenTool,
-  "ui/ux design": FiLayers,
-  "it & software": FiMonitor,
-  "business development": FiBriefcase,
-  "property": FiHome,
+  "data & ai": Lightbulb,
+  "design": Layers,
+  "it": GlobeCheck,
+  "hr & admin": UsersRound,
+  "supply chain": Van,
   "marketing": FiTarget,
   "healthcare": Cross,
-  "accounting & finance": FiDollarSign,
+  "accounting": DollarSign,
 };
 
 const getIcon = (name = "") => {
