@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Cross,GlobeCheck, DollarSign, Van,Lightbulb, Layers, UsersRound } from "lucide-react";
 import {  FiTarget,FiGrid,} from "react-icons/fi";
-
 import jobsApi from "../../Services/JobApi"; 
 
 const iconMap = {

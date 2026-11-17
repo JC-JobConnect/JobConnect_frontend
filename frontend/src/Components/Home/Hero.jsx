@@ -228,10 +228,19 @@ const Hero = () => {
                 className="bg-transparent outline-none w-full text-gray-700 dark:text-gray-100 text-base lg:text-lg cursor-pointer"
               >
                 <option value="">All Categories</option>
-                <option value="engineering">Engineering</option>
                 <option value="marketing">Marketing</option>
-                <option value="design">Design</option>
-                <option value="sales">Sales</option>
+                <option value="data & ai">Data & AI</option>
+                <option value="supply chain">Supply Chain</option>
+                <option value="healthcare">Healthcare</option>
+                <option value="it">IT</option>
+                <option value="marketing">Sales</option>
+                <option value="accounting">Accounting</option>
+                <option value="it">Software</option>
+                <option value="accounting">Finance</option>
+                <option value="design">UI/UX Design</option>
+                <option value="hr & admin">HR & Admin</option>
+                <option value="design">Design & Creative</option>
+                <option value="it">Engineer</option>
               </select>
             </div>
 
@@ -252,17 +261,17 @@ const Hero = () => {
 
             <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
               {[
-                "Data Science",
-                "Teacher",
-                "Internship",
-                "Lecturer",
-                "Analyst",
                 "Marketing",
-                "Receptionist/Front Office Desk",
-                "Fresher",
+                "Data & AI",
+                "Supply Chain",
+                "Accounting",
+                "Software",
+                "UI/UX Design",
+                "Finance",
+                "Healthcare",
                 "Engineering",
                 "Graphic Designer",
-                "Call Center",
+                "HR & Admin",
                 "Sales",
               ].map((item) => (
                 <button
