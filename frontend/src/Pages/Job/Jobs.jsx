@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { CiSearch } from "react-icons/ci";
 import { FiGrid, FiList } from "react-icons/fi";
 import JobsFilter from "../../Components/Jobs/JobsFilter";
@@ -11,12 +11,14 @@ const Jobs = () => {
   const [searchParams] = useSearchParams();
   const [jobType, setJobType] = useState("");
   const [sortBy, setSortBy] = useState("newest");
+  const navigate = useNavigate();
 
   const [jobsData, setJobsData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
+  const [resetSignal, setResetSignal] = useState(0);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [active, setActive] = useState("all");
@@ -93,7 +95,10 @@ const Jobs = () => {
 
 
   // Fetch jobs
+
   useEffect(() => {
+    const controller = new AbortController();
+
     const fetchJobs = async () => {
       try {
         setLoading(true);
@@ -102,14 +107,22 @@ const Jobs = () => {
         const response = await jobsApi.get("v1/jobs/", {
           params: {
             search: searchQuery || undefined,
-            location: filters.locations[0] || undefined,
+
+            location:
+              filters.locations[0] || undefined,
+
             category:
               filters.categories.length === 1
                 ? filters.categories[0]
                 : undefined,
-            min_salary: filters.minSalary || undefined,
-            max_salary: filters.maxSalary || undefined,
+
+            min_salary:
+              filters.minSalary || undefined,
+
+            max_salary:
+              filters.maxSalary || undefined,
           },
+          signal: controller.signal,
         });
 
         const data = Array.isArray(response.data)
@@ -118,18 +131,30 @@ const Jobs = () => {
 
         setJobsData(data);
       } catch (err) {
-        console.error("Error fetching jobs:", err);
-        setError(
-          err.response?.data?.detail ||
-          "Failed to load jobs. Please try again."
-        );
+        if (
+          err.name !== "CanceledError" &&
+          err.code !== "ERR_CANCELED"
+        ) {
+          console.error("Error fetching jobs:", err);
+
+          setError(
+            err.response?.data?.detail ||
+            "Failed to load jobs. Please try again."
+          );
+        }
       } finally {
-        setLoading(false);
+        if (!controller.signal.aborted) {
+          setLoading(false);
+        }
       }
     };
 
     fetchJobs();
+
+    return () => controller.abort();
+
   }, [filters, searchQuery]);
+
 
   const filteredJobs = jobsData
     .filter((job) => {
@@ -183,6 +208,7 @@ const Jobs = () => {
   const clearAllFilters = () => {
     setSearchTerm("");
     setSearchQuery("");
+
     setFilters({
       categories: [],
       locations: [],
@@ -190,7 +216,14 @@ const Jobs = () => {
       minSalary: "",
       maxSalary: "",
     });
+
+    setJobType("");
+    setActive("all");
     setCurrentPage(1);
+
+    setResetSignal((prev) => prev + 1);
+
+    navigate("/jobs", { replace: true });
   };
 
   return (
@@ -336,6 +369,7 @@ const Jobs = () => {
               jobsData={jobsData}
               initialLocations={filters.locations}
               initialCategories={filters.categories}
+              resetSignal={resetSignal}
             />
 
             <div className="flex-1">

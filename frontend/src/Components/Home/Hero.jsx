@@ -8,6 +8,9 @@ import { FaArrowRightLong } from "react-icons/fa6";
 import profileImg from "../../Assets/images/group_profile.webp"
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import jobsApi from "../../Services/JobApi";
+
+
 
 const Hero = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -16,6 +19,7 @@ const Hero = () => {
   const [search, setSearch] = useState("");
   const [location, setLocation] = useState("");
   const [category, setCategory] = useState("");
+  const [categories, setCategories] = useState([]);
 
   useEffect(() => {
     const checkAuth = () => {
@@ -38,12 +42,61 @@ const Hero = () => {
 
     const params = new URLSearchParams();
 
-    if (search.trim()) params.set("search", search.trim());
-    if (location.trim()) params.set("location", location.trim());
-    if (category) params.set("category", category);
+    if (search.trim()) {
+      params.set("search", search.trim());
+    }
+
+    if (location.trim()) {
+      params.set("location", location.trim());
+    }
+
+    if (category) {
+      params.set("category", category);
+
+      const selectedCategory = categories.find(
+        (cat) => String(cat.id) === String(category)
+      );
+
+      if (selectedCategory) {
+        params.set("category_name", selectedCategory.name);
+      }
+    }
 
     navigate(`/jobs?${params.toString()}`);
   };
+
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    const fetchCategories = async () => {
+      try {
+        const response = await jobsApi.get("v1/categories/", {
+          signal: controller.signal,
+        });
+
+        const data = response.data;
+
+        const results = Array.isArray(data)
+          ? data
+          : data.results || [];
+
+        setCategories(results);
+      } catch (error) {
+        if (
+          error.name !== "CanceledError" &&
+          error.code !== "ERR_CANCELED"
+        ) {
+          console.error("Hero categories failed:", error);
+        }
+      }
+    };
+
+    fetchCategories();
+
+    return () => controller.abort();
+  }, []);
+
 
   return (
     <section className="bg-[#F9FAFB] dark:bg-[#071A19] pt-28 pb-16 ">
@@ -228,19 +281,12 @@ const Hero = () => {
                 className="bg-transparent outline-none w-full text-gray-700 dark:text-gray-100 text-base lg:text-lg cursor-pointer"
               >
                 <option value="">All Categories</option>
-                <option value="marketing">Marketing</option>
-                <option value="data & ai">Data & AI</option>
-                <option value="supply chain">Supply Chain</option>
-                <option value="healthcare">Healthcare</option>
-                <option value="it">IT</option>
-                <option value="marketing">Sales</option>
-                <option value="accounting">Accounting</option>
-                <option value="it">Software</option>
-                <option value="accounting">Finance</option>
-                <option value="design">UI/UX Design</option>
-                <option value="hr & admin">HR & Admin</option>
-                <option value="design">Design & Creative</option>
-                <option value="it">Engineer</option>
+
+                {categories.map((cat) => (
+                  <option key={cat.id} value={cat.id}>
+                    {cat.name}
+                  </option>
+                ))}
               </select>
             </div>
 
