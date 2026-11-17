@@ -248,29 +248,32 @@ const Jobs = () => {
       <div className="min-h-screen bg-white dark:bg-[#071A19] py-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Top Row */}
-          <div className="flex flex-col gap-4 mb-4">
-            {/* Toggle - constrained on mobile */}
-            <div className="inline-flex w-full max-w-full sm:w-auto items-center bg-gray-100 dark:bg-[#0F2A28] rounded-full p-1">
+          <div className="flex flex-col lg:flex-row lg:items-center gap-4 mb-4">
+
+            {/* Toggle */}
+            <div className="inline-flex w-full sm:w-auto items-center bg-gray-100 dark:bg-[#0F2A28] rounded-full p-1">
               <button
                 onClick={() => handleToggle("all")}
-                className={`flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-3 sm:px-5 py-2.5 rounded-full text-sm font-semibold transition-all cursor-pointer whitespace-nowrap ${active === "all"
+                className={`flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-4 sm:px-5 py-2.5 rounded-full text-sm font-semibold transition-all cursor-pointer whitespace-nowrap ${active === "all"
                     ? "bg-teal-600 text-white shadow-sm"
                     : "text-gray-500 dark:text-gray-400 hover:text-gray-700"
                   }`}
               >
-                All Jobs <span className="opacity-90">{jobsData.length}</span>
+                All Jobs <span>{jobsData.length}</span>
               </button>
 
               <button
                 onClick={() => handleToggle("featured")}
-                className={`flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-3 sm:px-5 py-2.5 rounded-full text-sm font-semibold transition-all cursor-pointer whitespace-nowrap ${active === "featured"
+                className={`flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-4 sm:px-5 py-2.5 rounded-full text-sm font-semibold transition-all cursor-pointer whitespace-nowrap ${active === "featured"
                     ? "bg-teal-600 text-white shadow-sm"
                     : "text-gray-500 dark:text-gray-400 hover:text-gray-700"
                   }`}
               >
-                Featured <span className="opacity-90">{featuredCount}</span>
+                Featured <span>{featuredCount}</span>
               </button>
             </div>
+
+            {/* Search */}
             <div className="flex flex-1 gap-3">
               <div className="flex-1 flex items-center gap-2 bg-white dark:bg-[#0F2A28] border border-gray-200 dark:border-teal-900/40 rounded-full px-4 py-3 shadow-sm">
                 <CiSearch className="text-gray-400 text-xl" />
@@ -286,14 +289,9 @@ const Jobs = () => {
               <button
                 onClick={() => {
                   setCurrentPage(1);
-
-                  const categoryName =
-                    searchParams.get("category_name") || "";
-
+                  const categoryName = searchParams.get("category_name") || "";
                   setSearchQuery(
-                    searchTerm.trim() === categoryName
-                      ? ""
-                      : searchTerm.trim()
+                    searchTerm.trim() === categoryName ? "" : searchTerm.trim()
                   );
                 }}
                 className="bg-teal-500 hover:bg-teal-600 text-white font-semibold px-6 py-3 rounded-full transition-colors text-sm shrink-0 cursor-pointer"
@@ -302,7 +300,6 @@ const Jobs = () => {
               </button>
             </div>
           </div>
-
           {/* Active Filters Chips */}
           {(searchQuery || filters.locations.length > 0 || filters.categories.length > 0) && (
             <div className="flex flex-wrap items-center gap-2 mb-5">
