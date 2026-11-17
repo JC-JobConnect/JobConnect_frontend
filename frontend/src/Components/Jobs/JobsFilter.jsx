@@ -31,9 +31,8 @@ const FilterSection = ({ title, icon, children, defaultOpen = true }) => {
           {title}
         </span>
         <FiChevronDown
-          className={`text-slate-400 transition-transform ${
-            open ? "rotate-180" : ""
-          }`}
+          className={`text-slate-400 transition-transform ${open ? "rotate-180" : ""
+            }`}
         />
       </button>
 
@@ -64,26 +63,32 @@ const JobsFilter = ({
     const fetchCategories = async () => {
       try {
         const response = await jobsApi.get("v1/categories/");
-        setCategories(response.data);
+
+        const data = response.data;
+
+        const results = Array.isArray(data)
+          ? data
+          : data.results || [];
+
+        setCategories(results);
       } catch (error) {
         console.error("Category load failed:", error);
       }
     };
+
     fetchCategories();
   }, []);
 
-  // ✅ Automatically check locations coming from Homepage
+  // Automatically check locations coming from Homepage
   useEffect(() => {
     if (initialLocations.length > 0) {
       setSelectedLocations(initialLocations);
     }
   }, [initialLocations]);
 
-  // ✅ Automatically check categories coming from Homepage
+  // Automatically check categories coming from Homepage
   useEffect(() => {
-    if (initialCategories.length > 0) {
-      setSelectedCategories(initialCategories);
-    }
+    setSelectedCategories(initialCategories);
   }, [initialCategories]);
 
   // Send selected filters to parent

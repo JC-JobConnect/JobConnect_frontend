@@ -1,23 +1,27 @@
+
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Cross,GlobeCheck, DollarSign, Van,Lightbulb, Layers, UsersRound } from "lucide-react";
-import {  FiTarget,FiGrid,} from "react-icons/fi";
-import jobsApi from "../../Services/JobApi"; 
+import {
+  Cross,
+  GlobeCheck,
+  DollarSign,
+  Van,
+  Lightbulb,
+  Layers,
+  UsersRound,
+} from "lucide-react";
+import { FiTarget } from "react-icons/fi";
+import jobsApi from "../../Services/JobApi";
 
 const iconMap = {
   "data & ai": Lightbulb,
-  "design": Layers,
-  "it": GlobeCheck,
+  design: Layers,
+  it: GlobeCheck,
   "hr & admin": UsersRound,
   "supply chain": Van,
-  "marketing": FiTarget,
-  "healthcare": Cross,
-  "accounting": DollarSign,
-};
-
-const getIcon = (name = "") => {
-  const key = name.toLowerCase().trim();
-  return iconMap[key] || FiGrid; 
+  marketing: FiTarget,
+  healthcare: Cross,
+  accounting: DollarSign,
 };
 
 const Category = () => {
@@ -33,17 +37,23 @@ const Category = () => {
 
         const { data } = await jobsApi.get("/v1/categories/");
 
-        // Handle both array and paginated response
-        const results = Array.isArray(data) ? data : data.results || [];
-
-        const mapped = results.map((cat) => ({
-          id: cat.id,
-          name: cat.name,
-          vacancies: cat.job_count
-            ? `${cat.job_count.toLocaleString()} Job Vacancy`
-            : "Browse jobs",
-          icon: getIcon(cat.name),
-        }));
+        const results = Array.isArray(data)
+          ? data
+          : data.results || [];
+        // Maximum 8 cards on homepage.
+        const mapped = results
+          .filter((cat) =>
+            iconMap[cat.name?.toLowerCase().trim()]
+          )
+          .slice(0, 8)
+          .map((cat) => ({
+            id: cat.id,
+            name: cat.name,
+            vacancies: cat.job_count
+              ? `${cat.job_count.toLocaleString()} Job Vacancy`
+              : "Browse jobs",
+            icon: iconMap[cat.name.toLowerCase().trim()],
+          }));
 
         setCategories(mapped);
       } catch (err) {
@@ -60,12 +70,12 @@ const Category = () => {
   return (
     <section className="py-16 bg-white dark:bg-[#071A19]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Title */}
+
         <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-900 dark:text-white mb-12">
-          Browse Job By <span className="text-teal-500">Category</span>
+          Browse Job By{" "}
+          <span className="text-teal-500">Category</span>
         </h2>
 
-        {/* Loading */}
         {loading && (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
             {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
@@ -77,14 +87,14 @@ const Category = () => {
           </div>
         )}
 
-        {/* Error */}
         {error && !loading && (
           <div className="rounded-2xl border border-red-200 bg-red-50 px-6 py-10 text-center dark:border-red-900/40 dark:bg-red-900/20">
-            <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
+            <p className="text-sm text-red-600 dark:text-red-400">
+              {error}
+            </p>
           </div>
         )}
 
-        {/* Category Grid */}
         {!loading && !error && (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
             {categories.length > 0 ? (
@@ -94,27 +104,25 @@ const Category = () => {
                 return (
                   <Link
                     key={item.id}
-                    to={`/jobs?category=${item.id}`}
+                    to={`/jobs?category=${item.id}&category_name=${encodeURIComponent(item.name)}`}
                     className="block"
                   >
                     <div className="group relative bg-white dark:bg-[#0F2A28] rounded-2xl p-6 text-center shadow-sm border border-gray-100 dark:border-teal-900/50 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer h-full">
-                      {/* Active bottom border on hover */}
+
                       <div className="absolute bottom-0 left-0 right-0 h-1 bg-teal-400 rounded-b-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
 
-                      {/* Icon */}
                       <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-teal-50 dark:bg-teal-900/40 text-teal-500">
                         <Icon className="text-2xl" />
                       </div>
 
-                      {/* Name */}
                       <h3 className="text-base font-semibold text-gray-800 dark:text-white mb-1">
                         {item.name}
                       </h3>
 
-                      {/* Vacancies */}
                       <p className="text-sm text-gray-500 dark:text-gray-400">
                         {item.vacancies}
                       </p>
+
                     </div>
                   </Link>
                 );
@@ -128,6 +136,7 @@ const Category = () => {
             )}
           </div>
         )}
+
       </div>
     </section>
   );

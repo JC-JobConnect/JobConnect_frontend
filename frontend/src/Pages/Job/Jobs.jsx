@@ -42,6 +42,8 @@ const Jobs = () => {
     const searchFromUrl = searchParams.get("search") || "";
     const locationFromUrl = searchParams.get("location") || "";
     const categoryFromUrl = searchParams.get("category") || "";
+    const categoryNameFromUrl =
+      searchParams.get("category_name") || "";
 
     if (searchFromUrl) {
       setSearchTerm(searchFromUrl);
@@ -55,11 +57,22 @@ const Jobs = () => {
       }));
     }
 
-    if (categoryFromUrl && !searchFromUrl) {
-      setSearchTerm(categoryFromUrl);
-      setSearchQuery(categoryFromUrl);
+    if (categoryFromUrl) {
+      const categoryId = Number(categoryFromUrl);
+
+      if (Number.isFinite(categoryId)) {
+        setFilters((prev) => ({
+          ...prev,
+          categories: [categoryId],
+        }));
+      }
+    }
+
+    if (categoryNameFromUrl && !searchFromUrl) {
+      setSearchTerm(categoryNameFromUrl);
     }
   }, [searchParams]);
+
 
   // Fetch jobs
   useEffect(() => {
@@ -207,7 +220,15 @@ const Jobs = () => {
               <button
                 onClick={() => {
                   setCurrentPage(1);
-                  setSearchQuery(searchTerm);
+
+                  const categoryName =
+                    searchParams.get("category_name") || "";
+
+                  setSearchQuery(
+                    searchTerm.trim() === categoryName
+                      ? ""
+                      : searchTerm.trim()
+                  );
                 }}
                 className="bg-teal-500 hover:bg-teal-600 text-white font-semibold px-6 py-3 rounded-full transition-colors text-sm shrink-0 cursor-pointer"
               >
@@ -216,7 +237,7 @@ const Jobs = () => {
             </div>
           </div>
 
-          {/* ✅ Active Filters Chips */}
+          {/* Active Filters Chips */}
           {(searchQuery || filters.locations.length > 0 || filters.categories.length > 0) && (
             <div className="flex flex-wrap items-center gap-2 mb-5">
               <span className="text-sm text-gray-500 dark:text-gray-400">
@@ -260,14 +281,20 @@ const Jobs = () => {
 
               {filters.categories.length > 0 && (
                 <span className="inline-flex items-center gap-1.5 bg-purple-50 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300 px-3 py-1.5 rounded-full text-sm font-medium">
-                  Category selected
+                  Category: {searchParams.get("category_name") || "Selected"}
                   <button
-                    onClick={() =>
+                    onClick={() => {
                       setFilters((prev) => ({
                         ...prev,
                         categories: [],
-                      }))
-                    }
+                      }));
+
+                      if (
+                        searchTerm === searchParams.get("category_name")
+                      ) {
+                        setSearchTerm("");
+                      }
+                    }}
                     className="ml-1 hover:text-purple-900 dark:hover:text-white"
                   >
                     ×
@@ -289,7 +316,8 @@ const Jobs = () => {
             <JobsFilter
               onFilterChange={handleFilterChange}
               jobsData={jobsData}
-              initialLocations={filters.locations} // pass initial location
+              initialLocations={filters.locations}
+              initialCategories={filters.categories}
             />
 
             <div className="flex-1">
