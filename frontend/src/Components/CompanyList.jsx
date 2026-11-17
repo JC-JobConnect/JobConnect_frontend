@@ -258,7 +258,7 @@ function Companies() {
                 <button
                   onClick={() => handlePageChange(currentPage - 1)}
                   disabled={currentPage === 1}
-                  className="p-2 rounded-lg border border-gray-200 dark:border-slate-700 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-100 dark:hover:bg-[#123836]"
+                  className="p-2 rounded-lg border border-gray-200 dark:border-slate-700 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-100 dark:hover:bg-[#123836] cursor-pointer"
                 >
                   <FiChevronLeft className="w-5 h-5" />
                 </button>
@@ -270,7 +270,7 @@ function Companies() {
                   <button
                     key={page}
                     onClick={() => handlePageChange(page)}
-                    className={`w-9 h-9 rounded-lg text-sm font-medium transition ${
+                    className={`w-9 h-9 rounded-lg text-sm font-medium transition cursor-pointer ${
                       currentPage === page
                         ? "bg-teal-600 text-white"
                         : "border border-gray-200 dark:border-slate-700 hover:bg-gray-100 dark:hover:bg-[#123836]"
@@ -283,7 +283,7 @@ function Companies() {
                 <button
                   onClick={() => handlePageChange(currentPage + 1)}
                   disabled={currentPage === totalPages}
-                  className="p-2 rounded-lg border border-gray-200 dark:border-slate-700 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-100 dark:hover:bg-[#123836]"
+                  className="p-2 rounded-lg border border-gray-200 dark:border-slate-700 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-100 dark:hover:bg-[#123836] cursor-pointer"
                 >
                   <FiChevronRight className="w-5 h-5" />
                 </button>

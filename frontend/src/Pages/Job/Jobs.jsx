@@ -461,7 +461,7 @@ const Jobs = () => {
                       <button
                         onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
                         disabled={currentPage === 1}
-                        className="px-4 py-2 rounded-full border text-sm disabled:opacity-40"
+                        className="px-4 py-2 rounded-full border text-sm disabled:opacity-40 cursor-pointer"
                       >
                         Previous
                       </button>
@@ -470,7 +470,7 @@ const Jobs = () => {
                         <button
                           key={page}
                           onClick={() => setCurrentPage(page)}
-                          className={`w-10 h-10 rounded-full text-sm font-medium ${currentPage === page
+                          className={`w-10 h-10 rounded-full text-sm font-medium cursor-pointer${currentPage === page
                             ? "bg-teal-500 text-white"
                             : "border text-gray-600"
                             }`}
@@ -482,7 +482,7 @@ const Jobs = () => {
                       <button
                         onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
                         disabled={currentPage === totalPages}
-                        className="px-4 py-2 rounded-full border text-sm disabled:opacity-40"
+                        className="px-4 py-2 rounded-full border text-sm disabled:opacity-40 cursor-pointer"
                       >
                         Next
                       </button>
