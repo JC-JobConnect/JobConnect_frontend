@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
@@ -11,7 +12,7 @@ import jobsApi from "../../Services/JobApi";
 const FeaturedJobCard = ({
   title = "Featured Jobs",
   subtitle = "Hand-picked opportunities from top companies",
-  viewAllLink = "/jobs",
+  viewAllLink = "/jobs?filter=featured",
   limit = 3,
 }) => {
   const [jobs, setJobs] = useState([]);
@@ -24,28 +25,35 @@ const FeaturedJobCard = ({
         setLoading(true);
         setError(null);
 
+        // Fetch featured jobs only
         const { data } = await jobsApi.get("v1/jobs/", {
           params: {
-            is_featured: false,
+            is_featured: true,
             ordering: "-created_at",
           },
         });
 
-        const results = Array.isArray(data) ? data : data.results || [];
+        // Handle both paginated and non-paginated responses
+        const results = Array.isArray(data)
+          ? data
+          : data.results || [];
 
-        const normalJobs = results.filter(
-          (job) => job.is_featured === false
+        // Extra frontend protection:
+        // Only show jobs explicitly marked as featured
+        const featuredJobs = results.filter(
+          (job) => job.is_featured === true
         );
 
-        const limited = normalJobs.slice(0, limit);
+        // Limit the number of displayed jobs
+        const limited = featuredJobs.slice(0, limit);
 
-        // Map API response → component shape
+        // Map API response to component shape
         const mapped = limited.map((job) => ({
           id: job.id,
           title: job.title,
-          company: job.company_name,
-          logo: job.company_logo,
-          location: job.location,
+          company: job.company_name || "Company",
+          logo: job.company_logo || null,
+          location: job.location || "Not specified",
           jobType: formatJobType(job.job_type),
           workMode: formatWorkMode(job.work_mode),
           salary: formatSalary(job.salary),
@@ -65,6 +73,7 @@ const FeaturedJobCard = ({
   }, [limit]);
 
   // ---------- Helpers ----------
+
   const formatJobType = (type) => {
     const map = {
       full_time: "Full Time",
@@ -73,7 +82,8 @@ const FeaturedJobCard = ({
       internship: "Internship",
       contract: "Contract",
     };
-    return map[type] || type;
+
+    return map[type] || type || "Not specified";
   };
 
   const formatWorkMode = (mode) => {
@@ -82,45 +92,62 @@ const FeaturedJobCard = ({
       remote: "Remote",
       hybrid: "Hybrid",
     };
-    return map[mode] || mode;
+
+    return map[mode] || mode || "Not specified";
   };
 
   const formatSalary = (salary) => {
     if (!salary) return "Negotiable";
-    return `৳${Number(salary).toLocaleString()}`;
+
+    return `৳${Number(salary).toLocaleString("en-BD")}`;
   };
 
   const formatRelativeTime = (dateString) => {
     if (!dateString) return "";
+
     const date = new Date(dateString);
     const now = new Date();
-    const diffInDays = Math.floor((now - date) / (1000 * 60 * 60 * 24));
+
+    const diffInDays = Math.floor(
+      (now - date) / (1000 * 60 * 60 * 24)
+    );
 
     if (diffInDays === 0) return "Today";
     if (diffInDays === 1) return "1 day ago";
-    if (diffInDays < 7) return `${diffInDays} days ago`;
-    if (diffInDays < 30)
-      return `${Math.floor(diffInDays / 7)} week${Math.floor(diffInDays / 7) > 1 ? "s" : ""
-        } ago`;
-    return `${Math.floor(diffInDays / 30)} month${Math.floor(diffInDays / 30) > 1 ? "s" : ""
-      } ago`;
+
+    if (diffInDays < 7) {
+      return `${diffInDays} days ago`;
+    }
+
+    if (diffInDays < 30) {
+      const weeks = Math.floor(diffInDays / 7);
+
+      return `${weeks} week${weeks > 1 ? "s" : ""} ago`;
+    }
+
+    const months = Math.floor(diffInDays / 30);
+
+    return `${months} month${months > 1 ? "s" : ""} ago`;
   };
 
   return (
     <section className="bg-white py-16 dark:bg-[#071A19] sm:py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+
         {/* Header */}
         <div className="mb-8 flex items-center justify-between gap-4 sm:mb-10">
           <div>
             <h2 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-3xl">
               {title}
             </h2>
+
             <p className="mt-2 text-sm text-slate-500 dark:text-slate-400 sm:text-base">
               {subtitle}
             </p>
           </div>
+
           <Link
-            to="/jobs?filter=featured"
+            to={viewAllLink}
             className="group inline-flex shrink-0 items-center gap-1.5 text-sm font-semibold text-teal-600 transition-colors hover:text-teal-700 dark:text-teal-400 dark:hover:text-teal-300 sm:text-base"
           >
             View all
@@ -143,7 +170,9 @@ const FeaturedJobCard = ({
         {/* Error */}
         {error && !loading && (
           <div className="rounded-2xl border border-red-200 bg-red-50 px-6 py-8 text-center dark:border-red-900/40 dark:bg-red-900/20">
-            <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
+            <p className="text-sm text-red-600 dark:text-red-400">
+              {error}
+            </p>
           </div>
         )}
 
@@ -158,8 +187,10 @@ const FeaturedJobCard = ({
                   className="block"
                 >
                   <article className="group relative cursor-pointer rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-teal-300 hover:shadow-lg hover:shadow-teal-900/5 dark:border-white/10 dark:bg-[#0B2422] dark:hover:border-teal-700 sm:p-5">
+
                     <div className="flex items-start gap-3 sm:gap-4">
-                      {/* Logo */}
+
+                      {/* Company Logo */}
                       <div className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-teal-100 bg-teal-50 dark:border-teal-800/60 dark:bg-teal-900/30 sm:h-12 sm:w-12">
                         {job.logo ? (
                           <img
@@ -179,7 +210,7 @@ const FeaturedJobCard = ({
                         )}
                       </div>
 
-                      {/* Info */}
+                      {/* Job Information */}
                       <div className="min-w-0 flex-1">
                         <h3 className="text-base font-bold text-slate-900 transition-colors group-hover:text-teal-600 dark:text-slate-100 dark:group-hover:text-teal-400 sm:text-lg">
                           {job.title}
@@ -190,31 +221,37 @@ const FeaturedJobCard = ({
                         </p>
 
                         <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-slate-500 dark:text-slate-400 sm:text-sm">
+
                           <span className="inline-flex items-center gap-1.5">
                             <LuMapPin className="h-3.5 w-3.5 shrink-0" />
                             {job.location}
                           </span>
+
                           <span className="inline-flex items-center gap-1.5">
                             <LuClock3 className="h-3.5 w-3.5 shrink-0" />
                             {job.jobType}
                             {job.workMode ? ` · ${job.workMode}` : ""}
                           </span>
+
                           <span className="inline-flex items-center gap-1.5">
                             <LuDollarSign className="h-3.5 w-3.5 shrink-0" />
                             {job.salary}
                           </span>
+
                           <span className="inline-flex items-center gap-1.5">
                             <LuClock3 className="h-3.5 w-3.5 shrink-0" />
                             {job.postedAt}
                           </span>
+
                         </div>
                       </div>
                     </div>
 
-                    {/* Arrow indicator */}
+                    {/* Arrow Indicator */}
                     <div className="absolute bottom-4 right-4 inline-flex h-7 w-7 items-center justify-center rounded-full text-slate-400 transition-all duration-200 group-hover:bg-teal-50 group-hover:text-teal-600 dark:group-hover:bg-teal-900/40 dark:group-hover:text-teal-300 sm:bottom-5 sm:right-5">
                       <LuArrowUpRight className="h-4 w-4" />
                     </div>
+
                   </article>
                 </Link>
               ))
@@ -222,15 +259,17 @@ const FeaturedJobCard = ({
               /* Empty State */
               <div className="rounded-2xl border border-dashed border-slate-300 px-6 py-12 text-center dark:border-white/10">
                 <h3 className="text-lg font-semibold text-slate-800 dark:text-white">
-                  No jobs available yet
+                  No featured jobs available yet
                 </h3>
+
                 <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
-                  Check back soon for new career opportunities.
+                  Check back soon for new featured opportunities.
                 </p>
               </div>
             )}
           </div>
         )}
+
       </div>
     </section>
   );
