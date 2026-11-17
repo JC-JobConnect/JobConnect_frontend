@@ -113,12 +113,19 @@ export default function FeaturedJobs({
 
         const { data } = await jobsApi.get("/v1/jobs/", {
           params: {
+            is_featured: false,
             ordering: "-created_at",
           },
         });
 
-        const results = data.results || data;
-        const limited = results.slice(0, limit);
+        const results = Array.isArray(data) ? data : data.results || [];
+
+      
+        const normalJobs = results.filter(
+          (job) => job.is_featured === false
+        );
+
+        const limited = normalJobs.slice(0, limit);
 
         const mapped = limited.map((job) => ({
           id: job.id,
@@ -187,13 +194,11 @@ export default function FeaturedJobs({
     if (diffInDays === 1) return "1 day ago";
     if (diffInDays < 7) return `${diffInDays} days ago`;
     if (diffInDays < 30)
-      return `${Math.floor(diffInDays / 7)} week${
-        Math.floor(diffInDays / 7) > 1 ? "s" : ""
-      } ago`;
+      return `${Math.floor(diffInDays / 7)} week${Math.floor(diffInDays / 7) > 1 ? "s" : ""
+        } ago`;
 
-    return `${Math.floor(diffInDays / 30)} month${
-      Math.floor(diffInDays / 30) > 1 ? "s" : ""
-    } ago`;
+    return `${Math.floor(diffInDays / 30)} month${Math.floor(diffInDays / 30) > 1 ? "s" : ""
+      } ago`;
   };
 
   const formatDate = (dateString) => {

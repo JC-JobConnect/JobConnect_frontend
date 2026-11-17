@@ -24,18 +24,20 @@ const FeaturedJobCard = ({
         setLoading(true);
         setError(null);
 
-        const { data } = await jobsApi.get("/v1/jobs/", {
+        const { data } = await jobsApi.get("v1/jobs/", {
           params: {
-            is_featured: true,
+            is_featured: false,
             ordering: "-created_at",
           },
         });
 
-        // Handle both paginated and non-paginated responses
-        const results = data.results || data;
+        const results = Array.isArray(data) ? data : data.results || [];
 
-        // Limit on frontend
-        const limited = results.slice(0, limit);
+        const normalJobs = results.filter(
+          (job) => job.is_featured === false
+        );
+
+        const limited = normalJobs.slice(0, limit);
 
         // Map API response → component shape
         const mapped = limited.map((job) => ({
@@ -85,7 +87,7 @@ const FeaturedJobCard = ({
 
   const formatSalary = (salary) => {
     if (!salary) return "Negotiable";
-    return `$${Number(salary).toLocaleString()}`;
+    return `৳${Number(salary).toLocaleString()}`;
   };
 
   const formatRelativeTime = (dateString) => {
@@ -220,7 +222,7 @@ const FeaturedJobCard = ({
               /* Empty State */
               <div className="rounded-2xl border border-dashed border-slate-300 px-6 py-12 text-center dark:border-white/10">
                 <h3 className="text-lg font-semibold text-slate-800 dark:text-white">
-                  No featured jobs yet
+                  No jobs available yet
                 </h3>
                 <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
                   Check back soon for new career opportunities.
