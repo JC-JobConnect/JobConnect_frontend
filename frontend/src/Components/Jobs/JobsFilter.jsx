@@ -38,9 +38,8 @@ const FilterSection = ({
         </span>
 
         <FiChevronDown
-          className={`text-slate-400 transition-transform ${
-            open ? "rotate-180" : ""
-          }`}
+          className={`text-slate-400 transition-transform ${open ? "rotate-180" : ""
+            }`}
         />
       </button>
 
@@ -110,14 +109,30 @@ const JobsFilter = ({
     return () => controller.abort();
   }, []);
 
-  // Sync homepage location filters
   useEffect(() => {
-    setSelectedLocations(initialLocations);
+    setSelectedLocations((prev) => {
+      if (
+        prev.length === initialLocations.length &&
+        prev.every((value, index) => value === initialLocations[index])
+      ) {
+        return prev;
+      }
+
+      return initialLocations;
+    });
   }, [initialLocations]);
 
-  // Sync homepage category filters
   useEffect(() => {
-    setSelectedCategories(initialCategories);
+    setSelectedCategories((prev) => {
+      if (
+        prev.length === initialCategories.length &&
+        prev.every((value, index) => value === initialCategories[index])
+      ) {
+        return prev;
+      }
+
+      return initialCategories;
+    });
   }, [initialCategories]);
 
   // Reset all local filters when parent requests it

@@ -149,6 +149,9 @@ const Jobs = () => {
       }
     };
 
+    console.count("JOBS API REQUEST");
+    console.log("Current category:", filters.categories);
+    console.log("Current search:", searchQuery);
     fetchJobs();
 
     return () => controller.abort();
