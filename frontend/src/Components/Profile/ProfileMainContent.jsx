@@ -28,9 +28,8 @@ const getListData = (data) => {
   return data?.results || [];
 };
 
-// ==========================================
 // REUSABLE SECTION CARD
-// ==========================================
+
 
 const SectionCard = ({ title, children, onEdit, onAdd, showAdd = false }) => (
   <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition hover:shadow-md dark:border-teal-900/60 dark:bg-[#0B2421] sm:p-7">
@@ -70,9 +69,9 @@ const SectionCard = ({ title, children, onEdit, onAdd, showAdd = false }) => (
   </section>
 );
 
-// ==========================================
+
 // EMPTY STATE
-// ==========================================
+
 
 const EmptyState = ({ text }) => (
   <div className="flex min-h-24 items-center justify-center text-center text-sm text-slate-400 dark:text-slate-500">
@@ -80,9 +79,9 @@ const EmptyState = ({ text }) => (
   </div>
 );
 
-// ==========================================
+
 // FIELD COMPONENT
-// ==========================================
+
 
 const Field = ({ label, value }) => (
   <div className="min-w-0">
@@ -96,20 +95,19 @@ const Field = ({ label, value }) => (
   </div>
 );
 
-// ==========================================
+
 // MAIN COMPONENT
-// ==========================================
+
 
 const ProfileMainContent = ({ profileData, onProfileUpdate }) => {
-  // ----------------------------------------
+
   // REFS
-  // ----------------------------------------
+ 
 
   const fileInputRef = useRef(null);
 
-  // ----------------------------------------
+
   // STATES
-  // ----------------------------------------
 
   const [profile, setProfile] = useState(profileData || {});
 
@@ -142,9 +140,9 @@ const ProfileMainContent = ({ profileData, onProfileUpdate }) => {
 
   const [cvFile, setCvFile] = useState(null);
 
-  // ----------------------------------------
+  
   // PROFILE SYNC
-  // ----------------------------------------
+ 
 
   useEffect(() => {
     setProfile(profileData || {});
@@ -158,9 +156,9 @@ const ProfileMainContent = ({ profileData, onProfileUpdate }) => {
     });
   }, [profileData]);
 
-  // ----------------------------------------
+  
   // FETCH ALL DATA
-  // ----------------------------------------
+  
 
   const fetchData = async () => {
     try {
@@ -191,17 +189,17 @@ const ProfileMainContent = ({ profileData, onProfileUpdate }) => {
     fetchData();
   }, []);
 
-  // ----------------------------------------
+ 
   // MESSAGE
-  // ----------------------------------------
+
 
   const showMessage = (text, type = "success") => {
     setMessage({ text, type });
   };
 
-  // ----------------------------------------
+  
   // PROFILE EDIT
-  // ----------------------------------------
+  
 
   const handleProfileChange = (e) => {
     const { name, value } = e.target;
@@ -242,9 +240,9 @@ const ProfileMainContent = ({ profileData, onProfileUpdate }) => {
     }
   };
 
-  // ----------------------------------------
+  
   // OPEN ADD / EDIT MODAL
-  // ----------------------------------------
+ 
 
   const openModal = (type, item = null) => {
     setModalType(type);
@@ -291,9 +289,9 @@ const ProfileMainContent = ({ profileData, onProfileUpdate }) => {
     }));
   };
 
-  // ----------------------------------------
+  
   // SAVE EDUCATION / EXPERIENCE / SKILLS
-  // ----------------------------------------
+ 
 
   const handleSaveItem = async (e) => {
     e.preventDefault();
@@ -355,9 +353,9 @@ const ProfileMainContent = ({ profileData, onProfileUpdate }) => {
     }
   };
 
-  // ----------------------------------------
+ 
   // DELETE ITEM
-  // ----------------------------------------
+ 
 
   const handleDeleteItem = async (type, id) => {
     const confirmed = window.confirm(
@@ -381,9 +379,8 @@ const ProfileMainContent = ({ profileData, onProfileUpdate }) => {
     }
   };
 
-  // ----------------------------------------
+
   // CV SELECT
-  // ----------------------------------------
 
   const handleCVChange = (e) => {
     const file = e.target.files?.[0];
@@ -409,9 +406,8 @@ const ProfileMainContent = ({ profileData, onProfileUpdate }) => {
     setMessage({ type: "", text: "" });
   };
 
-  // ----------------------------------------
   // CV UPLOAD
-  // ----------------------------------------
+ 
 
   const handleUploadCV = async () => {
     if (!cvFile) {
@@ -453,9 +449,9 @@ const ProfileMainContent = ({ profileData, onProfileUpdate }) => {
     }
   };
 
-  // ----------------------------------------
+
   // FORM CONFIGURATION
-  // ----------------------------------------
+
 
   const modalFields = {
     education: [
@@ -503,9 +499,8 @@ const ProfileMainContent = ({ profileData, onProfileUpdate }) => {
     ],
   };
 
-  // ----------------------------------------
   // LOADING
-  // ----------------------------------------
+
 
   if (loading) {
     return (
@@ -521,9 +516,9 @@ const ProfileMainContent = ({ profileData, onProfileUpdate }) => {
     );
   }
 
-  // ========================================
+ 
   // MAIN UI
-  // ========================================
+ 
 
   return (
     <div className="space-y-6">
@@ -799,7 +794,7 @@ const ProfileMainContent = ({ profileData, onProfileUpdate }) => {
                 href={getMediaUrl(profile.cv)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex shrink-0 items-center justify-center gap-2 rounded-lg bg-teal-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-teal-700"
+                className="inline-flex shrink-0 items-center justify-center gap-2 rounded-lg bg-teal-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-teal-700 "
               >
                 <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z" />
@@ -843,7 +838,7 @@ const ProfileMainContent = ({ profileData, onProfileUpdate }) => {
                     fileInputRef.current.value = "";
                   }
                 }}
-                className="text-sm font-medium text-red-500 hover:text-red-700"
+                className="text-sm font-medium text-red-500 hover:text-red-700 cursor-pointer"
               >
                 Remove
               </button>
@@ -868,7 +863,7 @@ const ProfileMainContent = ({ profileData, onProfileUpdate }) => {
                 type="button"
                 onClick={handleUploadCV}
                 disabled={uploadingCV}
-                className="inline-flex items-center gap-2 rounded-lg bg-green-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-50"
+                className="inline-flex items-center gap-2 rounded-lg bg-green-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer"
               >
                 {uploadingCV ? (
                   <>
