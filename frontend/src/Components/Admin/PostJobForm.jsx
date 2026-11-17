@@ -198,7 +198,7 @@ const PostJobForm = ({ initialJob, onSuccess }) => {
   };
 
   const inputClass =
-    "mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-teal-500 dark:border-teal-800 dark:bg-[#071A19]";
+    "mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-teal-500 dark:border-teal-800 dark:bg-[#071A19] dark:text-slate-50";
 
   const labelClass =
     "text-xs font-semibold text-slate-500 dark:text-slate-50";
