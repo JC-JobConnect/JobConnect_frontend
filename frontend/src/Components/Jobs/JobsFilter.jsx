@@ -206,12 +206,12 @@ const JobsFilter = ({
               >
                 <input
                   type="checkbox"
-                  checked={selectedExperience.includes(exp.value)}
+                  checked={selectedCategories.includes(Number(cat.id))}
                   onChange={() =>
                     toggleFilter(
-                      exp.value,
-                      selectedExperience,
-                      setSelectedExperience
+                      Number(cat.id),
+                      selectedCategories,
+                      setSelectedCategories
                     )
                   }
                   className="h-4 w-4 rounded border-gray-300 text-teal-600 focus:ring-teal-500"
