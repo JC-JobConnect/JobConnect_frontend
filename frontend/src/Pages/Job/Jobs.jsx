@@ -8,7 +8,7 @@ import JobsCard from "../../Components/Jobs/JobsCard";
 import jobsApi from "../../Services/JobApi";
 
 const Jobs = () => {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [jobType, setJobType] = useState("");
   const [sortBy, setSortBy] = useState("newest");
   const navigate = useNavigate();
@@ -21,7 +21,9 @@ const Jobs = () => {
   const [resetSignal, setResetSignal] = useState(0);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [active, setActive] = useState("all");
+  const [active, setActive] = useState(() =>
+    searchParams.get("filter") === "featured" ? "featured" : "all"
+  );
   const [viewMode, setViewMode] = useState("list");
 
   const [filters, setFilters] = useState({
@@ -130,6 +132,10 @@ const Jobs = () => {
           : response.data.results || [];
 
         setJobsData(data);
+        const filterFromUrl = searchParams.get("filter");
+
+        setActive(filterFromUrl === "featured" ? "featured" : "all");
+        setCurrentPage(1);
       } catch (err) {
         if (
           err.name !== "CanceledError" &&
@@ -201,9 +207,15 @@ const Jobs = () => {
   const startIndex = (currentPage - 1) * jobsPerPage;
   const currentJobs = filteredJobs.slice(startIndex, startIndex + jobsPerPage);
 
-  const handleToggle = (value) => {
-    setActive(value);
+  const handleToggle = (filter) => {
+    setActive(filter);
     setCurrentPage(1);
+
+    if (filter === "featured") {
+      setSearchParams({ filter: "featured" });
+    } else {
+      setSearchParams({});
+    }
   };
 
   const featuredCount = jobsData.filter((job) => job.is_featured === true).length;
@@ -236,29 +248,29 @@ const Jobs = () => {
       <div className="min-h-screen bg-white dark:bg-[#071A19] py-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Top Row */}
-          <div className="flex flex-col lg:flex-row lg:items-center gap-4 mb-4">
-            <div className="inline-flex items-center bg-gray-100 dark:bg-[#0F2A28] rounded-full p-1 shrink-0">
+          <div className="flex flex-col gap-4 mb-4">
+            {/* Toggle - constrained on mobile */}
+            <div className="inline-flex w-full max-w-full sm:w-auto items-center bg-gray-100 dark:bg-[#0F2A28] rounded-full p-1">
               <button
                 onClick={() => handleToggle("all")}
-                className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all cursor-pointer ${active === "all"
-                  ? "bg-teal-600 text-white shadow-sm"
-                  : "text-gray-500 dark:text-gray-400 hover:text-gray-700"
+                className={`flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-3 sm:px-5 py-2.5 rounded-full text-sm font-semibold transition-all cursor-pointer whitespace-nowrap ${active === "all"
+                    ? "bg-teal-600 text-white shadow-sm"
+                    : "text-gray-500 dark:text-gray-400 hover:text-gray-700"
                   }`}
               >
-                All Jobs <span>{jobsData.length}</span>
+                All Jobs <span className="opacity-90">{jobsData.length}</span>
               </button>
 
               <button
                 onClick={() => handleToggle("featured")}
-                className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all cursor-pointer ${active === "featured"
-                  ? "bg-teal-600 text-white shadow-sm"
-                  : "text-gray-500 dark:text-gray-400 hover:text-gray-700"
+                className={`flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-3 sm:px-5 py-2.5 rounded-full text-sm font-semibold transition-all cursor-pointer whitespace-nowrap ${active === "featured"
+                    ? "bg-teal-600 text-white shadow-sm"
+                    : "text-gray-500 dark:text-gray-400 hover:text-gray-700"
                   }`}
               >
-                Featured Jobs <span>{featuredCount}</span>
+                Featured <span className="opacity-90">{featuredCount}</span>
               </button>
             </div>
-
             <div className="flex flex-1 gap-3">
               <div className="flex-1 flex items-center gap-2 bg-white dark:bg-[#0F2A28] border border-gray-200 dark:border-teal-900/40 rounded-full px-4 py-3 shadow-sm">
                 <CiSearch className="text-gray-400 text-xl" />

@@ -120,7 +120,7 @@ const FeaturedJobCard = ({
             </p>
           </div>
           <Link
-            to={viewAllLink}
+            to="/jobs?filter=featured"
             className="group inline-flex shrink-0 items-center gap-1.5 text-sm font-semibold text-teal-600 transition-colors hover:text-teal-700 dark:text-teal-400 dark:hover:text-teal-300 sm:text-base"
           >
             View all
