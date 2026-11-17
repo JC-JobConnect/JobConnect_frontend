@@ -254,7 +254,7 @@ const CompanyForm = () => {
           onChange={handleChange}
           type="text"
           placeholder="Company name *"
-          className="w-full border border-slate-200 dark:border-teal-800 dark:bg-[#071A19] rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-teal-500"
+          className="w-full border border-slate-200 dark:border-teal-800 dark:bg-[#071A19] rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-teal-500 dark:text-slate-50"
           disabled={submitting}
         />
 
@@ -264,7 +264,7 @@ const CompanyForm = () => {
           onChange={handleChange}
           type="text"
           placeholder="Location *"
-          className="w-full border border-slate-200 dark:border-teal-800 dark:bg-[#071A19] rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-teal-500"
+          className="w-full border border-slate-200 dark:border-teal-800 dark:bg-[#071A19] rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-teal-500 dark:text-slate-50"
           disabled={submitting}
         />
 
@@ -274,7 +274,7 @@ const CompanyForm = () => {
           onChange={handleChange}
           rows="2"
           placeholder="Short bio (optional)"
-          className="w-full border border-slate-200 dark:border-teal-800 dark:bg-[#071A19] rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-teal-500 resize-none"
+          className="w-full border border-slate-200 dark:border-teal-800 dark:bg-[#071A19] rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-teal-500 resize-none dark:text-slate-50"
           disabled={submitting}
         />
 
@@ -359,7 +359,7 @@ const CompanyForm = () => {
                     name="name"
                     value={editForm.name}
                     onChange={handleEditChange}
-                    className="w-full border border-teal-500 rounded px-2 py-2 text-sm dark:bg-[#071A19]"
+                    className="w-full border border-teal-500 rounded px-2 py-2 text-sm dark:bg-[#071A19] dark:text-slate-50"
                     placeholder="Company name"
                     disabled={submitting}
                   />
@@ -368,7 +368,7 @@ const CompanyForm = () => {
                     name="location"
                     value={editForm.location}
                     onChange={handleEditChange}
-                    className="w-full border border-teal-500 rounded px-2 py-2 text-sm dark:bg-[#071A19]"
+                    className="w-full border border-teal-500 rounded px-2 py-2 text-sm dark:bg-[#071A19] dark:text-slate-50"
                     placeholder="Location"
                     disabled={submitting}
                   />
@@ -378,7 +378,7 @@ const CompanyForm = () => {
                     value={editForm.bio}
                     onChange={handleEditChange}
                     rows="2"
-                    className="w-full border border-teal-500 rounded px-2 py-2 text-sm dark:bg-[#071A19] resize-none"
+                    className="w-full border border-teal-500 rounded px-2 py-2 text-sm dark:bg-[#071A19] resize-none dark:text-slate-50"
                     placeholder="Bio"
                     disabled={submitting}
                   />
@@ -386,7 +386,7 @@ const CompanyForm = () => {
                   {/* Current Logo */}
                   {company.logo && (
                     <div>
-                      <p className="text-xs text-slate-500 mb-2">
+                      <p className="text-xs text-slate-500 mb-2 dark:text-slate-50">
                         Current logo:
                       </p>
 
@@ -446,7 +446,7 @@ const CompanyForm = () => {
                       type="button"
                       onClick={() => handleUpdate(company.id)}
                       disabled={submitting}
-                      className="text-green-600 hover:text-green-700 flex items-center gap-1 text-sm font-medium disabled:opacity-50"
+                      className="text-green-600 hover:text-green-700 flex items-center gap-1 text-sm font-medium disabled:opacity-50 cursor-pointer"
                     >
                       <FaSave /> Save
                     </button>
@@ -455,7 +455,7 @@ const CompanyForm = () => {
                       type="button"
                       onClick={cancelEdit}
                       disabled={submitting}
-                      className="text-slate-500 hover:text-slate-700 flex items-center gap-1 text-sm disabled:opacity-50"
+                      className="text-slate-500 hover:text-slate-700 flex items-center gap-1 text-sm disabled:opacity-50 cursor-pointer"
                     >
                       <FaTimes /> Cancel
                     </button>

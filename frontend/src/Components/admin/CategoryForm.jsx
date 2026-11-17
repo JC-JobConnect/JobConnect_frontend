@@ -136,7 +136,7 @@ const CategoryForm = () => {
           onChange={(e) => setName(e.target.value)}
           type="text"
           placeholder="Category name (e.g. Development)"
-          className="flex-1 border border-slate-200 dark:border-teal-800 dark:bg-[#071A19] rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-teal-500"
+          className="flex-1 border border-slate-200 dark:border-teal-800 dark:bg-[#071A19] rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-teal-500 dark:text-slate-50"
           disabled={submitting}
         />
         <button
@@ -166,7 +166,7 @@ const CategoryForm = () => {
                   <input
                     value={editName}
                     onChange={(e) => setEditName(e.target.value)}
-                    className="flex-1 border border-teal-500 rounded px-2 py-1 text-sm dark:bg-[#071A19]"
+                    className="flex-1 border border-teal-500 rounded px-2 py-1 text-sm dark:bg-[#071A19] dark:text-slate-50"
                     autoFocus
                   />
                   <button

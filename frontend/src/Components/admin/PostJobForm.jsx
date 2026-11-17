@@ -201,7 +201,7 @@ const PostJobForm = ({ initialJob, onSuccess }) => {
     "mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-teal-500 dark:border-teal-800 dark:bg-[#071A19]";
 
   const labelClass =
-    "text-xs font-semibold text-slate-500 dark:text-slate-300";
+    "text-xs font-semibold text-slate-500 dark:text-slate-50";
 
   return (
     <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-teal-900/40 dark:bg-[#0F2A28]">
