@@ -30,10 +30,28 @@ const Jobs = () => {
     maxSalary: "",
   });
 
+
   const handleFilterChange = useCallback((newFilters) => {
-    setFilters(newFilters);
+    setFilters((prev) => {
+      const sameArray = (a, b) =>
+        a.length === b.length &&
+        a.every((value, index) => value === b[index]);
+
+      const unchanged =
+        sameArray(prev.categories, newFilters.categories) &&
+        sameArray(prev.locations, newFilters.locations) &&
+        sameArray(prev.experience, newFilters.experience) &&
+        prev.minSalary === newFilters.minSalary &&
+        prev.maxSalary === newFilters.maxSalary;
+
+      if (unchanged) return prev;
+
+      return newFilters;
+    });
+
     setCurrentPage(1);
   }, []);
+
 
   const jobsPerPage = 5;
 
