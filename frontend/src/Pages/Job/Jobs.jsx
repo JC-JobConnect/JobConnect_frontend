@@ -470,7 +470,7 @@ const Jobs = () => {
                         <button
                           key={page}
                           onClick={() => setCurrentPage(page)}
-                          className={`w-10 h-10 rounded-full text-sm font-medium cursor-pointer${currentPage === page
+                          className={`w-10 h-10 rounded-full text-sm font-medium cursor-pointer ${currentPage === page
                             ? "bg-teal-500 text-white"
                             : "border text-gray-600"
                             }`}
